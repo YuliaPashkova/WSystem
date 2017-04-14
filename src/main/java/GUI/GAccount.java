@@ -373,35 +373,35 @@ public class GAccount extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ResultTable);
 
-        WaterconButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\vodomerniy_uzel.jpg")); // NOI18N
+        WaterconButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\vodomerniy_uzel.jpg")); // NOI18N
         WaterconButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WaterconButtonActionPerformed(evt);
             }
         });
 
-        ClearButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\ikonka-korziny.jpg")); // NOI18N
+        ClearButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\ikonka-korziny.jpg")); // NOI18N
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearButtonActionPerformed(evt);
             }
         });
 
-        CountAccButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\n_icon.jpg")); // NOI18N
+        CountAccButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\n_icon.jpg")); // NOI18N
         CountAccButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CountAccButtonActionPerformed(evt);
             }
         });
 
-        SummDebtButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\summa_icon.jpg")); // NOI18N
+        SummDebtButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\summa_icon.jpg")); // NOI18N
         SummDebtButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SummDebtButtonActionPerformed(evt);
             }
         });
 
-        ContactsButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\contacts_icon.jpg")); // NOI18N
+        ContactsButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\contacts_icon.jpg")); // NOI18N
         ContactsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ContactsButtonActionPerformed(evt);
