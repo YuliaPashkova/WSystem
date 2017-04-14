@@ -1,4 +1,5 @@
 package GUI;
+import javax.swing.*;
 import java.awt.*;
 /**
  * Created by Юлия on 13.04.2017.
@@ -993,8 +994,31 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void NewAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        Object[] options = {"Физическое лицо",
+                "Юридическое лицо",
+                "Отмена"};
 
+        int result = JOptionPane.showOptionDialog(null,
+                "Укажите тип нового абонента ",
+                "Выбор типа абонента ",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]);
+
+        if (result == JOptionPane.YES_OPTION){
+            GNewAccountPerson nap= new GNewAccountPerson();
+            nap.setVisible(true);
+        }
+        else if (result == JOptionPane.NO_OPTION) {
+            GNewAccountCompany nac= new GNewAccountCompany();
+            nac.setVisible(true);
+        }
+        else
+            dispose();
     }
+
 
     private void NoticeDeptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
