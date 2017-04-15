@@ -625,9 +625,10 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(ClearButton))
                                 .addContainerGap())
         );
-
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>
+
 
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
         //какие-то действия

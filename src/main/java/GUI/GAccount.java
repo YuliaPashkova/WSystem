@@ -968,7 +968,8 @@ public class GAccount extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>
+        setLocationRelativeTo(null);
+    }
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
         //search();
