@@ -1,5 +1,6 @@
 package GUI;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -22,8 +23,9 @@ public class GTitul extends javax.swing.JFrame {
         GoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Вход в систему.");
+        setTitle("Вход в систему");
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
+
         setBounds(new java.awt.Rectangle(500, 200, 0, 0));
         setResizable(false);
 
