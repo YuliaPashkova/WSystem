@@ -3,6 +3,7 @@ package GUI;
 /**
  * Created by Юлия on 14.04.2017.
  */
+import javax.swing.*;
 import java.awt.*;
 
 public class GNewAccountPerson extends javax.swing.JFrame {
@@ -54,7 +55,9 @@ public class GNewAccountPerson extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый лицевой счет (физ.лицо)");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
+        //setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
+        ImageIcon icon = new ImageIcon("src\\main\\java\\icons\\main_icon.png");
+        setIconImage(icon.getImage());
         setBounds(new java.awt.Rectangle(300, 150, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);

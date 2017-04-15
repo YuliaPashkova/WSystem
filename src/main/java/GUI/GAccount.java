@@ -98,7 +98,9 @@ public class GAccount extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Лицевой счет");
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
+        //setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
+        ImageIcon icon = new ImageIcon("src\\main\\java\\icons\\main_icon.png");
+        setIconImage(icon.getImage());
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -335,7 +337,7 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        WatermeterButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\Vodomer_icon.jpg")); // NOI18N
+        WatermeterButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\Vodomer_icon.jpg")); // NOI18N
         WatermeterButton.setRequestFocusEnabled(false);
         WatermeterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
