@@ -1,9 +1,5 @@
 package GUI;
 import javax.swing.*;
-import java.awt.*;
-
-import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
-
 /**
  * Created by Юлия on 13.04.2017.
  */
@@ -1104,7 +1100,8 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ContactsButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+       GContacts c = new GContacts(this);
+        c.setVisible(true);
     }
 
     private void DateContractDatePickerMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1200,7 +1197,7 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) {
-        Object[] options = { "Да", "Нет!" };
+        Object[] options = { "Да", "Нет" };
         int n = JOptionPane.showOptionDialog(null, "Выйти из программы?",
                 "Подтверждение выхода", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
