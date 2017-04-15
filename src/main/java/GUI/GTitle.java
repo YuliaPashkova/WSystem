@@ -1,61 +1,20 @@
 package GUI;
 
 import javax.swing.*;
-import java.awt.*;
-import java.net.URL;
 
 /**
  * Created by Юлия on 13.04.2017.
  */
-public class GTitul extends javax.swing.JFrame {
+public class GTitle extends javax.swing.JFrame {
     private javax.swing.JButton ExitButton;
     private javax.swing.JButton GoButton;
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JPasswordField PasswordTextField;
     private javax.swing.JLabel UserNameLabel;
-                                             
 
-    /*public void go() throws SQLException {
-        int error = Access.login(UserNameTextField.getText(), PasswordTextField.getText());
-        switch (error) {
-            case 1://логин  и пароль введены верно
-                int access = Access.checkingUser(UserNameTextField.getText());//проверка доступа}
-                if (access != -1) {
-                    Lic_Schet_Menu.setEnabled(true);
-                    Bank_Menu.setEnabled(true);
-                    Otchet_Menu.setEnabled(true);
-                    Spravochnik_Menu.setEnabled(true);
-                }
-                switch (access) {
-                    case -1:
-                        JOptionPane.showMessageDialog(null, "Что-то пошло не так!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                        break;
-                    case 1://доступ к водомерному подключению
-                        formaaccount.Vodomer_UzelButton.setEnabled(false);
-                        break;
-                    case 2://нет доступа к созданию лицевого счета
-                        formaaccount.NewLicSchetMenuItem.setEnabled(false);
-                        break;
-
-                }
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "Логин или пароль введены неверно!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                break;
-            case 3:JOptionPane.showMessageDialog(null, "Введите логин и пароль!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                break;
-            case 4:
-                JOptionPane.showMessageDialog(null, "Введите логин!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                break;
-            case 5:
-                JOptionPane.showMessageDialog(null, "Введите пароль!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-                break;
-        }
-    }*/
     private javax.swing.JTextField UserNameTextField;
 
-    public GTitul() {
-        //Connect.conntoDB();
+    public GTitle() {
         initComponents();
     }
 
@@ -68,12 +27,12 @@ public class GTitul extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GTitul.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GTitle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GTitul().setVisible(true);
+                new GTitle().setVisible(true);
             }
         });
     }
@@ -165,8 +124,6 @@ public class GTitul extends javax.swing.JFrame {
     }
 
     private void GoButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // go();
-
     }
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {
