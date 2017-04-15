@@ -1,13 +1,124 @@
 package GUI;
 import javax.swing.*;
 import java.awt.*;
+
+import static java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE;
+
 /**
  * Created by Юлия on 13.04.2017.
  */
 public class GAccount extends javax.swing.JFrame {
+    // Variables declaration - do not modify
+    private javax.swing.JLabel AdressLabel;
+    private javax.swing.JTextField AdressTextField;
+    private javax.swing.JLabel BIKLabel;
+    private javax.swing.JTextField BIKTextField;
+    private javax.swing.JLabel BalanceLabel;
+    private javax.swing.JTextField BalanceTextField;
+    private javax.swing.JLabel BankAccLabel;
+    private javax.swing.JTextField BankAccTextField;
+    private javax.swing.JLabel BankLabel;
+    private javax.swing.JTextField BankTextField;
+    private javax.swing.JMenu CatalogMenu;
+    private javax.swing.JMenuItem ChangeAccMenuItem;
+    private javax.swing.JMenu ChangesMenu;
+    private javax.swing.JButton ClearButton;
+    private javax.swing.JMenuItem CloseOrderMenuItem;
+    private javax.swing.JLabel ConsTypeLabel;
+    private javax.swing.JTextField ConsTypeTextField;
+    private javax.swing.JButton ContactsButton;
+    private javax.swing.JLabel CorpusLabel;
+    private javax.swing.JTextField CorpusTextField;
+    private javax.swing.JButton CountAccButton;
+    private javax.swing.JMenu DataProtectionMenu;
+    private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
+    private javax.swing.JLabel DateContractLabel;
+    private javax.swing.JMenuItem DecryptDataMenuItem;
+    private javax.swing.JMenuItem DeleteAccMenuItem;
+    private javax.swing.JLabel DistrictLabel;
+    private javax.swing.JTextField DistrictTextField;
+    private javax.swing.JMenu DocumentsMenu;
+    private javax.swing.JMenuItem EncryptDataMenuItem;
+    private javax.swing.JLabel FIOLabel;
+    private javax.swing.JLabel FlatLabel;
+    private javax.swing.JTextField FlatTextField;
+    private javax.swing.JMenuItem HistoryMenuItem;
+    private javax.swing.JLabel HouseLabel;
+    private javax.swing.JTextField HouseTextField;
+    private javax.swing.JLabel INNLabel;
+    private javax.swing.JTextField INNTextField;
+    private javax.swing.JLabel IndexLabel;
+    private javax.swing.JTextField IndexTextField;
+    private javax.swing.JLabel KPPLabel;
+    private javax.swing.JTextField KPPTextField;
+    private javax.swing.JMenuItem ListDeptorsMenuItem2;
+    private javax.swing.JMenuBar MenuBar;
+    private javax.swing.JPopupMenu.Separator MenuSeparator;
+    private javax.swing.JPopupMenu.Separator MenuSeparator1;
+    private javax.swing.JTextField MiddleNameTextField;
+    private javax.swing.JLabel NameCompanyLabel;
+    private javax.swing.JTextField NameCompanyTextField;
+    private javax.swing.JTextField NameTextField;
+    private javax.swing.JMenuItem NewAccMenuItem;
+    private javax.swing.JMenuItem NewOrderMenuItem;
+    private javax.swing.JMenuItem NewWaterconMenuItem;
+    private javax.swing.JMenuItem NewWatermeterMenuItem;
+    private javax.swing.JMenuItem NoticeDeptMenuItem;
+    private javax.swing.JLabel NumAccLabel;
+    private javax.swing.JTextField NumAccTextField;
+    private javax.swing.JLabel NumContractLabel;
+    private javax.swing.JTextField NumContractTextField;
+    private javax.swing.JLabel NumSertifLabel;
+    private javax.swing.JTextField NumSertifTextField;
+    private javax.swing.JMenu OrderMenu;
+    private javax.swing.JMenuItem OrdersMenuItem;
+    private javax.swing.JLabel OwnerLabel;
+    private javax.swing.JTextField OwnerTextField;
+    private javax.swing.JMenuItem PatternDeptMenuItem;
+    private javax.swing.JTable ResultTable;
+    private javax.swing.JButton SearchButton;
+    private javax.swing.JSeparator Separator;
+    private javax.swing.JLabel StatusAccLabel;
+    private javax.swing.JTextField StatusAccTextField;
+    private javax.swing.JButton SummDebtButton;
+    private javax.swing.JTextField SurnameTextField;
+    private javax.swing.JLabel TelephoneLabel;
+    private javax.swing.JTextField TelephoneTextField;
+    private javax.swing.JButton WaterconButton;
+    private javax.swing.JMenuItem WaterconMenuItem;
+    private javax.swing.JButton WatermeterButton;
+    private javax.swing.JMenuItem WatermeterMenuItem;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JMenu ExitProgrammMenu;
     public GAccount() {
+
         initComponents();
     }
+
+    public static void main(String args[]) {
+
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+
+                new GAccount().setVisible(true);
+
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     private void initComponents() {
         DistrictLabel = new javax.swing.JLabel();
@@ -95,6 +206,7 @@ public class GAccount extends javax.swing.JFrame {
         DataProtectionMenu = new javax.swing.JMenu();
         EncryptDataMenuItem = new javax.swing.JMenuItem();
         DecryptDataMenuItem = new javax.swing.JMenuItem();
+        ExitProgrammMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Лицевой счет");
@@ -585,6 +697,14 @@ public class GAccount extends javax.swing.JFrame {
 
         MenuBar.add(DataProtectionMenu);
 
+        ExitProgrammMenu.setText("Выход");
+        ExitProgrammMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ExitProgrammMenuMouseClicked(evt);
+            }
+        });
+        MenuBar.add(ExitProgrammMenu);
+
         setJMenuBar(MenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -848,8 +968,7 @@ public class GAccount extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
-
+    }// </editor-fold>
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
         //search();
@@ -999,7 +1118,6 @@ public class GAccount extends javax.swing.JFrame {
         Object[] options = {"Физическое лицо",
                 "Юридическое лицо",
                 "Отмена"};
-
         int result = JOptionPane.showOptionDialog(null,
                 "Укажите тип нового абонента ",
                 "Выбор типа абонента ",
@@ -1008,19 +1126,17 @@ public class GAccount extends javax.swing.JFrame {
                 null,
                 options,
                 options[2]);
-
-        if (result == JOptionPane.YES_OPTION){
-            GNewAccountPerson nap= new GNewAccountPerson();
-            nap.setVisible(true);
+        switch (result){
+            case 0://физ.лицо
+                GNewAccountPerson nap= new GNewAccountPerson(this);
+                nap.setVisible(true);
+                break;
+            case 1://юр.лицо
+                GNewAccountCompany nac= new GNewAccountCompany(this);
+                nac.setVisible(true);
+                break;
         }
-        else if (result == JOptionPane.NO_OPTION) {
-            GNewAccountCompany nac= new GNewAccountCompany();
-            nac.setVisible(true);
-        }
-        else
-            dispose();
     }
-
 
     private void NoticeDeptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -1067,120 +1183,29 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void NewOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        //создаём объект дочернего окна, передавая в конструктор this-ссылку - т.о.,
+        // именно это окно становится для нового родительским
+        GNewOrder no = new GNewOrder(this);
+        no.setVisible(true);
     }
 
     private void CloseOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        GCloseOrder co = new GCloseOrder(this);
+        co.setVisible(true);
     }
 
     private void DecryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-    public static void main(String args[]) {
 
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GAccount.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) {
+        Object[] options = { "Да", "Нет!" };
+        int n = JOptionPane.showOptionDialog(null, "Выйти из программы?",
+                "Подтверждение выхода", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == 0) {
+            System.exit(0);
         }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-
-                new GAccount().setVisible(true);
-
-            }
-        });
     }
-
-    // Variables declaration - do not modify                     
-    private javax.swing.JLabel AdressLabel;
-    private javax.swing.JTextField AdressTextField;
-    private javax.swing.JLabel BIKLabel;
-    private javax.swing.JTextField BIKTextField;
-    private javax.swing.JLabel BalanceLabel;
-    private javax.swing.JTextField BalanceTextField;
-    private javax.swing.JLabel BankAccLabel;
-    private javax.swing.JTextField BankAccTextField;
-    private javax.swing.JLabel BankLabel;
-    private javax.swing.JTextField BankTextField;
-    private javax.swing.JMenu CatalogMenu;
-    private javax.swing.JMenuItem ChangeAccMenuItem;
-    private javax.swing.JMenu ChangesMenu;
-    private javax.swing.JButton ClearButton;
-    private javax.swing.JMenuItem CloseOrderMenuItem;
-    private javax.swing.JLabel ConsTypeLabel;
-    private javax.swing.JTextField ConsTypeTextField;
-    private javax.swing.JButton ContactsButton;
-    private javax.swing.JLabel CorpusLabel;
-    private javax.swing.JTextField CorpusTextField;
-    private javax.swing.JButton CountAccButton;
-    private javax.swing.JMenu DataProtectionMenu;
-    private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
-    private javax.swing.JLabel DateContractLabel;
-    private javax.swing.JMenuItem DecryptDataMenuItem;
-    private javax.swing.JMenuItem DeleteAccMenuItem;
-    private javax.swing.JLabel DistrictLabel;
-    private javax.swing.JTextField DistrictTextField;
-    private javax.swing.JMenu DocumentsMenu;
-    private javax.swing.JMenuItem EncryptDataMenuItem;
-    private javax.swing.JLabel FIOLabel;
-    private javax.swing.JLabel FlatLabel;
-    private javax.swing.JTextField FlatTextField;
-    private javax.swing.JMenuItem HistoryMenuItem;
-    private javax.swing.JLabel HouseLabel;
-    private javax.swing.JTextField HouseTextField;
-    private javax.swing.JLabel INNLabel;
-    private javax.swing.JTextField INNTextField;
-    private javax.swing.JLabel IndexLabel;
-    private javax.swing.JTextField IndexTextField;
-    private javax.swing.JLabel KPPLabel;
-    private javax.swing.JTextField KPPTextField;
-    private javax.swing.JMenuItem ListDeptorsMenuItem2;
-    private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JPopupMenu.Separator MenuSeparator;
-    private javax.swing.JPopupMenu.Separator MenuSeparator1;
-    private javax.swing.JTextField MiddleNameTextField;
-    private javax.swing.JLabel NameCompanyLabel;
-    private javax.swing.JTextField NameCompanyTextField;
-    private javax.swing.JTextField NameTextField;
-    private javax.swing.JMenuItem NewAccMenuItem;
-    private javax.swing.JMenuItem NewOrderMenuItem;
-    private javax.swing.JMenuItem NewWaterconMenuItem;
-    private javax.swing.JMenuItem NewWatermeterMenuItem;
-    private javax.swing.JMenuItem NoticeDeptMenuItem;
-    private javax.swing.JLabel NumAccLabel;
-    private javax.swing.JTextField NumAccTextField;
-    private javax.swing.JLabel NumContractLabel;
-    private javax.swing.JTextField NumContractTextField;
-    private javax.swing.JLabel NumSertifLabel;
-    private javax.swing.JTextField NumSertifTextField;
-    private javax.swing.JMenu OrderMenu;
-    private javax.swing.JMenuItem OrdersMenuItem;
-    private javax.swing.JLabel OwnerLabel;
-    private javax.swing.JTextField OwnerTextField;
-    private javax.swing.JMenuItem PatternDeptMenuItem;
-    private javax.swing.JTable ResultTable;
-    private javax.swing.JButton SearchButton;
-    private javax.swing.JSeparator Separator;
-    private javax.swing.JLabel StatusAccLabel;
-    private javax.swing.JTextField StatusAccTextField;
-    private javax.swing.JButton SummDebtButton;
-    private javax.swing.JTextField SurnameTextField;
-    private javax.swing.JLabel TelephoneLabel;
-    private javax.swing.JTextField TelephoneTextField;
-    private javax.swing.JButton WaterconButton;
-    private javax.swing.JMenuItem WaterconMenuItem;
-    private javax.swing.JButton WatermeterButton;
-    private javax.swing.JMenuItem WatermeterMenuItem;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration                   
 }

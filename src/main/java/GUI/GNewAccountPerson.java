@@ -6,9 +6,69 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class GNewAccountPerson extends javax.swing.JFrame {
-    public GNewAccountPerson() {
+public class GNewAccountPerson extends javax.swing.JDialog {
+    // Variables declaration - do not modify
+    private javax.swing.JLabel AdressLabel;
+    private javax.swing.JTextField AdressTextField;
+    private javax.swing.JLabel BalanceLabel;
+    private javax.swing.JTextField BalanceTextField;
+    private javax.swing.JButton CancelButton;
+    private javax.swing.JButton ClearButton;
+    private javax.swing.JLabel ConsTypeLabel;
+    private javax.swing.JTextField ConsTypeTextField;
+    private javax.swing.JLabel CorpusLabel;
+    private javax.swing.JTextField CorpusTextField;
+    private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
+    private javax.swing.JLabel DateContractLabel;
+    private javax.swing.JLabel DistrictLabel;
+    private javax.swing.JTextField DistrictTextField;
+    private javax.swing.JLabel FIOLabel;
+    private javax.swing.JLabel FlatLabel;
+    private javax.swing.JTextField FlatTextField;
+    private javax.swing.JLabel HouseLabel;
+    private javax.swing.JTextField HouseTextField;
+    private javax.swing.JLabel IndexLabel;
+    private javax.swing.JTextField IndexTextField;
+    private javax.swing.JTextField MiddleNameTextField;
+    private javax.swing.JTextField NameTextField;
+    private javax.swing.JLabel NumAccLabel;
+    private javax.swing.JTextField NumAccTextField;
+    private javax.swing.JButton OkButton;
+    private javax.swing.JLabel OwnerLabel;
+    private javax.swing.JTextField OwnerTextField;
+    private javax.swing.JLabel StatusAccLabel;
+    private javax.swing.JTextField StatusAccTextField;
+    private javax.swing.JTextField SurnameTextField;
+    private javax.swing.JLabel TelephoneLabel;
+    private javax.swing.JTextField TelephoneTextField;
+    private javax.swing.JLabel NumContractLabel;
+    private javax.swing.JTextField NumContractTextField;
+    public GNewAccountPerson(java.awt.Frame parent) {
+        //вызываем конструктор базового класса, т.о. сообщаем, что переданное в качестве аргумента
+        // окно parent является родительским для данного; true - диалог модальный (блокирует выполнение
+        // родительского окна до завершение работы дочернего)
+        super(parent, true);
         initComponents();
+
+    }
+
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GNewAccountPerson.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GNewAccountPerson(null).setVisible(true);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -413,15 +473,17 @@ public class GNewAccountPerson extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>
 
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-       // dispose();
+        //какие-то действия
+        this.dispose();
 
     }
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
+        //какие-то действия
+        this.dispose();
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -495,60 +557,5 @@ public class GNewAccountPerson extends javax.swing.JFrame {
     private void ConsTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GNewAccountPerson.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GNewAccountPerson().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify                     
-    private javax.swing.JLabel AdressLabel;
-    private javax.swing.JTextField AdressTextField;
-    private javax.swing.JLabel BalanceLabel;
-    private javax.swing.JTextField BalanceTextField;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JButton ClearButton;
-    private javax.swing.JLabel ConsTypeLabel;
-    private javax.swing.JTextField ConsTypeTextField;
-    private javax.swing.JLabel CorpusLabel;
-    private javax.swing.JTextField CorpusTextField;
-    private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
-    private javax.swing.JLabel DateContractLabel;
-    private javax.swing.JLabel DistrictLabel;
-    private javax.swing.JTextField DistrictTextField;
-    private javax.swing.JLabel FIOLabel;
-    private javax.swing.JLabel FlatLabel;
-    private javax.swing.JTextField FlatTextField;
-    private javax.swing.JLabel HouseLabel;
-    private javax.swing.JTextField HouseTextField;
-    private javax.swing.JLabel IndexLabel;
-    private javax.swing.JTextField IndexTextField;
-    private javax.swing.JTextField MiddleNameTextField;
-    private javax.swing.JTextField NameTextField;
-    private javax.swing.JLabel NumAccLabel;
-    private javax.swing.JTextField NumAccTextField;
-    private javax.swing.JButton OkButton;
-    private javax.swing.JLabel OwnerLabel;
-    private javax.swing.JTextField OwnerTextField;
-    private javax.swing.JLabel StatusAccLabel;
-    private javax.swing.JTextField StatusAccTextField;
-    private javax.swing.JTextField SurnameTextField;
-    private javax.swing.JLabel TelephoneLabel;
-    private javax.swing.JTextField TelephoneTextField;
-    private javax.swing.JLabel NumContractLabel;
-    private javax.swing.JTextField NumContractTextField;
     // End of variables declaration                   
 }
