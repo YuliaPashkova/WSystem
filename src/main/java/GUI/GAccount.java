@@ -99,7 +99,7 @@ public class GAccount extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Лицевой счет");
         //setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
-        ImageIcon icon = new ImageIcon("src\\main\\java\\icons\\main_icon.png");
+        ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -337,7 +337,7 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        WatermeterButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\Vodomer_icon.jpg")); // NOI18N
+        WatermeterButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\Vodomer_icon.jpg")); // NOI18N
         WatermeterButton.setRequestFocusEnabled(false);
         WatermeterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -375,35 +375,35 @@ public class GAccount extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ResultTable);
 
-        WaterconButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\vodomerniy_uzel.jpg")); // NOI18N
+        WaterconButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\vodomerniy_uzel.jpg")); // NOI18N
         WaterconButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WaterconButtonActionPerformed(evt);
             }
         });
 
-        ClearButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\ikonka-korziny.jpg")); // NOI18N
+        ClearButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\ikonka-korziny.jpg")); // NOI18N
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearButtonActionPerformed(evt);
             }
         });
 
-        CountAccButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\n_icon.jpg")); // NOI18N
+        CountAccButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\n_icon.jpg")); // NOI18N
         CountAccButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CountAccButtonActionPerformed(evt);
             }
         });
 
-        SummDebtButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\summa_icon.jpg")); // NOI18N
+        SummDebtButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\summa_icon.jpg")); // NOI18N
         SummDebtButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SummDebtButtonActionPerformed(evt);
             }
         });
 
-        ContactsButton.setIcon(new javax.swing.ImageIcon("C:\\Users\\Юлия\\IdeaProjects\\WSystem\\src\\main\\resources\\contacts_icon.jpg")); // NOI18N
+        ContactsButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\contacts_icon.jpg")); // NOI18N
         ContactsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ContactsButtonActionPerformed(evt);

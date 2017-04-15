@@ -56,7 +56,7 @@ public class GNewAccountPerson extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый лицевой счет (физ.лицо)");
         //setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
-        ImageIcon icon = new ImageIcon("src\\main\\java\\icons\\main_icon.png");
+        ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setBounds(new java.awt.Rectangle(300, 150, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
