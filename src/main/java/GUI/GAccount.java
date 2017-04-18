@@ -4,7 +4,6 @@ import javax.swing.*;
  * Created by Юлия on 13.04.2017.
  */
 public class GAccount extends javax.swing.JFrame {
-    // Variables declaration - do not modify
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
     private javax.swing.JLabel BIKLabel;
@@ -161,7 +160,7 @@ public class GAccount extends javax.swing.JFrame {
         INNTextField = new javax.swing.JTextField();
         SearchButton = new javax.swing.JButton();
         DateContractDatePicker = new org.jdesktop.swingx.JXDatePicker();
-        DateContractDatePicker.setFormats(new String[] {"yyyy-MM-dd"});
+        DateContractDatePicker.setFormats("yyyy-MM-dd");
         DateContractDatePicker.setDate(null);
         DateContractDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         WatermeterButton = new javax.swing.JButton();
@@ -968,11 +967,12 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        //search();
+
     }
-
+    //карточка водомера
     private void WatermeterButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
+        GWatermeter wm = new GWatermeter(this);
+        wm.setWMode(true);//применяет нужные настройки и отображает форму
     }
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {
@@ -1155,17 +1155,19 @@ public class GAccount extends javax.swing.JFrame {
     private void DeleteAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    //новый водомер
     private void NewWatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+       GNewWatermeter nw = new GNewWatermeter(this);
+        nw.setVisible(true);
     }
 
     private void NewWaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    //журнал водомеров
     private void WatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        GWatermeter wm = new GWatermeter(this);
+        wm.setWMode(false);//применяет нужные настройки и отображает форму
     }
 
     private void WaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

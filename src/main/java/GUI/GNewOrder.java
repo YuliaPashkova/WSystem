@@ -69,11 +69,11 @@ public class GNewOrder extends javax.swing.JDialog {
         StatusTextField = new javax.swing.JTextField();
         StatusLabel = new javax.swing.JLabel();
         DateRegDatePicker = new org.jdesktop.swingx.JXDatePicker();
-        DateRegDatePicker.setFormats(new String[] {"yyyy-MM-dd"});
+        DateRegDatePicker.setFormats("yyyy-MM-dd");
         DateRegDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         DateRealizDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateRealizDatePicker.setDate(null);
-        DateRealizDatePicker.setFormats(new String[] {"yyyy-MM-dd"});
+        DateRealizDatePicker.setFormats("yyyy-MM-dd");
         DateRealizDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         DateRegLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();

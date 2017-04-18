@@ -113,7 +113,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         OkButton = new javax.swing.JButton();
         CancelButton = new javax.swing.JButton();
         DateContractDatePicker = new org.jdesktop.swingx.JXDatePicker();
-        DateContractDatePicker.setFormats(new String[] {"yyyy-MM-dd"});
+        DateContractDatePicker.setFormats("yyyy-MM-dd");
         DateContractDatePicker.setDate(null);
         DateContractDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         ClearButton = new javax.swing.JButton();
