@@ -562,7 +562,7 @@ public class GAccount extends javax.swing.JFrame {
         ChangesMenu.add(NewWatermeterMenuItem);
 
         NewWaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        NewWaterconMenuItem.setText("Новый водомерный узел");
+        NewWaterconMenuItem.setText("Новое водомерное подключение");
         NewWaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewWaterconMenuItemActionPerformed(evt);
@@ -585,7 +585,7 @@ public class GAccount extends javax.swing.JFrame {
         CatalogMenu.add(WatermeterMenuItem);
 
         WaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        WaterconMenuItem.setText("Водомерные узлы");
+        WaterconMenuItem.setText("Водомерные подключения");
         WaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WaterconMenuItemActionPerformed(evt);
@@ -982,9 +982,10 @@ public class GAccount extends javax.swing.JFrame {
     private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) {
 
     }
-
+    //карточка водомерного подключения
     private void WaterconButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
+        GWaterconnection wc = new GWaterconnection(this);
+        wc.setWatconMode(true);//применяет нужные настройки и отображает форму
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1158,20 +1159,22 @@ public class GAccount extends javax.swing.JFrame {
     //новый водомер
     private void NewWatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
        GNewWatermeter nw = new GNewWatermeter(this);
-        nw.setVisible(true);
+       nw.setVisible(true);
     }
-
+    //новое водомерное подключение
     private void NewWaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        GNewWaterconnection wc = new GNewWaterconnection(this);
+        wc.setVisible(true);
     }
     //журнал водомеров
     private void WatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         GWatermeter wm = new GWatermeter(this);
         wm.setWMode(false);//применяет нужные настройки и отображает форму
     }
-
+    //журнал водомерных подключений
     private void WaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        GWaterconnection wc = new GWaterconnection(this);
+        wc.setWatconMode(false);//применяет нужные настройки и отображает форму
     }
 
     private void OrdersMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

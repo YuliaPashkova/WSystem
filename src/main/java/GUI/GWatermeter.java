@@ -331,7 +331,7 @@ public class GWatermeter extends javax.swing.JDialog {
         });
         EditMenu.add(DeleteMenuItem);
         MenuBar.add(EditMenu);
-        JournalWMMenu.setText("Журнал водомеров");
+        JournalWMMenu.setText("Справочник водомеров");
 
         SearchMenuItem.setText("Поиск");
         SearchMenuItem.addActionListener(new java.awt.event.ActionListener() {
