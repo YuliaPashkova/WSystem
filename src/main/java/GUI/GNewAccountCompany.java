@@ -1,9 +1,8 @@
 package GUI;
-
+import javax.swing.*;
 /**
  * Created by Юлия on 14.04.2017.
  */
-import javax.swing.*;
 public class GNewAccountCompany extends javax.swing.JDialog {
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
@@ -23,8 +22,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
     private javax.swing.JTextField CorpusTextField;
     private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
     private javax.swing.JLabel DateContractLabel;
+    private javax.swing.JComboBox<String> DistrictComboBox;
     private javax.swing.JLabel DistrictLabel;
-    private javax.swing.JTextField DistrictTextField;
     private javax.swing.JLabel FIOLabel;
     private javax.swing.JLabel FlatLabel;
     private javax.swing.JTextField FlatTextField;
@@ -56,9 +55,6 @@ public class GNewAccountCompany extends javax.swing.JDialog {
     private javax.swing.JTextField TelephoneTextField;
     private javax.swing.JSeparator jSeparator2;
     public GNewAccountCompany(java.awt.Frame parent) {
-        //вызываем конструктор базового класса, т.о. сообщаем, что переданное в качестве аргумента
-        // окно parent является родительским для данного; true - диалог модальный (блокирует выполнение
-        // родительского окна до завершение работы дочернего)
         super(parent, true);
         initComponents();
     }
@@ -72,20 +68,18 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GNewAccountCompany.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GNewAccountPerson.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewAccountCompany(null).setVisible(true);
+                new GNewAccountPerson(null).setVisible(true);
             }
         });
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
         DistrictLabel = new javax.swing.JLabel();
         MiddleNameTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
@@ -117,7 +111,6 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         DateContractDatePicker.setDate(null);
         DateContractDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         ClearButton = new javax.swing.JButton();
-        DistrictTextField = new javax.swing.JTextField();
         BalanceTextField = new javax.swing.JTextField();
         BalanceLabel = new javax.swing.JLabel();
         NumContractTextField = new javax.swing.JTextField();
@@ -139,10 +132,10 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         INNLabel = new javax.swing.JLabel();
         BankAccTextField = new javax.swing.JTextField();
         NumSertifTextField = new javax.swing.JTextField();
+        DistrictComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый лицевой счет (юр.лицо)");
-        //setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.png")));
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setBounds(new java.awt.Rectangle(300, 150, 0, 0));
@@ -179,6 +172,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumAccLabel.setText("№ лицевого счета");
 
+        NumAccTextField.setEditable(false);
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumAccTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,7 +242,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TelephoneLabel.setText("Телефон");
 
+        ConsTypeTextField.setEditable(false);
         ConsTypeTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ConsTypeTextField.setText("ЮРИДИЧЕСКОЕ ЛИЦО");
         ConsTypeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConsTypeTextFieldActionPerformed(evt);
@@ -296,13 +292,6 @@ public class GNewAccountCompany extends javax.swing.JDialog {
             }
         });
 
-        DistrictTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DistrictTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DistrictTextFieldActionPerformed(evt);
-            }
-        });
-
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BalanceTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -323,7 +312,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         NumContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumContractLabel.setText("Номер договора");
 
+        StatusAccTextField.setEditable(false);
         StatusAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        StatusAccTextField.setText("ОТКРЫТ");
         StatusAccTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StatusAccTextFieldActionPerformed(evt);
@@ -393,6 +384,13 @@ public class GNewAccountCompany extends javax.swing.JDialog {
             }
         });
 
+        DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ" }));
+        DistrictComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DistrictComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -405,7 +403,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                 .addComponent(INNLabel)
                                                 .addGap(152, 152, 152)
                                                 .addComponent(KPPLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
                                                 .addComponent(BIKLabel)
                                                 .addGap(59, 59, 59))
                                         .addGroup(layout.createSequentialGroup()
@@ -438,12 +436,12 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                        .addComponent(DistrictTextField)
                                                                         .addComponent(SurnameTextField)
                                                                         .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addGap(46, 46, 46)
-                                                                        .addComponent(FIOLabel)))
+                                                                        .addComponent(FIOLabel))
+                                                                .addComponent(DistrictComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -539,9 +537,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(BalanceLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DistrictTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(DistrictComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(FIOLabel)
@@ -625,27 +623,19 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(ClearButton))
                                 .addContainerGap())
         );
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-
     private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        //какие-то действия
-        this.dispose();
-
+        dispose();
     }
 
     private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        //какие-то действия
-        this.dispose();
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DistrictTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
@@ -736,5 +726,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
     private void NumSertifTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
         // TODO add your handling code here:
     }
-    // End of variables declaration
+
+    private void DistrictComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
 }

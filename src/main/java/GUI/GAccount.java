@@ -88,12 +88,10 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JMenu ExitProgrammMenu;
     public GAccount() {
-
         initComponents();
     }
 
     public static void main(String args[]) {
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -107,9 +105,7 @@ public class GAccount extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-
                 new GAccount().setVisible(true);
-
             }
         });
     }
@@ -1176,9 +1172,10 @@ public class GAccount extends javax.swing.JFrame {
         GWaterconnection wc = new GWaterconnection(this);
         wc.setWatconMode(false);//применяет нужные настройки и отображает форму
     }
-
+    //журнал заказов
     private void OrdersMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        GJournalOrders jo = new GJournalOrders(this);
+        jo.setVisible(true);
     }
 
     private void HistoryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1186,8 +1183,6 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void NewOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        //создаём объект дочернего окна, передавая в конструктор this-ссылку - т.о.,
-        // именно это окно становится для нового родительским
         GNewOrder no = new GNewOrder(this);
         no.setVisible(true);
     }
