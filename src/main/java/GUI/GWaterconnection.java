@@ -1,6 +1,6 @@
 package GUI;
 import javax.swing.*;
-/**
+/*
  * Created by Юлия on 19.04.2017.
  */
 
@@ -41,9 +41,11 @@ public class GWaterconnection extends javax.swing.JDialog {
     private javax.swing.JMenu WatermetersMenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    public GWaterconnection(java.awt.Frame parent) {
+
+    public GWaterconnection(boolean mode,java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        setWatconMode(mode);
     }
 
     public static void main(String args[]) {
@@ -60,7 +62,7 @@ public class GWaterconnection extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GWaterconnection(null).setVisible(true);
+                new GWaterconnection(true,null).setVisible(true);
             }
         });
     }
@@ -507,11 +509,11 @@ public class GWaterconnection extends javax.swing.JDialog {
     }
 
     /* Устаналивает режим работы формы Водомерное подключение.
-    * Если b-true, то форма работает в качестве карточки водомерного подключения
-    * Если b-false,то в качестве журнала водомерных подключений.
+    * Если mode-true, то форма работает в качестве карточки водомерного подключения
+    * Если mode-false,то в качестве журнала водомерных подключений.
     */
-    public void setWatconMode(boolean b) {
-        if(b){
+    public void setWatconMode(boolean mode) {
+        if(mode){
             setTitle("Карточка водомерного подключения");
             EditMenu.setEnabled(true);//включение вкладки "редактирование"
             WatermetersMenu.setEnabled(true);

@@ -1,8 +1,6 @@
 package GUI;
-
 import javax.swing.*;
-
-/**
+/*
  * Created by Юлия on 18.04.2017.
  */
 public class GWatermeter extends javax.swing.JDialog {
@@ -47,9 +45,10 @@ public class GWatermeter extends javax.swing.JDialog {
     private javax.swing.JLabel TypeLabel;
     private javax.swing.JTextField TypeTextField;
     private javax.swing.JScrollPane jScrollPane1;
-    public GWatermeter(java.awt.Frame parent) {
+    public GWatermeter(boolean mode,java.awt.Frame parent) {
         super(parent, true);
         initComponents();
+        setWMode(mode);
     }
 
     public static void main(String args[]) {
@@ -66,7 +65,7 @@ public class GWatermeter extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GWatermeter(null).setVisible(true);
+                new GWatermeter(true,null).setVisible(true);
             }
         });
     }
@@ -135,7 +134,6 @@ public class GWatermeter extends javax.swing.JDialog {
         setTitle("Карточка водомера");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
-       // setBounds(new java.awt.Rectangle(150, 150, 0, 0));
         setResizable(false);
 
         CodeWatconLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -575,14 +573,13 @@ public class GWatermeter extends javax.swing.JDialog {
     private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
     /*
    * Устаналивает режим работы формы Водомер.
-   * Если b-true, то форма работает в качестве карточки водомера
-   * Если b-false,то в качестве журнала водомеров.
+   * Если mode-true, то форма работает в качестве карточки водомера
+   * Если mode-false,то в качестве журнала водомеров.
    * */
-    public void setWMode(boolean b) {
-        if(b){
+    public void setWMode(boolean mode) {
+        if(mode){
             setTitle("Карточка водомера");
             EditMenu.setEnabled(true);//включение вкладки "редактирование"
             JournalWMMenu.setEnabled(false);//отключени вкладки "журнал водомеров"

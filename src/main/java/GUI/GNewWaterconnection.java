@@ -44,12 +44,12 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GWaterconnection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GNewWaterconnection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GWaterconnection(null).setVisible(true);
+                new GNewWaterconnection(null).setVisible(true);
             }
         });
     }
