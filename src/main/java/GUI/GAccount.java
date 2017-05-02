@@ -1,9 +1,23 @@
 package GUI;
+import ClassesForWork.Account;
+import ClassesForWork.Connect;
+import ClassesForWork.Methods;
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import static ClassesForWork.Connect.close;
+import static ClassesForWork.Connect.conntoDB;
+
 /*
  * Created by Юлия on 13.04.2017.
  */
 public class GAccount extends javax.swing.JFrame {
+    static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
     private javax.swing.JLabel BIKLabel;
@@ -11,7 +25,7 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JLabel BalanceLabel;
     private javax.swing.JTextField BalanceTextField;
     private javax.swing.JLabel BankAccLabel;
-    private javax.swing.JTextField BankAccTextField;
+    private javax.swing.JTextField BankAccTextField;//расчетный счет
     private javax.swing.JLabel BankLabel;
     private javax.swing.JTextField BankTextField;
     private javax.swing.JMenu CatalogMenu;
@@ -75,8 +89,8 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JButton SearchButton;
     private javax.swing.JSeparator Separator;
     private javax.swing.JLabel StatusAccLabel;
-    private javax.swing.JComboBox<String> StatusComboBox;
-    private javax.swing.JButton SummDebtButton;
+    private javax.swing.JComboBox<String> StatusAccComboBox;
+    private javax.swing.JButton SummBalanceButton;
     private javax.swing.JTextField SurnameTextField;
     private javax.swing.JLabel TelephoneLabel;
     private javax.swing.JTextField TelephoneTextField;
@@ -87,7 +101,9 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    public GAccount() {
+
+    public GAccount() throws Exception {
+        conntoDB();
         initComponents();
     }
 
@@ -104,12 +120,23 @@ public class GAccount extends javax.swing.JFrame {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GAccount().setVisible(true);
+                try {
+                    new GAccount().setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void initComponents() {
+    //добавление в таблицу новой строки
+    public static void AddRowTable(Account account){
+        model.addRow(new Object[]{
+            account.num_account, account.balance,
+            account.FIO});
+    }
+
+    private void initComponents() throws SQLException {
         DistrictLabel = new javax.swing.JLabel();
         FIOLabel = new javax.swing.JLabel();
         SurnameTextField = new javax.swing.JTextField();
@@ -161,7 +188,7 @@ public class GAccount extends javax.swing.JFrame {
         WaterconButton = new javax.swing.JButton();
         ClearButton = new javax.swing.JButton();
         CountAccButton = new javax.swing.JButton();
-        SummDebtButton = new javax.swing.JButton();
+        SummBalanceButton = new javax.swing.JButton();
         ContactsButton = new javax.swing.JButton();
         FlatLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -169,7 +196,7 @@ public class GAccount extends javax.swing.JFrame {
         NameCompanyLabel = new javax.swing.JLabel();
         DistrictComboBox = new javax.swing.JComboBox<>();
         ConsTypeComboBox = new javax.swing.JComboBox<>();
-        StatusComboBox = new javax.swing.JComboBox<>();
+        StatusAccComboBox = new javax.swing.JComboBox<>();
         MenuBar = new javax.swing.JMenuBar();
         ChangesMenu = new javax.swing.JMenu();
         NewAccMenuItem = new javax.swing.JMenuItem();
@@ -197,6 +224,20 @@ public class GAccount extends javax.swing.JFrame {
         DecryptDataMenuItem = new javax.swing.JMenuItem();
         ExitProgrammMenu = new javax.swing.JMenu();
 
+        //AUTOCOMPLETERS
+
+        TextAutoCompleter streetcomplete=new TextAutoCompleter(AdressTextField);
+        Connect.retrieveStreet();
+        while(Connect.rs.next()){streetcomplete.addItem(Connect.rs.getString("street")); }
+
+        TextAutoCompleter bankcomplete=new TextAutoCompleter(BankTextField);
+        Connect.retrieveBank();
+        while(Connect.rs.next()){ bankcomplete.addItem(Connect.rs.getString("bank")); }
+
+        TextAutoCompleter indexcomplete=new TextAutoCompleter(IndexTextField);
+        Connect.retrieveIndex();
+        while(Connect.rs.next()){ indexcomplete.addItem(Connect.rs.getString("indx")); }
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Лицевой счет");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
@@ -215,52 +256,27 @@ public class GAccount extends javax.swing.JFrame {
         FIOLabel.setText("Фамилия, имя, отчество");
 
         SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SurnameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                SurnameTextFieldKeyPressed(evt);
-            }
-        });
+
 
         NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumAccTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NumAccTextFieldKeyPressed(evt);
-            }
-        });
 
         BalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BalanceLabel.setText("Баланс");
 
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BalanceTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BalanceTextFieldKeyPressed(evt);
-            }
-        });
+
 
         MiddleNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        MiddleNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                MiddleNameTextFieldKeyPressed(evt);
-            }
-        });
+
 
         NameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NameTextFieldKeyPressed(evt);
-            }
-        });
+
 
         NumContractTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumContractTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NumContractTextFieldKeyPressed(evt);
-            }
-        });
+
 
         DateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateContractLabel.setText("Дата договора");
@@ -273,48 +289,28 @@ public class GAccount extends javax.swing.JFrame {
         AdressLabel.setText("Адрес");
 
         AdressTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AdressTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                AdressTextFieldKeyPressed(evt);
-            }
-        });
+
 
         HouseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         HouseLabel.setText("Дом");
 
         HouseTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        HouseTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                HouseTextFieldKeyPressed(evt);
-            }
-        });
+
 
         CorpusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         CorpusLabel.setText("Корпус");
 
         CorpusTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CorpusTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CorpusTextFieldKeyPressed(evt);
-            }
-        });
+
 
         FlatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        FlatTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                FlatTextFieldKeyPressed(evt);
-            }
-        });
+
 
         OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerLabel.setText("Владелец");
 
         OwnerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                OwnerTextFieldKeyPressed(evt);
-            }
-        });
+
 
         ConsTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ConsTypeLabel.setText("Категория потребителей");
@@ -326,28 +322,15 @@ public class GAccount extends javax.swing.JFrame {
         TelephoneLabel.setText("Телефон");
 
         IndexTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        IndexTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                IndexTextFieldKeyPressed(evt);
-            }
-        });
+
 
         TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TelephoneTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                TelephoneTextFieldKeyPressed(evt);
-            }
-        });
+
 
         StatusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccLabel.setText("Статус cчета");
 
         BankTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BankTextFieldKeyPressed(evt);
-            }
-        });
 
         BankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BankLabel.setText("Банк плательщика");
@@ -359,18 +342,10 @@ public class GAccount extends javax.swing.JFrame {
         KPPLabel.setText("КПП");
 
         BIKTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BIKTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BIKTextFieldKeyPressed(evt);
-            }
-        });
+
 
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        KPPTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                KPPTextFieldKeyPressed(evt);
-            }
-        });
+
 
         BankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BankAccLabel.setText("Расчетный счет");
@@ -382,31 +357,22 @@ public class GAccount extends javax.swing.JFrame {
         INNLabel.setText("ИНН");
 
         BankAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankAccTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BankAccTextFieldKeyPressed(evt);
-            }
-        });
 
         NumSertifTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumSertifTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NumSertifTextFieldKeyPressed(evt);
-            }
-        });
+
 
         INNTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        INNTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                INNTextFieldKeyPressed(evt);
-            }
-        });
+
 
         SearchButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         SearchButton.setText("Поиск");
         SearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchButtonActionPerformed(evt);
+                try {
+                    SearchButtonActionPerformed(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -436,11 +402,11 @@ public class GAccount extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                        "№ л/счета", "Баланс", "Фамилия", "Имя", "Отчество"
+                        "№ л/счета", "Баланс", "ФИО"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false
+                    false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -457,6 +423,7 @@ public class GAccount extends javax.swing.JFrame {
                 ResultTableKeyPressed(evt);
             }
         });
+        model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
         jScrollPane1.setViewportView(ResultTable);
 
         WaterconButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\vodomerniy_uzel.jpg")); // NOI18N
@@ -480,10 +447,14 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        SummDebtButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\summa_icon.jpg")); // NOI18N
-        SummDebtButton.addActionListener(new java.awt.event.ActionListener() {
+        SummBalanceButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\summa_icon.jpg")); // NOI18N
+        SummBalanceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SummDebtButtonActionPerformed(evt);
+                try {
+                    SummBalanceButtonActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -515,10 +486,10 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ" }));
-        StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
+        StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ" }));
+        StatusAccComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusComboBoxActionPerformed(evt);
+                StatusAccComboBoxActionPerformed(evt);
             }
         });
 
@@ -695,7 +666,11 @@ public class GAccount extends javax.swing.JFrame {
         ExitProgrammMenu.setText("Выход");
         ExitProgrammMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ExitProgrammMenuMouseClicked(evt);
+                try {
+                    ExitProgrammMenuMouseClicked(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         MenuBar.add(ExitProgrammMenu);
@@ -717,7 +692,7 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addComponent(ContactsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(ClearButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(CountAccButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(SummDebtButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(SummBalanceButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(Separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -802,7 +777,7 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                                         .addComponent(TelephoneLabel))
                                                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                                                .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                                .addComponent(StatusAccComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                                                 .addComponent(HouseLabel))
                                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -860,7 +835,7 @@ public class GAccount extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(ContactsButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(SummDebtButton)
+                                                .addComponent(SummBalanceButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(CountAccButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -900,7 +875,7 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(MiddleNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(StatusAccComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGap(10, 10, 10)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -959,7 +934,70 @@ public class GAccount extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+        String data [] = new String [23];//данные из текстовых полей
+
+        data[0]=NumAccTextField.getText().trim();
+
+        data[1]=SurnameTextField.getText().toUpperCase()+" "+NameTextField.getText().toUpperCase()+" "+MiddleNameTextField.getText().toUpperCase();
+        data[1]=data[1].trim();//удалить пробелы
+
+        data[2]=BalanceTextField.getText().trim();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date_contr = DateContractDatePicker.getDate();
+            data[3] = format.format(date_contr);//дата договора
+        } catch (Exception ex){
+            data[3]="";
+        }
+        data[4]=NumContractTextField.getText().trim();
+        data[5]="";//здесь будет заполняться адрес
+        data[6]=OwnerTextField.getText().toUpperCase().trim();
+
+        data[7]=(String)ConsTypeComboBox.getSelectedItem();
+        if(data[7]=="НЕ ВЫБРАНО") data[7]="";
+
+        data[8]=TelephoneTextField.getText().trim();
+        data[9]=(String)StatusAccComboBox.getSelectedItem();
+        if(data[9]=="НЕ ВЫБРАНО") data[9]="";
+
+        //поля адреса,которые формируют data[5]
+        data[10]=(String)DistrictComboBox.getSelectedItem();
+        if(data[10]=="НЕ ВЫБРАНО") data[10]="";
+        data[11]=AdressTextField.getText().toUpperCase().trim();
+        data[12]=HouseTextField.getText().trim();
+        data[13]=CorpusTextField.getText().toUpperCase().trim();
+        data[14]=FlatTextField.getText().trim();
+        data[15]=IndexTextField.getText().trim();
+
+
+        //юр.лицо
+        data[16]=NameCompanyTextField.getText().toUpperCase().trim();
+        data[17]=NumSertifTextField.getText().trim();
+        data[18]=BankTextField.getText().toUpperCase().trim();//банк
+        data[19]=BankAccTextField.getText().trim();//расчетный счет
+        data[20]=INNTextField.getText().trim();
+        data[21]=KPPTextField.getText().trim();
+        data[22]=BIKTextField.getText().trim();
+
+
+        //замена пустых значений на null
+        for(int i=0;i<data.length;i++)
+            if(data[i].equals("")) data[i]=null;
+        DeleteRows();//удаление строк из таблицы
+
+
+
+        Account.searchAccount(data,"fields");
+
+        if(Account.account!=null){//если что-то найдено
+            Account.account = null;//обнуление абонента
+            ResultTable.setRowSelectionInterval(0, 0);
+            ResultTable.requestFocus();
+        } else{
+            DeleteRows();//удаление строк из таблицы
+            JOptionPane.showMessageDialog(null,"Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     //карточка водомера
@@ -981,7 +1019,10 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
+        CleanFields();
+        DeleteRows();//очистка таблицы
+        SearchButton.setEnabled(true);
+        setConditionFields(true);  //активные поля
     }
 
     private void OrdersMenuItemMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1073,11 +1114,20 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void CountAccButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null,"Найдено лицевых счетов: "+ResultTable.getRowCount(), "Количество лицевых счетов", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void SummDebtButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    //суммарный долг по счетам
+    private void SummBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+        double balance;
+        String num_accs="";
+        for(int i=0;i<ResultTable.getRowCount();i++)
+            num_accs+=ResultTable.getValueAt(i,0)+" ";
+        if(num_accs.equals("")) JOptionPane.showMessageDialog(null,"Не найден ни один лицевой счет. Выполните поиск и повторите попытку!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else {
+            balance = Methods.SumBalance(num_accs);
+            JOptionPane.showMessageDialog(null,"Суммарный баланс по найденным лицевым счетам составляет "+ String.format("%.2f ",balance)+" руб.", "Суммарный баланс", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void ContactsButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1185,13 +1235,14 @@ public class GAccount extends javax.swing.JFrame {
         GProtection p = new GProtection(false,this);//режим дешифрования
     }
 
-    private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) {
+    private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
         Object[] options = { "Да", "Нет" };
         int n = JOptionPane.showOptionDialog(null, "Выйти из программы?",
                 "Подтверждение выхода", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (n == 0) {
             System.exit(0);
+            close();
         }
     }
 
@@ -1202,8 +1253,76 @@ public class GAccount extends javax.swing.JFrame {
     private void ConsTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
-    private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+    
+    private void StatusAccComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    }
+
+    //удаляет все строки из таблицы
+    public void DeleteRows(){
+        model.setRowCount(0);
+    }
+    /**
+     * Очищает поля в форме
+     */
+    private void CleanFields(){
+        DistrictComboBox.setSelectedIndex(0);
+        NumAccTextField.setText(null);
+        ConsTypeComboBox.setSelectedIndex(0);
+        BalanceTextField.setText(null);
+        SurnameTextField.setText(null);
+        NameTextField.setText(null);
+        MiddleNameTextField.setText(null);
+        NumContractTextField.setText(null);
+        DateContractDatePicker.setDate(null);
+        StatusAccComboBox.setSelectedIndex(0);
+        TelephoneTextField.setText(null);
+        AdressTextField.setText(null);
+        HouseTextField.setText(null);
+        FlatTextField.setText(null);
+        CorpusTextField.setText(null);
+        IndexTextField.setText(null);
+        OwnerTextField.setText(null);
+
+        NameCompanyTextField.setText(null);
+        NumSertifTextField.setText(null);
+        BankAccTextField.setText(null);
+        BankTextField.setText(null);
+        INNTextField.setText(null);
+        KPPTextField.setText(null);
+        BIKTextField.setText(null);
+
+    }
+
+    /*
+     * Принимает true или false
+     * Делает активными/неактивными поля соответственно
+     */
+    public void setConditionFields(boolean sost){
+        DistrictComboBox.setEditable(sost);
+        NumAccTextField.setEditable(sost);
+        ConsTypeComboBox.setEditable(sost);
+        BalanceTextField.setEditable(sost);
+        SurnameTextField.setEditable(sost);
+        NameTextField.setEditable(sost);
+        MiddleNameTextField.setEditable(sost);
+        NumContractTextField.setEditable(sost);
+        DateContractDatePicker.setEditable(sost);
+        StatusAccComboBox.setEditable(sost);
+        TelephoneTextField.setEditable(sost);
+        AdressTextField.setEditable(sost);
+        HouseTextField.setEditable(sost);
+        FlatTextField.setEditable(sost);
+        CorpusTextField.setEditable(sost);
+        IndexTextField.setEditable(sost);
+        OwnerTextField.setEditable(sost);
+
+        NameCompanyTextField.setEditable(sost);
+        NumSertifTextField.setEditable(sost);
+        BankAccTextField.setEditable(sost);
+        BankTextField.setEditable(sost);
+        INNTextField.setEditable(sost);
+        KPPTextField.setEditable(sost);
+        BIKTextField.setEditable(sost);
     }
 }
