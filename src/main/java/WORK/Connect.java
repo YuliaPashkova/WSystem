@@ -1,4 +1,4 @@
-package ClassesForWork;
+package WORK;
 /*
  * Created by Юлия on 27.04.2017.
  */

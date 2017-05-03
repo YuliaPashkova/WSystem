@@ -1,4 +1,4 @@
-package ClassesForWork;
+package WORK;
 import com.mysql.fabric.jdbc.FabricMySQLDriver;
 import java.sql.*;
 /*

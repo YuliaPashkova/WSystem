@@ -1,7 +1,7 @@
 package GUI;
-import ClassesForWork.Account;
-import ClassesForWork.Connect;
-import ClassesForWork.Methods;
+import WORK.Account;
+import WORK.Connect;
+import WORK.Methods;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import static ClassesForWork.Connect.close;
-import static ClassesForWork.Connect.conntoDB;
+import static WORK.Connect.close;
+import static WORK.Connect.conntoDB;
 
 /*
  * Created by Юлия on 13.04.2017.
@@ -133,7 +133,7 @@ public class GAccount extends javax.swing.JFrame {
     public static void AddRowTable(Account account){
         model.addRow(new Object[]{
             account.num_account, account.balance,
-            account.FIO});
+            account.FIO,account.cons_type});
     }
 
     private void initComponents() throws SQLException {
@@ -402,11 +402,11 @@ public class GAccount extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                        "№ л/счета", "Баланс", "ФИО"
+                        "№ л/счета", "Баланс", "ФИО","Тип абонента"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false
+                    false, false, false,false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -936,7 +936,6 @@ public class GAccount extends javax.swing.JFrame {
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
         String data [] = new String [23];//данные из текстовых полей
-
         data[0]=NumAccTextField.getText().trim();
 
         data[1]=SurnameTextField.getText().toUpperCase()+" "+NameTextField.getText().toUpperCase()+" "+MiddleNameTextField.getText().toUpperCase();
@@ -970,33 +969,39 @@ public class GAccount extends javax.swing.JFrame {
         data[14]=FlatTextField.getText().trim();
         data[15]=IndexTextField.getText().trim();
 
-
         //юр.лицо
-        data[16]=NameCompanyTextField.getText().toUpperCase().trim();
-        data[17]=NumSertifTextField.getText().trim();
-        data[18]=BankTextField.getText().toUpperCase().trim();//банк
+        data[16]=BankTextField.getText().toUpperCase().trim();//банк
+        data[17]=KPPTextField.getText().trim();
+        data[18]=BIKTextField.getText().trim();
         data[19]=BankAccTextField.getText().trim();//расчетный счет
-        data[20]=INNTextField.getText().trim();
-        data[21]=KPPTextField.getText().trim();
-        data[22]=BIKTextField.getText().trim();
+        data[20]=NumSertifTextField.getText().trim();
+        data[21]=INNTextField.getText().trim();
+        data[22]=NameCompanyTextField.getText().toUpperCase().trim();
 
+        DeleteRows();//удаление строк из таблицы
 
         //замена пустых значений на null
         for(int i=0;i<data.length;i++)
             if(data[i].equals("")) data[i]=null;
-        DeleteRows();//удаление строк из таблицы
 
+        //подсчет null полей
+        int count_null=0;//количество null полей
+        for(int i=0;i<data.length;i++)
+            if(data[i]==null)count_null++;
 
-
-        Account.searchAccount(data,"fields");
-
-        if(Account.account!=null){//если что-то найдено
-            Account.account = null;//обнуление абонента
-            ResultTable.setRowSelectionInterval(0, 0);
-            ResultTable.requestFocus();
-        } else{
-            DeleteRows();//удаление строк из таблицы
-            JOptionPane.showMessageDialog(null,"Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        if(count_null==data.length){//если ничего не введено
+            JOptionPane.showMessageDialog(null,"Выберите критерии поиска и повторите попытку!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            int result = Account.searchAccount(data,"fields");
+            if(result==0){//если что-то найдено
+                Account.account = null;//обнуление абонента
+                ResultTable.setRowSelectionInterval(0, 0);
+                ResultTable.requestFocus();
+            } else{
+                DeleteRows();//удаление строк из таблицы
+                JOptionPane.showMessageDialog(null,"Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 
