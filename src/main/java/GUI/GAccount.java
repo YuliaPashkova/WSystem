@@ -539,9 +539,14 @@ public class GAccount extends javax.swing.JFrame {
 
         DeleteAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
         DeleteAccMenuItem.setText("Удалить лицевой счет");
+        DeleteAccMenuItem.setEnabled(false);
         DeleteAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteAccMenuItemActionPerformed(evt);
+                try {
+                    DeleteAccMenuItemActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(DeleteAccMenuItem);
@@ -1188,6 +1193,7 @@ public class GAccount extends javax.swing.JFrame {
         }
         setConditionFields(false);
         SearchButton.setEnabled(false);
+        DeleteAccMenuItem.setEnabled(true);
 
 
     }
@@ -1270,9 +1276,22 @@ public class GAccount extends javax.swing.JFrame {
     private void EncryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         GProtection p = new GProtection(true, this);//режим шифрования
     }
-
-    private void DeleteAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    //удаление лицевого счета
+    private void DeleteAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+        String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0)); //получение номера счета
+        Object[] options = {"Да", "Нет"};
+        int n = JOptionPane.showOptionDialog(null, "Удалить лицевой счет с номером "+num_acc+" ?",
+                "Подтверждение удаления", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        if (n == 0) {
+            Account.DeleteAccount(num_acc);
+            JOptionPane.showMessageDialog(null, "Лицевой счет с номером "+num_acc+" был удален!", "Удаление лицевого счета", JOptionPane.INFORMATION_MESSAGE);
+            DeleteRows();//очистка таблицы
+            CleanFields();
+            setConditionFields(true);
+            SearchButton.setEnabled(true);
+            DeleteAccMenuItem.setEnabled(false);
+        }
     }
 
     //новый водомер

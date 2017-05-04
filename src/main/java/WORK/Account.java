@@ -286,6 +286,19 @@ public class Account{
     }
 
     /*
+    * Метод удаляет аккаунт с номером счета num_acc
+    * */
+    public static void DeleteAccount(String num_acc) throws SQLException {
+        String query="delete from account where num_account="+num_acc;
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
     * Выполнение запроса к таблице Account
     * String q - запрос
     * boolean inTable - заполняется таблица из формы,иначе - из таблицы в форму
