@@ -43,6 +43,20 @@ public class Methods {
         }
         return balance;
     }
+    /**
+     * Добавляет нули к числу типа double, если требуется
+     * Возвращает строку типа Х.00 | Х.Х0
+     **/
+    public static String Zero(String d) {
+        String new_d = d;
+        if ((!d.endsWith(".") && !d.contains("."))) {
+            new_d = d + ".00"; //если целое, добавляем запятую
+            return new_d;
+        }
+        String drob = d.substring(d.indexOf(".") + 1); //получаем дробную часть
+        if (drob.length() == 1) new_d = d + "0"; //если в ней одно число, добавляем 0
+        return new_d;
+    }
 
 
 }

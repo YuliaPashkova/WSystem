@@ -6,10 +6,17 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Arc2D;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
+import java.util.StringTokenizer;
+import java.util.spi.LocaleNameProvider;
+
 import static WORK.Connect.close;
 import static WORK.Connect.conntoDB;
 
@@ -18,6 +25,8 @@ import static WORK.Connect.conntoDB;
  */
 public class GAccount extends javax.swing.JFrame {
     static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+
+
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
     private javax.swing.JLabel BIKLabel;
@@ -130,10 +139,10 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //добавление в таблицу новой строки
-    public static void AddRowTable(Account account){
+    public static void AddRowTable(Account account) {
         model.addRow(new Object[]{
-            account.num_account, account.balance,
-            account.FIO,account.cons_type});
+                account.num_account, Methods.Zero(Double.toString(Account.account.balance)),
+                account.FIO, account.cons_type});
     }
 
     private void initComponents() throws SQLException {
@@ -226,17 +235,23 @@ public class GAccount extends javax.swing.JFrame {
 
         //AUTOCOMPLETERS
 
-        TextAutoCompleter streetcomplete=new TextAutoCompleter(AdressTextField);
+        TextAutoCompleter streetcomplete = new TextAutoCompleter(AdressTextField);
         Connect.retrieveStreet();
-        while(Connect.rs.next()){streetcomplete.addItem(Connect.rs.getString("street")); }
+        while (Connect.rs.next()) {
+            streetcomplete.addItem(Connect.rs.getString("street"));
+        }
 
-        TextAutoCompleter bankcomplete=new TextAutoCompleter(BankTextField);
+        TextAutoCompleter bankcomplete = new TextAutoCompleter(BankTextField);
         Connect.retrieveBank();
-        while(Connect.rs.next()){ bankcomplete.addItem(Connect.rs.getString("bank")); }
+        while (Connect.rs.next()) {
+            bankcomplete.addItem(Connect.rs.getString("bank"));
+        }
 
-        TextAutoCompleter indexcomplete=new TextAutoCompleter(IndexTextField);
+        TextAutoCompleter indexcomplete = new TextAutoCompleter(IndexTextField);
         Connect.retrieveIndex();
-        while(Connect.rs.next()){ indexcomplete.addItem(Connect.rs.getString("indx")); }
+        while (Connect.rs.next()) {
+            indexcomplete.addItem(Connect.rs.getString("indx"));
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Лицевой счет");
@@ -398,29 +413,38 @@ public class GAccount extends javax.swing.JFrame {
         Separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         ResultTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
+                new Object[][]{
 
                 },
-                new String [] {
-                        "№ л/счета", "Баланс", "ФИО","Тип абонента"
+                new String[]{
+                        "№ л/счета", "Баланс", "ФИО", "Тип абонента"
                 }
         ) {
-            boolean[] canEdit = new boolean [] {
-                    false, false, false,false
+            boolean[] canEdit = new boolean[]{
+                    false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+                return canEdit[columnIndex];
             }
         });
         ResultTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ResultTableMouseClicked(evt);
+                try {
+                    ResultTableMouseClicked(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
+        ResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ResultTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                ResultTableKeyPressed(evt);
+                try {
+                    ResultTableKeyPressed(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
@@ -472,21 +496,21 @@ public class GAccount extends javax.swing.JFrame {
         NameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NameCompanyLabel.setText("Название предприятия");
 
-        DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ" }));
+        DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ"}));
         DistrictComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DistrictComboBoxActionPerformed(evt);
             }
         });
 
-        ConsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ФИЗИЧЕСКОЕ ЛИЦО", "ЮРИДИЧЕСКОЕ ЛИЦО" }));
+        ConsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ФИЗИЧЕСКОЕ ЛИЦО", "ЮРИДИЧЕСКОЕ ЛИЦО"}));
         ConsTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ConsTypeComboBoxActionPerformed(evt);
             }
         });
 
-        StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ" }));
+        StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ"}));
         StatusAccComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StatusAccComboBoxActionPerformed(evt);
@@ -935,92 +959,87 @@ public class GAccount extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
-        String data [] = new String [23];//данные из текстовых полей
-        data[0]=NumAccTextField.getText().trim();
+        String data[] = new String[23];//данные из текстовых полей
+        data[0] = NumAccTextField.getText().trim();
 
-        data[1]=SurnameTextField.getText().toUpperCase()+" "+NameTextField.getText().toUpperCase()+" "+MiddleNameTextField.getText().toUpperCase();
-        data[1]=data[1].trim();//удалить пробелы
+        data[1] = SurnameTextField.getText().toUpperCase() + " " + NameTextField.getText().toUpperCase() + " " + MiddleNameTextField.getText().toUpperCase();
+        data[1] = data[1].trim();//удалить пробелы
 
-        data[2]=BalanceTextField.getText().trim();
+        data[2] = BalanceTextField.getText().trim();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date_contr = DateContractDatePicker.getDate();
             data[3] = format.format(date_contr);//дата договора
-        } catch (Exception ex){
-            data[3]="";
+        } catch (Exception ex) {
+            data[3] = "";
         }
-        data[4]=NumContractTextField.getText().trim();
-        data[5]="";//здесь будет заполняться адрес
-        data[6]=OwnerTextField.getText().toUpperCase().trim();
+        data[4] = NumContractTextField.getText().trim();
+        data[5] = "";//здесь будет заполняться адрес
+        data[6] = OwnerTextField.getText().toUpperCase().trim();
 
-        data[7]=(String)ConsTypeComboBox.getSelectedItem();
-        if(data[7]=="НЕ ВЫБРАНО") data[7]="";
+        data[7] = (String) ConsTypeComboBox.getSelectedItem();
+        if (Objects.equals(data[7], "НЕ ВЫБРАНО")) data[7] = "";
 
-        data[8]=TelephoneTextField.getText().trim();
-        data[9]=(String)StatusAccComboBox.getSelectedItem();
-        if(data[9]=="НЕ ВЫБРАНО") data[9]="";
+        data[8] = TelephoneTextField.getText().trim();
+        data[9] = (String) StatusAccComboBox.getSelectedItem();
+        if (Objects.equals(data[9], "НЕ ВЫБРАНО")) data[9] = "";
 
         //поля адреса,которые формируют data[5]
-        data[10]=(String)DistrictComboBox.getSelectedItem();
-        if(data[10]=="НЕ ВЫБРАНО") data[10]="";
-        data[11]=AdressTextField.getText().toUpperCase().trim();
-        data[12]=HouseTextField.getText().trim();
-        data[13]=CorpusTextField.getText().toUpperCase().trim();
-        data[14]=FlatTextField.getText().trim();
-        data[15]=IndexTextField.getText().trim();
+        data[10] = (String) DistrictComboBox.getSelectedItem();
+        if (Objects.equals(data[10], "НЕ ВЫБРАНО")) data[10] = "";
+        data[11] = AdressTextField.getText().toUpperCase().trim();
+        data[12] = HouseTextField.getText().trim();
+        data[13] = CorpusTextField.getText().toUpperCase().trim();
+        data[14] = FlatTextField.getText().trim();
+        data[15] = IndexTextField.getText().trim();
 
         //юр.лицо
-        data[16]=BankTextField.getText().toUpperCase().trim();//банк
-        data[17]=KPPTextField.getText().trim();
-        data[18]=BIKTextField.getText().trim();
-        data[19]=BankAccTextField.getText().trim();//расчетный счет
-        data[20]=NumSertifTextField.getText().trim();
-        data[21]=INNTextField.getText().trim();
-        data[22]=NameCompanyTextField.getText().toUpperCase().trim();
+        data[16] = BankTextField.getText().toUpperCase().trim();//банк
+        data[17] = KPPTextField.getText().trim();
+        data[18] = BIKTextField.getText().trim();
+        data[19] = BankAccTextField.getText().trim();//расчетный счет
+        data[20] = NumSertifTextField.getText().trim();
+        data[21] = INNTextField.getText().trim();
+        data[22] = NameCompanyTextField.getText().toUpperCase().trim();
 
         DeleteRows();//удаление строк из таблицы
 
         //замена пустых значений на null
-        for(int i=0;i<data.length;i++)
-            if(data[i].equals("")) data[i]=null;
+        for (int i = 0; i < data.length; i++)
+            if (data[i].equals("")) data[i] = null;
 
         //подсчет null полей
-        int count_null=0;//количество null полей
-        for(int i=0;i<data.length;i++)
-            if(data[i]==null)count_null++;
+        int count_null = 0;//количество null полей
+        for (int i = 0; i < data.length; i++)
+            if (data[i] == null) count_null++;
 
-        if(count_null==data.length){//если ничего не введено
-            JOptionPane.showMessageDialog(null,"Выберите критерии поиска и повторите попытку!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
-        }
-        else {
-            int result = Account.searchAccount(data,"fields");
-            if(result==0){//если что-то найдено
+        if (count_null == data.length) {//если ничего не введено
+            JOptionPane.showMessageDialog(null, "Выберите критерии поиска и повторите попытку!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            int result = Account.searchAccount(data);
+            if (result == 0) {//если что-то найдено
                 Account.account = null;//обнуление абонента
                 ResultTable.setRowSelectionInterval(0, 0);
                 ResultTable.requestFocus();
-            } else{
+            } else {
                 DeleteRows();//удаление строк из таблицы
-                JOptionPane.showMessageDialog(null,"Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     //карточка водомера
     private void WatermeterButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        GWatermeter wm = new GWatermeter(true,this);
+        GWatermeter wm = new GWatermeter(true, this);
     }
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) {
-
-    }
-
     //карточка водомерного подключения
     private void WaterconButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        GWaterconnection wc = new GWaterconnection(true,this);
+        GWaterconnection wc = new GWaterconnection(true, this);
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1114,24 +1133,87 @@ public class GAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    private void ResultTableKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
+    //по клику на строке таблицы
+    private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
+        //if(evt.getClickCount()==2&&!changing){
+        if (evt.getClickCount() == 2) {
+            // ChangeLicSchetMenuItem.setEnabled(true);//разблокировать функцию изменения
+            // RegionTextField.requestFocus();
+            ClickOnTable();
+            ResultTable.requestFocus();
+        }
+    }
+
+    //по клику на таблице
+    public void ClickOnTable() throws Exception {
+        //получение номера лицевого счета с выделенной строки
+        String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        String cons_type = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3));
+         Account.showAccount(num_acc, cons_type);//вызов метода заполнения формы по клику
+
+        DistrictComboBox.setSelectedItem(Account.names_indexes[0]);
+        NumAccTextField.setText(Integer.toString(Account.account.num_account));
+        ConsTypeComboBox.setSelectedItem(Account.account.cons_type);
+        BalanceTextField.setText(Methods.Zero(Double.toString(Account.account.balance)));
+        String FIO[] = Account.account.FIO.split(" ");
+        SurnameTextField.setText(FIO[0]);
+        NameTextField.setText(FIO[1]);
+        MiddleNameTextField.setText(FIO[2]);
+        NumContractTextField.setText(Integer.toString(Account.account.num_contract));
+
+        DateContractDatePicker.setDate(Account.account.date_contract);
+
+        StatusAccComboBox.setSelectedItem(Account.account.acc_status);
+        TelephoneTextField.setText(Account.account.telephone);
+        AdressTextField.setText(Account.names_indexes[1]);
+        HouseTextField.setText(Account.names_indexes[2]);
+
+        if (Account.names_indexes[4] == null) FlatTextField.setText("");
+        FlatTextField.setText(Account.names_indexes[3]);
+
+        if (Account.names_indexes[3] == null) CorpusTextField.setText("");
+        else CorpusTextField.setText(Account.names_indexes[4]);
+
+        IndexTextField.setText(Account.names_indexes[5]);
+        OwnerTextField.setText(Account.account.owner_flat);
+
+        if (cons_type.equals("ЮРИДИЧЕСКОЕ ЛИЦО")) {//юр.лицо
+            NameCompanyTextField.setText(Account.account.name_company);
+            NumSertifTextField.setText(Long.toString(Account.account.num_cert));
+            BankTextField.setText(Account.names_indexes[6]);
+            BankAccTextField.setText(Long.toString(Account.account.pay_account));
+            INNTextField.setText(Long.toString(Account.account.INN));
+            KPPTextField.setText(Long.toString(Account.account.kpp));
+            BIKTextField.setText(Long.toString(Account.account.bik));
+        }
+        setConditionFields(false);
+        SearchButton.setEnabled(false);
+
+
+    }
+
+    //по нажатию enter на таблице
+    private void ResultTableKeyPressed(java.awt.event.KeyEvent evt) throws Exception {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) ClickOnTable();
+        // ChangeLicSchetMenuItem.setEnabled(true);//разблокировать функцию изменения
+        // ResultTable.requestFocus();
     }
 
     private void CountAccButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        JOptionPane.showMessageDialog(null,"Найдено лицевых счетов: "+ResultTable.getRowCount(), "Количество лицевых счетов", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Найдено лицевых счетов: " + ResultTable.getRowCount(), "Количество лицевых счетов", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //суммарный долг по счетам
     private void SummBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
         double balance;
-        String num_accs="";
-        for(int i=0;i<ResultTable.getRowCount();i++)
-            num_accs+=ResultTable.getValueAt(i,0)+" ";
-        if(num_accs.equals("")) JOptionPane.showMessageDialog(null,"Не найден ни один лицевой счет. Выполните поиск и повторите попытку!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        String num_accs = "";
+        for (int i = 0; i < ResultTable.getRowCount(); i++)
+            num_accs += ResultTable.getValueAt(i, 0) + " ";
+        if (num_accs.equals(""))
+            JOptionPane.showMessageDialog(null, "Не найден ни один лицевой счет. Выполните поиск и повторите попытку!", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else {
             balance = Methods.SumBalance(num_accs);
-            JOptionPane.showMessageDialog(null,"Суммарный баланс по найденным лицевым счетам составляет "+ String.format("%.2f ",balance)+" руб.", "Суммарный баланс", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Суммарный баланс по найденным лицевым счетам составляет " + String.format("%.2f ", balance) + " руб.", "Суммарный баланс", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -1160,13 +1242,13 @@ public class GAccount extends javax.swing.JFrame {
                 null,
                 options,
                 options[2]);
-        switch (result){
+        switch (result) {
             case 0://физ.лицо
-                GNewAccountPerson nap= new GNewAccountPerson(this);
+                GNewAccountPerson nap = new GNewAccountPerson(this);
                 nap.setVisible(true);
                 break;
             case 1://юр.лицо
-                GNewAccountCompany nac= new GNewAccountCompany(this);
+                GNewAccountCompany nac = new GNewAccountCompany(this);
                 nac.setVisible(true);
                 break;
         }
@@ -1186,7 +1268,7 @@ public class GAccount extends javax.swing.JFrame {
 
     //шифрование дампа бд
     private void EncryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        GProtection p = new GProtection(true,this);//режим шифрования
+        GProtection p = new GProtection(true, this);//режим шифрования
     }
 
     private void DeleteAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1207,12 +1289,12 @@ public class GAccount extends javax.swing.JFrame {
 
     //журнал водомеров
     private void WatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        GWatermeter wm = new GWatermeter(false,this);
+        GWatermeter wm = new GWatermeter(false, this);
     }
 
     //журнал водомерных подключений
     private void WaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        GWaterconnection wc = new GWaterconnection(false,this);
+        GWaterconnection wc = new GWaterconnection(false, this);
     }
 
     //журнал заказов
@@ -1237,11 +1319,11 @@ public class GAccount extends javax.swing.JFrame {
 
     //дешифрование дампа бд
     private void DecryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        GProtection p = new GProtection(false,this);//режим дешифрования
+        GProtection p = new GProtection(false, this);//режим дешифрования
     }
 
     private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
-        Object[] options = { "Да", "Нет" };
+        Object[] options = {"Да", "Нет"};
         int n = JOptionPane.showOptionDialog(null, "Выйти из программы?",
                 "Подтверждение выхода", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -1258,19 +1340,20 @@ public class GAccount extends javax.swing.JFrame {
     private void ConsTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-    
+
     private void StatusAccComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
     //удаляет все строки из таблицы
-    public void DeleteRows(){
+    public void DeleteRows() {
         model.setRowCount(0);
     }
+
     /**
      * Очищает поля в форме
      */
-    private void CleanFields(){
+    private void CleanFields() {
         DistrictComboBox.setSelectedIndex(0);
         NumAccTextField.setText(null);
         ConsTypeComboBox.setSelectedIndex(0);
@@ -1303,17 +1386,18 @@ public class GAccount extends javax.swing.JFrame {
      * Принимает true или false
      * Делает активными/неактивными поля соответственно
      */
-    public void setConditionFields(boolean sost){
-        DistrictComboBox.setEditable(sost);
+    public void setConditionFields(boolean sost) {
+        NumAccTextField.requestFocus();
+        DistrictComboBox.setEnabled(sost);
         NumAccTextField.setEditable(sost);
-        ConsTypeComboBox.setEditable(sost);
+        ConsTypeComboBox.setEnabled(sost);
         BalanceTextField.setEditable(sost);
         SurnameTextField.setEditable(sost);
         NameTextField.setEditable(sost);
         MiddleNameTextField.setEditable(sost);
         NumContractTextField.setEditable(sost);
         DateContractDatePicker.setEditable(sost);
-        StatusAccComboBox.setEditable(sost);
+        StatusAccComboBox.setEnabled(sost);
         TelephoneTextField.setEditable(sost);
         AdressTextField.setEditable(sost);
         HouseTextField.setEditable(sost);
