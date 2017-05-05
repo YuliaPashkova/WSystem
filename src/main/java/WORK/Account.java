@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
+
+import static WORK.Methods.getColumnName;
+
 /*
  * Created by Юлия on 02.05.2017.
  */
@@ -17,18 +20,14 @@ public class Account{
     public int num_account;
     //физ.лицо
     public String FIO;
-
     public double balance;
     public Date date_contract;
     public int num_contract;
-
     public int adres;
-
     public String owner_flat;
     public String cons_type;
     public String telephone;
     public String acc_status;
-
     //юр.лицо
     public int bank;
     public int kpp;
@@ -130,7 +129,7 @@ public class Account{
         //затем искать в таблице account по введенным полям и id_adress
         //затем нужно проверить,заполнено ли хотя бы одно поле для юр.лиц
         //если заполнено, то составить запрос на объединение двух таблиц через JOIN
-        String column_account[] = Methods.getColumnName("watermeter.account").split(" ");//получение имен колонок таблицы account
+        String column_account[] = getColumnName("watermeter.account").split(" ");//получение имен колонок таблицы account
         //подсчет пустых полей
         int counter = 0;
         for (String d : data) if (!(d == null)) counter++;// нахождение количества ненулевых критериев запроса
@@ -171,7 +170,7 @@ public class Account{
             if (data[16] != null)
                 data[16] = Integer.toString(getIndex(data[16], 4));//теперь вместо названия банка, хранится его индекс
             //получение имен колонок таблицы account_company
-            String column_account_comp[] = Methods.getColumnName("watermeter.account_company").split(" ");
+            String column_account_comp[] = getColumnName("watermeter.account_company").split(" ");
             int i, j;//переменные цикла
             //i - пробег по column_account_company, c 1 - так как первая колонка это num_account и она уже есть в запросе
             //j-пробег по данным с 16 по 22 ячейку (поля для юр.лиц)
@@ -296,6 +295,232 @@ public class Account{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /*
+    * Метод анализирует новые данные и изменяет в БД
+    * Возвращает
+    * 0 - без ошибок
+    *
+    * */
+    public static int changeData(String[] new_data) throws Exception {
+        int id_adres=-1;
+        boolean changed_adres=false;//флаг изменения адреса (true - адрес был изменен)
+        boolean changed_fieldsAcc=false;//флаг изменения полей для физ.лица (true - хотя бы одно поле было изменено)
+        boolean changed_fieldsComp=false;//флаг изменения полей для юр.лица (true - хотя бы одно поле было изменено)
+
+        //проверка адреса
+        String  new_adres[]=new String[6];
+        new_adres[0]=new_data[20];//район
+        new_adres[1]=new_data[6];//улица
+        new_adres[2]=new_data[7];//дом
+        new_adres[3]=new_data[9];//квартира
+        new_adres[4]=new_data[8];//корпус
+        new_adres[5]=new_data[10];//индекс
+
+        for(int i=0;i<new_adres.length;i++)
+            if(new_adres[i].contains("*")){
+                changed_adres=true;break;
+            }
+        if(changed_adres){//если хотя бы одно поле адреса было изменено
+        //тут должны проверяться поля адреса на содержимое
+            id_adres=changeAdres(new_data[0],new_adres);//new_data[0]- номер аккаунта,который не изменяется
+         }
+
+
+        //работа с полями для физ.лица,сборка данных в массив,удобный для использования
+        String new_data_acc [] = new String[10];//данные из полей для физ.лица
+        new_data_acc[0]=new_data[0];//номер лицевого счета
+        new_data_acc[1]=new_data[1]+" "+new_data[2]+" "+new_data[3];//ФИО
+        new_data_acc[2]=new_data[4];//баланс
+        new_data_acc[3]=new_data[23];//дата договора
+        new_data_acc[4]=new_data[5];//номер договора
+        new_data_acc[5]=Integer.toString(id_adres);//адрес (к этому моменту он уже поменялся)
+        new_data_acc[6]=new_data[12];//владелец
+        new_data_acc[7]=new_data[21];//тип потребителя
+        new_data_acc[8]=new_data[11];//телефон
+        new_data_acc[9]=new_data[22];//статус аккаунта
+
+        for(int i=0;i<new_data_acc.length;i++)
+            if(new_data_acc[i].contains("*")){
+                changed_fieldsAcc=true;break;
+            }
+        if(changed_fieldsAcc){//если хотя бы одно поле  было изменено
+           //тут должна быть проверка на содержимое полей
+            changeDataAcc(new_data_acc);//изменение полей для физ.лица
+        }
+
+
+        if(new_data_acc[7].equals("ЮРИДИЧЕСКОЕ ЛИЦО")){
+            String new_data_comp []= new String[8];//данные из полей для юр.лица
+            new_data_comp[0]=new_data[0];//номер лицевого счета
+            new_data_comp[1]=new_data[15];//банк
+            new_data_comp[2]=new_data[18];//кпп
+            new_data_comp[3]=new_data[19];//бик
+            new_data_comp[4]=new_data[16];//расчетный счет
+            new_data_comp[5]=new_data[14];//номер сертификата
+            new_data_comp[6]=new_data[17];//инн
+            new_data_comp[7]=new_data[13];//название компании
+
+            for(int i=0;i< new_data_comp.length;i++)
+                if(new_data_comp[i].contains("*")){
+                    changed_fieldsComp=true;break;
+                }
+
+            if(changed_fieldsComp){//если хотя бы одно поле  было изменено
+                //тут должна быть проверка на содержимое полей
+                changeDataAccCompany(new_data_comp);//изменение полей для юр.лица
+            }
+        }
+        return 0;
+    }
+
+    /*
+    * Метод изменяет данные для юр. лица
+    * Принимает новые данные
+    * */
+    private static void changeDataAccCompany(String[] new_data_comp) throws Exception {
+        String column[] = Methods.getColumnName("account_company").split(" ");//названия колонок таблицы account_company
+        String query="update account_company set ";
+        for(int i =1;i<new_data_comp.length;i++){//с 1 - так как номер лицевого счета не изменяется
+            if(new_data_comp[i].contains("*"))//поле содержит звездочку
+                if(i==1){//банк
+                    int id_bank = getIndex(new_data_comp[i].replaceAll("\\*", ""), 3);//получаем индекс банка, передаем название банка
+                    if(id_bank==-1){
+                        addNewData(new_data_comp[i].replaceAll("\\*", ""),2);//если нет,то добавить в базу
+                        id_bank=getIndex(new_data_comp[i].replaceAll("\\*", ""),3);//получаем индекс нового банка
+                    }
+                    query+="bank = "+id_bank+",";//если такая улица уже есть в базе
+                }
+                else query+=column[i]+" = \""+new_data_comp[i].replaceAll("\\*", "")+"\",";
+        }
+        //обрезаем последнюю запятую
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
+        query+=" where num_account = "+new_data_comp[0];
+        //выполняем запрос
+        statement = Connect.connection.createStatement();
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    * Метод изменяет данные для физ. лица
+    * Принимает новые данные
+    * */
+    private static void changeDataAcc(String[] new_data_acc) throws SQLException {
+        String column[] = Methods.getColumnName("account").split(" ");//названия колонок таблицы account
+        String query="update account set ";
+        for(int i =1;i<new_data_acc.length;i++){//с 1 - так как номер лицевого счета не изменяется
+            if(new_data_acc[i].contains("*"))//поле содержит звездочку
+                query+=column[i]+" = \""+new_data_acc[i].replaceAll("\\*", "")+"\",";
+        }
+        //обрезаем последнюю запятую
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
+        query+=" where num_account = "+new_data_acc[0];
+        System.out.println(query);
+        //выполняем запрос
+        statement = Connect.connection.createStatement();
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+    * Метод изменяет адрес
+    * Принимает номер аккаунта и новый адрес
+    * */
+    private static int changeAdres(String num_acc, String[] new_adres) throws Exception {
+        String query = "select adres from account where num_account = "+num_acc;//ищем айди старого адреса
+        int id_adres=-1;//ид старого адреса
+
+        statement = Connect.connection.createStatement();
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            while (resSet.next()) {
+               id_adres=resSet.getInt("adres");
+            }
+        }
+        statement.close();
+
+        query="update adres set ";
+        for(int i=0;i<new_adres.length;i++){
+            if(new_adres[i].contains("*"))//если поле содержит звездочку
+                switch (i){
+                    case 0://район
+                        int id_district = getIndex(new_adres[i].replaceAll("\\*", ""), 0);//получаем индекс района, передаем название района
+                        query+="id_district = "+id_district+",";
+                        break;
+                    case 1://улица
+                        int id_street = getIndex(new_adres[i].replaceAll("\\*", ""), 1);//получаем индекс улицы, передаем название улицы
+                        if(id_street==-1){
+                            addNewData(new_adres[i].replaceAll("\\*", ""),0);//если нет,то добавить в базу
+                            id_street=getIndex(new_adres[i].replaceAll("\\*", ""),1);//получаем индекс новой улицы
+                        }
+                        query+="id_street = "+id_street+",";//если такая улица уже есть в базе
+                        break;
+                    case 2://дом
+                        query+="house = "+new_adres[i].replaceAll("\\*", "")+",";
+                        break;
+                    case 3://квартира
+                        query+="flat = \""+new_adres[i].replaceAll("\\*", "")+"\" ,";
+                        break;
+                    case 4://корпус
+                        query+="corpus =\""+new_adres[i].replaceAll("\\*", "")+"\" ,";
+                        break;
+                    case 5://индекс
+                        int id_index = getIndex(new_adres[i].replaceAll("\\*", ""), 2);//получаем индекс индекса, передаем название индекса
+                        if(id_index==-1){
+                            addNewData(new_adres[i].replaceAll("\\*", ""), 1);//если нет,то добавить в базу
+                            id_index=getIndex(new_adres[i].replaceAll("\\*", ""),2);//получаем индекс нового индекса
+                        }
+                        query+="id_index = "+id_index;
+                        break;
+            }
+        }
+        //обрезаем последнюю запятую
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
+        query+=" where id_adres = "+id_adres;
+        //выполняем запрос
+        statement = Connect.connection.createStatement();
+            try {
+                statement = Connect.connection.createStatement();
+                statement.executeUpdate(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return id_adres;
+    }
+
+    /*
+    * Метод добавляет в базу данных новую улицу,индекс,банк
+    * int what: 0- улица,1 - индекс,2 - банк
+    * */
+    private static void addNewData(String data,int what) throws SQLException {
+        String query;
+        if(what==0)  query= "insert into cat_street (street) values ("+"\""+data+"\")";//добавляем улицу
+        else if(what==1) query= "insert into cat_index (indx) values ("+data+")";//добавляем индекс
+        else query= "insert into cat_bank (bank) values ("+"\""+data+"\")";//добавляем банк
+        statement = Connect.connection.createStatement();
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        statement.close();
     }
 
     /*

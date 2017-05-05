@@ -25,6 +25,11 @@ import static WORK.Connect.conntoDB;
  */
 public class GAccount extends javax.swing.JFrame {
     static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+    boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить лиц.счет",иначе false)
+    JTextField textfields [];//массив текстовых полей
+    JComboBox comboboxes[];//массив комбобоксов
+    String new_data[];//массив новых данных
+    String old_data[];//массив старых данных
 
 
     private javax.swing.JLabel AdressLabel;
@@ -114,6 +119,17 @@ public class GAccount extends javax.swing.JFrame {
     public GAccount() throws Exception {
         conntoDB();
         initComponents();
+        textfields = new JTextField[]{//массив текстовых полей
+                NumAccTextField, SurnameTextField, NameTextField, MiddleNameTextField,
+                BalanceTextField, NumContractTextField, AdressTextField, HouseTextField,
+                CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
+                OwnerTextField, NameCompanyTextField, NumSertifTextField, BankTextField,
+                BankAccTextField, INNTextField, KPPTextField, BIKTextField
+        };
+        comboboxes=new JComboBox[]{//массив комбобоксов
+            DistrictComboBox, ConsTypeComboBox, StatusAccComboBox
+        };
+
     }
 
     public static void main(String args[]) {
@@ -497,25 +513,8 @@ public class GAccount extends javax.swing.JFrame {
         NameCompanyLabel.setText("Название предприятия");
 
         DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ"}));
-        DistrictComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DistrictComboBoxActionPerformed(evt);
-            }
-        });
-
         ConsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ФИЗИЧЕСКОЕ ЛИЦО", "ЮРИДИЧЕСКОЕ ЛИЦО"}));
-        ConsTypeComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConsTypeComboBoxActionPerformed(evt);
-            }
-        });
-
         StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ"}));
-        StatusAccComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusAccComboBoxActionPerformed(evt);
-            }
-        });
 
         ChangesMenu.setText("Изменения");
 
@@ -530,6 +529,7 @@ public class GAccount extends javax.swing.JFrame {
 
         ChangeAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         ChangeAccMenuItem.setText("Изменение текущей записи");
+        ChangeAccMenuItem.setEnabled(false);
         ChangeAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ChangeAccMenuItemActionPerformed(evt);
@@ -964,6 +964,73 @@ public class GAccount extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+        if(change_mode)makeChanges();//если включен режим изменения
+        else gatherDataForSearch();
+    }
+
+    /*
+    * Метод осуществляет изменение данных
+    * */
+    private void makeChanges() throws Exception {
+        new_data=readData();//считывание новых данных
+        if(new_data[20].equals("НЕ ВЫБРАНО"))new_data[20]=old_data[20];//если изменилось на "не выбрано",выбрать предыдущее значение
+        if(new_data[22].equals("НЕ ВЫБРАНО"))new_data[22]=old_data[22];
+
+        //сравнение данных и проверка на изменение данных
+       if(Methods.haveNewValues(Methods.compareData(old_data,new_data))==0) {//данные не изменялись
+           JOptionPane.showMessageDialog(null, "Данные не были изменены. Выход из режима редактирования...", "Выход", JOptionPane.INFORMATION_MESSAGE);
+           NumAccTextField.setEditable(true);
+           ConsTypeComboBox.setEnabled(true);
+           changeMode(false,true);//выход из режима редактирования
+       }
+       else {
+           Object[] options = { "Да", "Нет" };
+           if (JOptionPane.showOptionDialog(null, "Принять изменения?", "Подтверждение", JOptionPane.YES_NO_OPTION,
+               JOptionPane.QUESTION_MESSAGE, null, options, options[0]) == 0)//если да,то изменить бд
+               switch(Account.changeData(new_data)){
+                   case 0:// успешное изменение
+                       JOptionPane.showMessageDialog(null,"Изменение данных прошло успешно! Выход из режима редактирования...", "Результат изменения", JOptionPane.INFORMATION_MESSAGE);
+                       NumAccTextField.setEditable(true);
+                       ConsTypeComboBox.setEnabled(true);
+                       new_data=null;//очистка
+                       old_data=null;
+                       changeMode(false,true);//выход из режима редактирования
+                       break;
+
+               }
+           else if (JOptionPane.showOptionDialog(null, "Выйти из режима редактирования?",
+                   "Подтверждение", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == 0) {//Если да, то выйти из режима редактирования
+               changeMode(false,true);//выход из режима редактирования
+               NumAccTextField.setEditable(true);
+               ConsTypeComboBox.setEnabled(true);
+           }
+       }
+
+    }
+
+    /*
+    Метод считывает данные из всех полей и возвращает их в виде массива
+     */
+    private String [] readData() {
+        String data[] = new String[24];
+        String datafields[] = new  String [20];//массив,где будут хранится данные из текстовых полей
+        String datacomboboxes[] = new String[3];//массив,где будут хранится данные из комбобоксов
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date_contract = dateFormat.format(DateContractDatePicker.getDate());//старая дата договора
+        for(int i=0;i<textfields.length;i++)//считывание данных из текстовых полей
+            datafields[i]=textfields[i].getText();
+        for(int i=0;i<comboboxes.length;i++)datacomboboxes[i]=(String)comboboxes[i].getSelectedItem();
+        System.arraycopy(datafields, 0, data, 0, 20);//копирование данных из текстовых полей
+        System.arraycopy(datacomboboxes, 0, data, 20, 3);//копирование данных из комбобоксов
+        data[23]=date_contract;
+
+        for(int i=0;i<data.length;i++)data[i]=data[i].toUpperCase();
+        return  data;
+    }
+    /*
+    * Метод собирает данные для поиска,затем вызвает метод поиска
+    * */
+    private void gatherDataForSearch() throws Exception {
         String data[] = new String[23];//данные из текстовых полей
         data[0] = NumAccTextField.getText().trim();
 
@@ -1033,6 +1100,7 @@ public class GAccount extends javax.swing.JFrame {
         }
     }
 
+
     //карточка водомера
     private void WatermeterButtonActionPerformed(java.awt.event.ActionEvent evt) {
         GWatermeter wm = new GWatermeter(true, this);
@@ -1051,7 +1119,7 @@ public class GAccount extends javax.swing.JFrame {
         CleanFields();
         DeleteRows();//очистка таблицы
         SearchButton.setEnabled(true);
-        setConditionFields(true);  //активные поля
+        setConditionFields(true,true);  //активные поля
     }
 
     private void OrdersMenuItemMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1140,16 +1208,27 @@ public class GAccount extends javax.swing.JFrame {
 
     //по клику на строке таблицы
     private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
-        //if(evt.getClickCount()==2&&!changing){
-        if (evt.getClickCount() == 2) {
-            // ChangeLicSchetMenuItem.setEnabled(true);//разблокировать функцию изменения
-            // RegionTextField.requestFocus();
+        if(evt.getClickCount()==2&&!change_mode){
+            ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
+            NumAccTextField.requestFocus();
+            ClickOnTable();
+            ResultTable.requestFocus();
+        }
+    }
+    //по нажатию enter на таблице
+    private void ResultTableKeyPressed(java.awt.event.KeyEvent evt) throws Exception {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+            ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
+            NumAccTextField.requestFocus();
             ClickOnTable();
             ResultTable.requestFocus();
         }
     }
 
-    //по клику на таблице
+    /*
+    Метод отправляет номер аккаунта и тип абонента,происходит поиск расширенных данных.
+    Затем данные выводятся в форму
+     */
     public void ClickOnTable() throws Exception {
         //получение номера лицевого счета с выделенной строки
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
@@ -1191,19 +1270,14 @@ public class GAccount extends javax.swing.JFrame {
             KPPTextField.setText(Long.toString(Account.account.kpp));
             BIKTextField.setText(Long.toString(Account.account.bik));
         }
-        setConditionFields(false);
+        setConditionFields(false,true);
         SearchButton.setEnabled(false);
         DeleteAccMenuItem.setEnabled(true);
 
 
     }
 
-    //по нажатию enter на таблице
-    private void ResultTableKeyPressed(java.awt.event.KeyEvent evt) throws Exception {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) ClickOnTable();
-        // ChangeLicSchetMenuItem.setEnabled(true);//разблокировать функцию изменения
-        // ResultTable.requestFocus();
-    }
+
 
     private void CountAccButtonActionPerformed(java.awt.event.ActionEvent evt) {
         JOptionPane.showMessageDialog(null, "Найдено лицевых счетов: " + ResultTable.getRowCount(), "Количество лицевых счетов", JOptionPane.INFORMATION_MESSAGE);
@@ -1233,7 +1307,14 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ChangeAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        boolean company=false;//если изменяем юр.лицо
+
+        if(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3)).equals("ЮРИДИЧЕСКОЕ ЛИЦО"))
+            company=true;
+        changeMode(true,company);
+        old_data = readData();//считать все текущие данные
+        NumAccTextField.setEditable(false);//нельзя изменять номер счета
+        ConsTypeComboBox.setEnabled(false);//нельзя изменять тип лица
     }
 
     private void NewAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1288,7 +1369,7 @@ public class GAccount extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Лицевой счет с номером "+num_acc+" был удален!", "Удаление лицевого счета", JOptionPane.INFORMATION_MESSAGE);
             DeleteRows();//очистка таблицы
             CleanFields();
-            setConditionFields(true);
+            setConditionFields(true,true);
             SearchButton.setEnabled(true);
             DeleteAccMenuItem.setEnabled(false);
         }
@@ -1352,85 +1433,84 @@ public class GAccount extends javax.swing.JFrame {
         }
     }
 
-    private void DistrictComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
+    /**
+     * Производит необходимые действия при входе/выходе из режима редактирования
+     * Принимает mode (true-вход/false-выход)
+     * company: true- юр.лицо,false-физ.лицо
+     */
+    private void changeMode(boolean mode,boolean company) {
+        if(mode){//включить режим изменения
 
-    private void ConsTypeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
-    private void StatusAccComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+            change_mode = true;//флаг изменения
+            SearchButton.setText("Изменить");
+            ResultTable.setEnabled(false);
+            setConditionFields(true,company);//активные поля
+            SearchButton.setEnabled(true);
+            DeleteAccMenuItem.setEnabled(false);
+            ChangeAccMenuItem.setEnabled(false);
+            change_state_buttons(false);
+
+        }
+        else{//выход
+            change_mode=false;
+            SearchButton.setText("Поиск");
+            ResultTable.setEnabled(true);
+            ChangeAccMenuItem.setEnabled(false);
+            DeleteAccMenuItem.setEnabled(false);
+            setConditionFields(true,company);//активные поля
+            CleanFields();
+            DeleteRows();
+            ResultTable.requestFocus();
+            change_state_buttons(true);
+        }
+    }
+    /**
+     * Изменяет состояние кнопок и вкладок при входе/выходе из режима изменений
+     */
+    private void change_state_buttons(boolean sost) {
+        SummBalanceButton.setEnabled(sost);
+        CountAccButton.setEnabled(sost);
+        ClearButton.setEnabled(sost);
+        WaterconButton.setEnabled(sost);
+        WatermeterButton.setEnabled(sost);
+        ContactsButton.setEnabled(sost);
+        NewAccMenuItem.setEnabled(sost);
+        NewWaterconMenuItem.setEnabled(sost);
+        NewWatermeterMenuItem.setEnabled(sost);
+        CatalogMenu.setEnabled(sost);
+        OrderMenu.setEnabled(sost);
+        DocumentsMenu.setEnabled(sost);
+        DataProtectionMenu.setEnabled(sost);
+        ExitProgrammMenu.setEnabled(sost);
     }
 
     //удаляет все строки из таблицы
     public void DeleteRows() {
         model.setRowCount(0);
     }
-
-    /**
+    /*
      * Очищает поля в форме
      */
     private void CleanFields() {
-        DistrictComboBox.setSelectedIndex(0);
-        NumAccTextField.setText(null);
-        ConsTypeComboBox.setSelectedIndex(0);
-        BalanceTextField.setText(null);
-        SurnameTextField.setText(null);
-        NameTextField.setText(null);
-        MiddleNameTextField.setText(null);
-        NumContractTextField.setText(null);
+        for(int i=0;i<textfields.length;i++) textfields[i].setText(null);
+        for(int i=0;i<comboboxes.length;i++) comboboxes[i].setSelectedIndex(0);
         DateContractDatePicker.setDate(null);
-        StatusAccComboBox.setSelectedIndex(0);
-        TelephoneTextField.setText(null);
-        AdressTextField.setText(null);
-        HouseTextField.setText(null);
-        FlatTextField.setText(null);
-        CorpusTextField.setText(null);
-        IndexTextField.setText(null);
-        OwnerTextField.setText(null);
-
-        NameCompanyTextField.setText(null);
-        NumSertifTextField.setText(null);
-        BankAccTextField.setText(null);
-        BankTextField.setText(null);
-        INNTextField.setText(null);
-        KPPTextField.setText(null);
-        BIKTextField.setText(null);
-
     }
-
-    /*
-     * Принимает true или false
+    /*Принимает company : true - юр.лицо,false- физ.лицо
+     * Принимает sost: true или false
      * Делает активными/неактивными поля соответственно
      */
-    public void setConditionFields(boolean sost) {
-        NumAccTextField.requestFocus();
-        DistrictComboBox.setEnabled(sost);
-        NumAccTextField.setEditable(sost);
-        ConsTypeComboBox.setEnabled(sost);
-        BalanceTextField.setEditable(sost);
-        SurnameTextField.setEditable(sost);
-        NameTextField.setEditable(sost);
-        MiddleNameTextField.setEditable(sost);
-        NumContractTextField.setEditable(sost);
+    public void setConditionFields(boolean sost,boolean company) {
+        //для всех лиц
+        for(int i=0;i<13;i++) textfields[i].setEnabled(sost);
         DateContractDatePicker.setEditable(sost);
-        StatusAccComboBox.setEnabled(sost);
-        TelephoneTextField.setEditable(sost);
-        AdressTextField.setEditable(sost);
-        HouseTextField.setEditable(sost);
-        FlatTextField.setEditable(sost);
-        CorpusTextField.setEditable(sost);
-        IndexTextField.setEditable(sost);
-        OwnerTextField.setEditable(sost);
+        for(int i=0;i<comboboxes.length;i++) comboboxes[i].setEnabled(sost);
 
-        NameCompanyTextField.setEditable(sost);
-        NumSertifTextField.setEditable(sost);
-        BankAccTextField.setEditable(sost);
-        BankTextField.setEditable(sost);
-        INNTextField.setEditable(sost);
-        KPPTextField.setEditable(sost);
-        BIKTextField.setEditable(sost);
+        if(company)
+            for(int i=13;i<textfields.length;i++) textfields[i].setEnabled(sost);//для юр.лиц
+
+        NumAccTextField.requestFocus();
+
     }
 }

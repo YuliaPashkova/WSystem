@@ -57,6 +57,23 @@ public class Methods {
         if (drob.length() == 1) new_d = d + "0"; //если в ней одно число, добавляем 0
         return new_d;
     }
-
+    /*
+    Метод сравнивает новые данные и старые данные. Если есть изменения,добавляет к старым данным звездочку
+    */
+    public static String []compareData(String[] old_data, String[] new_data) {
+        for(int i=0;i<old_data.length;i++)
+            if(!old_data[i].equals(new_data[i]))new_data[i]+="*";//если данные разные,то добавить звездочку
+        return new_data;
+    }
+    /**
+     * Метод подсчитывает и возвращает количество измененных полей
+     **/
+    public static int haveNewValues(String data[]) {
+        int count = 0; //количество измененных полей
+        for (String d : data)
+            if (d.contains("*")) //есть *
+                count++;
+        return count;
+    }
 
 }
