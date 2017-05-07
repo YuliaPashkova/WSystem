@@ -1,5 +1,7 @@
 package GUI;
 import javax.swing.*;
+import java.sql.SQLException;
+
 /**
  * Created by Юлия on 14.04.2017.
  */
@@ -73,7 +75,11 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewAccountPerson(null).setVisible(true);
+                try {
+                    new GNewAccountPerson(null).setVisible(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

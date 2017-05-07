@@ -522,7 +522,11 @@ public class GAccount extends javax.swing.JFrame {
         NewAccMenuItem.setText("Новый лицевой счет");
         NewAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewAccMenuItemActionPerformed(evt);
+                try {
+                    NewAccMenuItemActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(NewAccMenuItem);
@@ -996,7 +1000,9 @@ public class GAccount extends javax.swing.JFrame {
                        old_data=null;
                        changeMode(false,true);//выход из режима редактирования
                        break;
-
+                   case -1:
+                       JOptionPane.showMessageDialog(null,Account.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                       break;
                }
            else if (JOptionPane.showOptionDialog(null, "Выйти из режима редактирования?",
                    "Подтверждение", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == 0) {//Если да, то выйти из режима редактирования
@@ -1016,7 +1022,12 @@ public class GAccount extends javax.swing.JFrame {
         String datafields[] = new  String [20];//массив,где будут хранится данные из текстовых полей
         String datacomboboxes[] = new String[3];//массив,где будут хранится данные из комбобоксов
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date_contract = dateFormat.format(DateContractDatePicker.getDate());//старая дата договора
+        String date_contract;
+        try{
+            date_contract = dateFormat.format(DateContractDatePicker.getDate());//старая дата договора
+        }catch (NullPointerException ex){
+            date_contract= null;
+        }
         for(int i=0;i<textfields.length;i++)//считывание данных из текстовых полей
             datafields[i]=textfields[i].getText();
         for(int i=0;i<comboboxes.length;i++)datacomboboxes[i]=(String)comboboxes[i].getSelectedItem();
@@ -1024,7 +1035,8 @@ public class GAccount extends javax.swing.JFrame {
         System.arraycopy(datacomboboxes, 0, data, 20, 3);//копирование данных из комбобоксов
         data[23]=date_contract;
 
-        for(int i=0;i<data.length;i++)data[i]=data[i].toUpperCase();
+        for(int i=0;i<data.length;i++)
+            if(data[i]!=null) data[i]=data[i].toUpperCase();
         return  data;
     }
     /*
@@ -1252,10 +1264,10 @@ public class GAccount extends javax.swing.JFrame {
         AdressTextField.setText(Account.names_indexes[1]);
         HouseTextField.setText(Account.names_indexes[2]);
 
-        if (Account.names_indexes[4] == null) FlatTextField.setText("");
+        if (Account.names_indexes[3] == null) FlatTextField.setText("");
         FlatTextField.setText(Account.names_indexes[3]);
 
-        if (Account.names_indexes[3] == null) CorpusTextField.setText("");
+        if (Account.names_indexes[4] == null) CorpusTextField.setText("");
         else CorpusTextField.setText(Account.names_indexes[4]);
 
         IndexTextField.setText(Account.names_indexes[5]);
@@ -1317,7 +1329,7 @@ public class GAccount extends javax.swing.JFrame {
         ConsTypeComboBox.setEnabled(false);//нельзя изменять тип лица
     }
 
-    private void NewAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NewAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
         Object[] options = {"Физическое лицо",
                 "Юридическое лицо",
                 "Отмена"};

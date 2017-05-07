@@ -3,9 +3,20 @@ package GUI;
 /**
  * Created by Юлия on 14.04.2017.
  */
+import WORK.Account;
+import WORK.Connect;
+import WORK.Methods;
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 public class GNewAccountPerson extends javax.swing.JDialog {
+    JTextField textfields [];//массив текстовых полей
+
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
     private javax.swing.JLabel BalanceLabel;
@@ -41,9 +52,16 @@ public class GNewAccountPerson extends javax.swing.JDialog {
     private javax.swing.JTextField SurnameTextField;
     private javax.swing.JLabel TelephoneLabel;
     private javax.swing.JTextField TelephoneTextField;
-    public GNewAccountPerson(java.awt.Frame parent) {
+    public GNewAccountPerson(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
+        textfields = new JTextField[]{//массив текстовых полей
+                NumAccTextField, SurnameTextField, NameTextField, MiddleNameTextField,
+                BalanceTextField, NumContractTextField, AdressTextField, HouseTextField,
+                CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
+                OwnerTextField,StatusAccTextField,ConsTypeTextField
+        };
+        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount("account")+1));//получение номера аккаунта
     }
 
     public static void main(String args[]) {
@@ -60,13 +78,17 @@ public class GNewAccountPerson extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewAccountPerson(null).setVisible(true);
+                try {
+                    new GNewAccountPerson(null).setVisible(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     @SuppressWarnings("unchecked")
-    private void initComponents() {
+    private void initComponents() throws SQLException {
         DistrictLabel = new javax.swing.JLabel();
         MiddleNameTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
@@ -105,6 +127,20 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         StatusAccTextField = new javax.swing.JTextField();
         StatusAccLabel = new javax.swing.JLabel();
         DistrictComboBox = new javax.swing.JComboBox<>();
+
+        //AUTOCOMPLETERS
+
+        TextAutoCompleter streetcomplete = new TextAutoCompleter(AdressTextField);
+        Connect.retrieveStreet();
+        while (Connect.rs.next()) {
+            streetcomplete.addItem(Connect.rs.getString("street"));
+        }
+
+        TextAutoCompleter indexcomplete = new TextAutoCompleter(IndexTextField);
+        Connect.retrieveIndex();
+        while (Connect.rs.next()) {
+            indexcomplete.addItem(Connect.rs.getString("indx"));
+        }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый лицевой счет (физ.лицо)");
@@ -240,7 +276,13 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         OkButton.setText("ОК");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OkButtonActionPerformed(evt);
+                try {
+                    OkButtonActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -473,7 +515,38 @@ public class GNewAccountPerson extends javax.swing.JDialog {
 
     }
 
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+        String data[] = readData();
+       switch(Account.addAccount(data,true)){
+           case 0:
+               JOptionPane.showMessageDialog(null,"Новый лицевой счет был успешно создан!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);
+               dispose();
+               break;
+           case -1:
+               JOptionPane.showMessageDialog(null,Account.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+               break;
+       }
+    }
+
+    /*
+    Метод считывает данные из всех полей и возвращает их в виде массива
+     */
+    private String [] readData() {
+        String data[] = new String[17];
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date_contract;
+        try{
+            date_contract = dateFormat.format(DateContractDatePicker.getDate());//старая дата договора
+        }catch (NullPointerException ex){
+            date_contract= null;
+        }
+        for(int i=0;i<textfields.length;i++)//считывание данных из текстовых полей
+            data[i]=textfields[i].getText();
+        data[15]=(String)DistrictComboBox.getSelectedItem();
+        data[16]=date_contract;
+        for(int i=0;i<data.length;i++)
+            if(data[i]!=null) data[i]=data[i].toUpperCase();
+        return  data;
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {

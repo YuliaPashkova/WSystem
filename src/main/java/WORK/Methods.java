@@ -75,5 +75,41 @@ public class Methods {
                 count++;
         return count;
     }
+    /*
+     * Проверяет входную строку на математичесое число
+     * Возвращает true | false
+     */
+    public static boolean isDigit(String str) {
+        return str.matches("^[+-]?\\d+(\\.\\d+)?");
+    }
+    /*
+    * Проверяет входную строку на состав цифр
+    * Возвращает true | false
+    */
+    public static boolean isOnlyDigit(String str){
+        return str.matches("\\d+");
+    }
+    /*
+     * Проверяет входную строку на буквы
+     * Возвращает true | false
+     */
+    public static boolean isLetter(String str) {
+        return str.matches("^[[а-яА-Яa-zA-z]\\s]+$") & !str.matches("^\\d+(\\.\\d+)?");
+    }
+    /*
+    * Проверяет входную строку на формат улицы
+    * Возвращает true | false
+    */
+    public static boolean isStreet(String str){
+        return  str.matches("[а-яА-Яa-zA-z]+\\.[\\s*[а-яА-Яa-zA-z0-9]+]+");
+    }
+    /*
+    * Проверяет входную строку
+    * Возвращает true: если строка содержит буквы,если строка содержит цифры,если строка содержит буквы и цифры
+    * */
+    public static boolean isLetterOrDigit(String str){
+        return str.matches("\\w*");
+    }
+
 
 }
