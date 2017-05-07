@@ -334,7 +334,7 @@ public class Stribog {
             message[i] = new BigInteger(1, new byte[]{initial[i]});
         //основой метод
         BigInteger[] rez = G.Work(message);
-        byte res[] = new byte[initial.length];
+        byte res[] = new byte[32];
         for(int i = 0; i < rez.length; i++)
             res[i] = rez[i].byteValue();
         return new String(res);
