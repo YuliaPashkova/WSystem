@@ -1,6 +1,9 @@
 package GUI;
 
+import WORK.Connect;
+
 import javax.swing.*;
+import java.awt.event.KeyEvent;
 
 /**
  * Created by Юлия on 13.04.2017.
@@ -49,7 +52,6 @@ public class GTitle extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Вход в систему");
-        // setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("main_icon.ico")));
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
 
@@ -68,14 +70,18 @@ public class GTitle extends javax.swing.JFrame {
         ExitButton.setText("Выход");
         ExitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitButtonActionPerformed(evt);
+                try {
+                    ExitButtonActionPerformed();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         GoButton.setText("Войти");
         GoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GoButtonActionPerformed(evt);
+                GoButtonActionPerformed();
             }
         });
 
@@ -123,15 +129,20 @@ public class GTitle extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void GoButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void GoButtonActionPerformed() {
+        login();
     }
 
-    private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void login() {
+    }
 
+    private void ExitButtonActionPerformed() throws Exception {
+        Connect.close();
+        System.exit(0);
     }
 
     private void PasswordTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-
+        if (evt.getKeyCode()== KeyEvent.VK_ENTER) login();
     }
 }
 

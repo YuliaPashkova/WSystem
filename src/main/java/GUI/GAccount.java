@@ -1,21 +1,19 @@
 package GUI;
 import WORK.Account;
 import WORK.Connect;
+import WORK.Contact;
 import WORK.Methods;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Arc2D;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-import java.util.StringTokenizer;
-import java.util.spi.LocaleNameProvider;
+
 
 import static WORK.Connect.close;
 import static WORK.Connect.conntoDB;
@@ -24,6 +22,7 @@ import static WORK.Connect.conntoDB;
  * Created by Юлия on 13.04.2017.
  */
 public class GAccount extends javax.swing.JFrame {
+    public static String NUM_ACC;//номер аккаунта (необходимо запомнить для контактных лиц)
     static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
     boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить лиц.счет",иначе false)
     JTextField textfields [];//массив текстовых полей
@@ -420,6 +419,7 @@ public class GAccount extends javax.swing.JFrame {
 
         WatermeterButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\Vodomer_icon.jpg")); // NOI18N // NOI18N
         WatermeterButton.setRequestFocusEnabled(false);
+        WatermeterButton.setEnabled(false);
         WatermeterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WatermeterButtonActionPerformed(evt);
@@ -472,6 +472,7 @@ public class GAccount extends javax.swing.JFrame {
                 WaterconButtonActionPerformed(evt);
             }
         });
+        WaterconButton.setEnabled(false);
 
         ClearButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\ikonka-korziny.jpg")); // NOI18N
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -501,9 +502,14 @@ public class GAccount extends javax.swing.JFrame {
         ContactsButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\contacts_icon.jpg")); // NOI18N
         ContactsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ContactsButtonActionPerformed(evt);
+                try {
+                    ContactsButtonActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
+        ContactsButton.setEnabled(false);
 
         FlatLabel.setText("КВ");
 
@@ -706,6 +712,7 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
+
         MenuBar.add(ExitProgrammMenu);
 
         setJMenuBar(MenuBar);
@@ -1086,7 +1093,7 @@ public class GAccount extends javax.swing.JFrame {
         data[21] = INNTextField.getText().trim();
         data[22] = NameCompanyTextField.getText().toUpperCase().trim();
 
-        DeleteRows();//удаление строк из таблицы
+        deleteRows();//удаление строк из таблицы
 
         //замена пустых значений на null
         for (int i = 0; i < data.length; i++)
@@ -1106,7 +1113,7 @@ public class GAccount extends javax.swing.JFrame {
                 ResultTable.setRowSelectionInterval(0, 0);
                 ResultTable.requestFocus();
             } else {
-                DeleteRows();//удаление строк из таблицы
+                deleteRows();//удаление строк из таблицы
                 JOptionPane.showMessageDialog(null, "Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -1129,7 +1136,7 @@ public class GAccount extends javax.swing.JFrame {
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
         CleanFields();
-        DeleteRows();//очистка таблицы
+        deleteRows();//очистка таблицы
         SearchButton.setEnabled(true);
         setConditionFields(true,true);  //активные поля
     }
@@ -1142,77 +1149,7 @@ public class GAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    private void NameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
 
-    private void MiddleNameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumContractTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void AdressTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void HouseTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CorpusTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void FlatTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OwnerTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void IndexTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void TelephoneTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BankTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BIKTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void KPPTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BankAccTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumSertifTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void INNTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumAccTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BalanceTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
 
     private void DateContractDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -1245,6 +1182,10 @@ public class GAccount extends javax.swing.JFrame {
         //получение номера лицевого счета с выделенной строки
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
         String cons_type = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3));
+
+        if(cons_type.equals("ФИЗИЧЕСКОЕ ЛИЦО")) ContactsButton.setEnabled(false);
+        else ContactsButton.setEnabled(true);
+
          Account.showAccount(num_acc, cons_type);//вызов метода заполнения формы по клику
 
         DistrictComboBox.setSelectedItem(Account.names_indexes[0]);
@@ -1309,9 +1250,13 @@ public class GAccount extends javax.swing.JFrame {
         }
     }
 
-    private void ContactsButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        GContacts c = new GContacts(this);
-        c.setVisible(true);
+    private void ContactsButtonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+        GContacts contact = new GContacts(this);
+        contact.deleteRows();
+        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        int result=Contact.searchContact(NUM_ACC);
+        if(result==0) contact.setVisible(true);
+        else JOptionPane.showMessageDialog(null, "По лицевому счету с номером "+NUM_ACC+" не найдено контактных лиц!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void DateContractDatePickerMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1320,7 +1265,6 @@ public class GAccount extends javax.swing.JFrame {
 
     private void ChangeAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         boolean company=false;//если изменяем юр.лицо
-
         if(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3)).equals("ЮРИДИЧЕСКОЕ ЛИЦО"))
             company=true;
         changeMode(true,company);
@@ -1377,9 +1321,9 @@ public class GAccount extends javax.swing.JFrame {
                 "Подтверждение удаления", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (n == 0) {
-            Account.DeleteAccount(num_acc);
+            Account.deleteAccount(num_acc);
             JOptionPane.showMessageDialog(null, "Лицевой счет с номером "+num_acc+" был удален!", "Удаление лицевого счета", JOptionPane.INFORMATION_MESSAGE);
-            DeleteRows();//очистка таблицы
+            deleteRows();//очистка таблицы
             CleanFields();
             setConditionFields(true,true);
             SearchButton.setEnabled(true);
@@ -1472,7 +1416,7 @@ public class GAccount extends javax.swing.JFrame {
             DeleteAccMenuItem.setEnabled(false);
             setConditionFields(true,company);//активные поля
             CleanFields();
-            DeleteRows();
+            deleteRows();
             ResultTable.requestFocus();
             change_state_buttons(true);
         }
@@ -1498,7 +1442,7 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //удаляет все строки из таблицы
-    public void DeleteRows() {
+    public void deleteRows() {
         model.setRowCount(0);
     }
     /*

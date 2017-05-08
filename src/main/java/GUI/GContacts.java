@@ -1,12 +1,14 @@
 package GUI;
-
+import WORK.Contact;
 import javax.swing.*;
-
+import javax.swing.table.DefaultTableModel;
 /**
  * Created by Юлия on 15.04.2017.
  */
 public class GContacts extends javax.swing.JDialog {
-        // Variables declaration - do not modify
+
+        static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+        private static javax.swing.JTable ResultTable;
         private javax.swing.JMenuItem AcceptChangesMenuItem;
         private javax.swing.JMenu AddMenu;
         private javax.swing.JMenuItem AddModeContactMenuItem;
@@ -22,7 +24,6 @@ public class GContacts extends javax.swing.JDialog {
         private javax.swing.JTextField NameCompanyTextField;
         private javax.swing.JTextField NameTextField;
         private javax.swing.JMenu PrintMenu;
-        private javax.swing.JTable ResultTable;
         private javax.swing.JLabel SurnameLabel;
         private javax.swing.JTextField SurnameTextField;
         private javax.swing.JLabel TelephoneLabel;
@@ -32,9 +33,6 @@ public class GContacts extends javax.swing.JDialog {
         private javax.swing.JMenuBar jMenuBar1;
         private javax.swing.JScrollPane jScrollPane2;
     public GContacts(java.awt.Frame parent) {
-        //вызываем конструктор базового класса, т.о. сообщаем, что переданное в качестве аргумента
-        // окно parent является родительским для данного; true - диалог модальный (блокирует выполнение
-        // родительского окна до завершение работы дочернего)
         super(parent, true);
         initComponents();
     }
@@ -55,6 +53,12 @@ public class GContacts extends javax.swing.JDialog {
                     new GContacts(null).setVisible(true);
                 }
             });
+        }
+
+        //добавление в таблицу новой строки
+        public  static void AddRowTable(Contact contact) {
+            model.addRow(new Object[]{
+                    contact.FIO,contact.telephone});
         }
 
         private void initComponents() {
@@ -126,6 +130,7 @@ public class GContacts extends javax.swing.JDialog {
             TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
             ResultTable.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            ResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             ResultTable.setModel(new javax.swing.table.DefaultTableModel(
                     new Object [][] {
 
@@ -142,6 +147,7 @@ public class GContacts extends javax.swing.JDialog {
                     return canEdit [columnIndex];
                 }
             });
+            model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
             jScrollPane2.setViewportView(ResultTable);
 
             EditMenu.setText("Редактирование");
@@ -260,5 +266,9 @@ public class GContacts extends javax.swing.JDialog {
         private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
             // TODO add your handling code here:
         }
-        // End of variables declaration                   
+
+        //удаляет все строки из таблицы
+        public  void deleteRows() {
+            model.setRowCount(0);
+        }
     }

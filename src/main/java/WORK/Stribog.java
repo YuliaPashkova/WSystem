@@ -47,10 +47,16 @@ public class Stribog {
             outLen = 256;
         }
     }
+
+   public static  void main(String[]args) throws IOException {
+        Stribog stribog = new Stribog(256);
+       System.out.println(stribog.getHash("Julia"));
+    }
+
     private void initA() throws IOException {
         byte initial[] = new byte[8];
         try {
-            in = new BufferedReader(new FileReader("src\\main\\resources\\A.txt"));
+            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\A.txt"));
             //В цикле построчно считываем файл
             String s;
             int k = 0; //счетчик для А
@@ -67,7 +73,7 @@ public class Stribog {
     private void initSbox() throws IOException {
         try {
             byte initial[] = new byte[]{(byte) 0x00};
-            in = new BufferedReader(new FileReader("src\\main\\resources\\Sbox.txt"));
+            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\Sbox.txt"));
             //В цикле построчно считываем файл
             String s;
             int k = 0; //счетчик для Sbox
@@ -84,7 +90,7 @@ public class Stribog {
         try {
             byte initial[] = new byte[]{(byte) 0x00};
             String temp[]; //строку по пробелу разделяем и сюда пишем(по байтам в каждую ячейку)
-            in = new BufferedReader(new FileReader("src\\main\\resources\\C.txt"));
+            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\C.txt"));
             //В цикле построчно считываем файл
             String s;
             int j = 0; //счетчик для строк (12)
@@ -325,7 +331,7 @@ public class Stribog {
      * @param m - строка, для которой нужен хэш
      * @return хэш строки m
      */
-    public String getHash(String m) throws IOException {
+    public  String getHash(String m) throws IOException {
         Stribog G = new Stribog(256);
         byte initial[] = m.getBytes(); //строку в байты
         BigInteger[] message = new BigInteger[initial.length];

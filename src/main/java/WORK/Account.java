@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import static WORK.Methods.getColumnName;
-
 /*
  * Created by Юлия on 02.05.2017.
  */
@@ -62,6 +61,7 @@ public class Account {
                    long num_cert,
                    long INN,
                    String name_company
+
     ) {
         this.num_account = num_account;
         this.FIO = FIO;
@@ -116,11 +116,11 @@ public class Account {
         if (cons_type.equals("ФИЗИЧЕСКОЕ ЛИЦО")) {//для физ.лица
             query = "select * from account where num_account=" + num_acc;
             account = new Account();
-            account.receivingQuery(query, false, true);
+            account.receivingQueryForSearch(query, false, true);
         } else {//для юр.лица
             query = "select * from account JOIN account_company ON account.num_account=account_company.num_account and account.num_account=" + num_acc;
             account = new Account();
-            account.receivingQuery(query, false, false);
+            account.receivingQueryForSearch(query, false, false);
         }
     }
 
@@ -142,7 +142,12 @@ public class Account {
         if (counter == 0) return -1;//если введена пустая строка
         //обработка адреса
         String address[] = new String[6];
+
         System.arraycopy(data, 10, address, 0, 6);//копирование полей адреса
+        //for(int i=0;i<address.length;i++)address[i]+="*";//для проверки полей на корректность нужно добавить звезды
+       // if(checkAdresFields(address)!=0)return -1;//если адрес введен неправильно,то вернуть -1
+        //for(int i=0;i<address.length;i++)address[i].replaceAll("\\*","");//убрать звезды
+
         data[5] = checkAddress(address);//проверка,заполнено ли хотя бы одно поле адреса и формирование индексов подходящих адресов
         if (data[5].equals("not found")) return -1;//ничего не найдено,дальше нет смысла проверять
         //если поля для юр.лиц не заполнены
@@ -158,7 +163,7 @@ public class Account {
             if (data[1] != null) query += "FIO like '%" + data[1] + "%'";
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
             account = new Account();
-            return account.receivingQuery(query, true, true); //0-найдено,-1-не найдено
+            return account.receivingQueryForSearch(query, true, true); //0-найдено,-1-не найдено
         }
         //если заполнено хотя бы одно поле для юр.лиц
         else {
@@ -189,7 +194,7 @@ public class Account {
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
 
             account = new Account();
-            return account.receivingQuery(query, true, false);
+            return account.receivingQueryForSearch(query, true, false);
         }
     }
 
@@ -293,7 +298,7 @@ public class Account {
     /*
     * Метод удаляет аккаунт с номером счета num_acc
     * */
-    public static void DeleteAccount(String num_acc) throws SQLException {
+    public static void deleteAccount(String num_acc) throws SQLException {
         String query = "delete from account where num_account=" + num_acc;
         try {
             statement = Connect.connection.createStatement();
@@ -453,15 +458,15 @@ public class Account {
                         break;
                     case 5://номер сертификата
                         if (s.equals("")) {
-                            error = "Поле \"№ сертификата\" не может быть пустым!";
+                            error = "Поле \"№ свидетельства\" не может быть пустым!";
                             return -1;
                         }
                         if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"№ сертификата\" должно содержать только цифры!";
+                            error = "Поле \"№ свидетельства\" должно содержать только цифры!";
                             return -1;
                         }
                         if (s.length() != 15) {
-                            error = "Поле \"№ сертификата\" должно содержать 15 символов!";
+                            error = "Поле \"№ свидетельства\" должно содержать 15 символов!";
                             return -1;
                         }
                         break;
@@ -638,7 +643,7 @@ public class Account {
                             return -1;
                         }
                         if (!Methods.isStreet(s)) {
-                            error = "Поле \"Улица\" содержит недопустимые символы!";
+                            error = "Поле \"Улица\" содержит недопустимые символы или имеет неправильный формат!";
                             return -1;
                         }
                         break;
@@ -681,8 +686,8 @@ public class Account {
                             error = "Поле \"Индекс\" не может быть пустым!";
                             return -1;
                         }
-                        if (s.length() > 6) {
-                            error = "Поле \"Индекс\" содержит много символов!";
+                        if (s.length() != 6) {
+                            error = "Поле \"Индекс\" должно содержать 6 символов!";
                             return -1;
                         }
                         if (!Methods.isOnlyDigit(s) || s.contains("-")) {
@@ -906,31 +911,60 @@ public class Account {
         for (int i=0;i<account_data.length;i++)account_data[i]+="*";
         if(checkAccountFields(account_data)!=0)return -1;//проверка на корректность полей
 
-        //если ошибок нет,то добавляем адрес
-        //удаление звездочек
-        for (int i=0;i<adres.length;i++)adres[i]=adres[i].replaceAll("\\*","");
-        account_data[5] = Integer.toString(addNewAdres(adres));//адрес
+        String account_data_company[] =new String[8];
+        if(!account) {//если добавляется юр.лицо
+            account_data_company[0] = data[0];//номер лицевого счета
+            //получаем индекс банка
+            int id_bank=getIndex(data[17],3);
+            if(id_bank==-1) {
+                addNewData(data[17], 2);//добавляем новый банк
+                id_bank=getIndex(data[17], 3);//получаем индекс
+            }
+            account_data_company[1] = String.valueOf(id_bank);
+            account_data_company[2] = data[18];//кпп
+            account_data_company[3] = data[19];//бик
+            account_data_company[4] = data[20];//счет
+            account_data_company[5] = data[21];//номер свид
+            account_data_company[6] = data[22];//инн
+            account_data_company[7] = data[23];//название компании
+            //добавление всем полям звездочки (признак новых данных,для проверки их на корректность)
+            for (int i=0;i< account_data_company.length;i++) account_data_company[i]+="*";
+            if(checkAccountCompFields(account_data_company)!=0)return -1;//проверка на корректность полей
+            for (int i=0;i< account_data_company.length;i++) account_data_company[i]= account_data_company[i].replaceAll("\\*","");//удаление звездочек (поля для юр.лица)
+        }
 
-        //удаление звездочек
-        for (int i=0;i<account_data.length;i++)account_data[i]=account_data[i].replaceAll("\\*","");
-        addNewAccount(account_data);//добавление нового лицевого счета
+        for (int i=0;i<adres.length;i++)adres[i]=adres[i].replaceAll("\\*","");//удаление звездочек (адрес)
+        for (int i=0;i<account_data.length;i++)account_data[i]=account_data[i].replaceAll("\\*","");//удаление звездочек (поля для физ.лица)
+
+        account_data[5] = Integer.toString(addNewAdres(adres));//добавление адреса
+        receiveQueryNewAccount(account_data,true);//физ.лицо
+        if(!account)receiveQueryNewAccount( account_data_company,false);//если юр.лицо
+
         return 0;
     }
-
     /*
-    * Метод добавляет новый лицевой счет в таблицу account
+    * Метод составляет запрос на добавление нового лицевого счета и выполняет его
+    * account = true - физ.лицо,false-юр.лицо
+    *
     */
-    private static void addNewAccount(String[] account_data) throws SQLException {
-        String column []= Methods.getColumnName("account").split(" ");
-        String query="insert into account (";
+    private static int receiveQueryNewAccount(String[] data,boolean account) throws SQLException {
+        String column [];
+        String query;
+        if(account) {//если физ.лицо
+             column= Methods.getColumnName("account").split(" ");
+             query="insert into account (";
+        }
+        else{//юр.лицо
+            column = Methods.getColumnName("account_company").split(" ");
+            query ="insert into account_company (";
+        }
+
         for (int i=0;i<column.length;i++)query+=column[i]+",";
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
         query+=") values (";
-        for (int i=0;i<account_data.length;i++)query+="\""+account_data[i]+"\",";
+        for (int i=0;i<data.length;i++)query+="\""+data[i]+"\",";
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
         query+=")";
-        System.out.println(query);
-
         statement = Connect.connection.createStatement();
         try {
             statement = Connect.connection.createStatement();
@@ -939,8 +973,8 @@ public class Account {
             e.printStackTrace();
         }
         statement.close();
+        return 0;
     }
-
     /*
     * Метод добавляет новый адрес в таблицу adres
     * */
@@ -1015,7 +1049,7 @@ public class Account {
     * boolean inTable - заполняется таблица из формы,иначе - из таблицы в форму
     * boolean type -  true - физ.лицо,false - юр.лицо
     * */
-    private int receivingQuery(String q, boolean inTable, boolean type) throws Exception {
+    private int receivingQueryForSearch(String q, boolean inTable, boolean type) throws Exception {
         ResultSet resSet = null; //отправка запроса
         try {
             statement = Connect.connection.createStatement();
@@ -1082,7 +1116,7 @@ public class Account {
     private void getNamesFromIndexes(int id_adres, int id_bank, boolean type) throws SQLException {
         //расшифровываем адрес
         String query_adr = "select * from adres where id_adres=" + id_adres;
-        String[] adres = receivingQueryAdres(query_adr);
+        String[] adres = getAdres(query_adr);
         String bank = "";
         statement = Connect.connection.createStatement();
         ResultSet resSet = null; //отправка запроса
@@ -1115,7 +1149,7 @@ public class Account {
     * Расшифровывает названия по индексам
     * Возвращает адрес в нормальном виде
     * */
-    private String[] receivingQueryAdres(String query) throws SQLException {
+    private String[] getAdres(String query) throws SQLException {
         String adres_ind[] = new String[6];//0-район,1-улица,2-дом,3-квартира,4-корпус,5-индекс
         //получение "цифрового" адреса
         statement = Connect.connection.createStatement();

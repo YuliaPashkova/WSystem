@@ -1,11 +1,18 @@
 package GUI;
+import WORK.Account;
+import WORK.Connect;
+import com.mxrck.autocompleter.TextAutoCompleter;
+
 import javax.swing.*;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Юлия on 14.04.2017.
  */
 public class GNewAccountCompany extends javax.swing.JDialog {
+    JTextField textfields [];//массив текстовых полей
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
     private javax.swing.JLabel BIKLabel;
@@ -56,9 +63,20 @@ public class GNewAccountCompany extends javax.swing.JDialog {
     private javax.swing.JLabel TelephoneLabel;
     private javax.swing.JTextField TelephoneTextField;
     private javax.swing.JSeparator jSeparator2;
-    public GNewAccountCompany(java.awt.Frame parent) {
+    public GNewAccountCompany(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
+        textfields = new JTextField[]{//массив текстовых полей
+                NumAccTextField, SurnameTextField, NameTextField, MiddleNameTextField,
+                BalanceTextField, NumContractTextField, AdressTextField, HouseTextField,
+                CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
+                OwnerTextField,StatusAccTextField,ConsTypeTextField,BankTextField,KPPTextField,
+                BIKTextField,BankAccTextField,NumSertifTextField,INNTextField,NameCompanyTextField
+
+
+
+        };
+        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount("account")+1));//получение номера аккаунта
     }
 
     public static void main(String args[]) {
@@ -85,7 +103,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
     }
 
     @SuppressWarnings("unchecked")
-    private void initComponents() {
+    private void initComponents() throws SQLException {
         DistrictLabel = new javax.swing.JLabel();
         MiddleNameTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
@@ -140,6 +158,24 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         NumSertifTextField = new javax.swing.JTextField();
         DistrictComboBox = new javax.swing.JComboBox<>();
 
+        //AUTOCOMPLETERS
+
+        TextAutoCompleter streetcomplete = new TextAutoCompleter(AdressTextField);
+        Connect.retrieveStreet();
+        while (Connect.rs.next()) {
+            streetcomplete.addItem(Connect.rs.getString("street"));
+        }
+        TextAutoCompleter indexcomplete = new TextAutoCompleter(IndexTextField);
+        Connect.retrieveIndex();
+        while (Connect.rs.next()) {
+            indexcomplete.addItem(Connect.rs.getString("indx"));
+        }
+        TextAutoCompleter bankcomplete = new TextAutoCompleter(BankTextField);
+        Connect.retrieveBank();
+        while (Connect.rs.next()) {
+            bankcomplete.addItem(Connect.rs.getString("bank"));
+        }
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый лицевой счет (юр.лицо)");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
@@ -152,39 +188,23 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         DistrictLabel.setText("Район");
 
         MiddleNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        MiddleNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MiddleNameTextFieldActionPerformed(evt);
-            }
-        });
+
 
         NameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTextFieldActionPerformed(evt);
-            }
-        });
+
 
         FIOLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         FIOLabel.setText("Фамилия, имя, отчество");
 
         SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SurnameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SurnameTextFieldActionPerformed(evt);
-            }
-        });
+
 
         NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setEditable(false);
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumAccTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumAccTextFieldActionPerformed(evt);
-            }
-        });
+
 
         DateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateContractLabel.setText("Дата договора");
@@ -193,51 +213,31 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         AdressLabel.setText("Адрес");
 
         AdressTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AdressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdressTextFieldActionPerformed(evt);
-            }
-        });
+
 
         HouseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         HouseLabel.setText("Дом");
 
         HouseTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        HouseTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HouseTextFieldActionPerformed(evt);
-            }
-        });
+
 
         CorpusLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         CorpusLabel.setText("Корпус");
 
         CorpusTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CorpusTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorpusTextFieldActionPerformed(evt);
-            }
-        });
+
 
         FlatLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         FlatLabel.setText("Квартира");
 
         FlatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        FlatTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FlatTextFieldActionPerformed(evt);
-            }
-        });
+
 
         OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerLabel.setText("Владелец");
 
         OwnerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OwnerTextFieldActionPerformed(evt);
-            }
-        });
+
 
         ConsTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ConsTypeLabel.setText("Категория потребителей");
@@ -251,30 +251,22 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         ConsTypeTextField.setEditable(false);
         ConsTypeTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ConsTypeTextField.setText("ЮРИДИЧЕСКОЕ ЛИЦО");
-        ConsTypeTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConsTypeTextFieldActionPerformed(evt);
-            }
-        });
+
 
         TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TelephoneTextFieldActionPerformed(evt);
-            }
-        });
+
 
         IndexTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        IndexTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IndexTextFieldActionPerformed(evt);
-            }
-        });
+
 
         OkButton.setText("ОК");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OkButtonActionPerformed(evt);
+                try {
+                    OkButtonActionPerformed(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -285,11 +277,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
             }
         });
 
-        DateContractDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateContractDatePickerActionPerformed(evt);
-            }
-        });
+
 
         ClearButton.setText("Очистить форму");
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
@@ -299,21 +287,13 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         });
 
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BalanceTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BalanceTextFieldActionPerformed(evt);
-            }
-        });
+
 
         BalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BalanceLabel.setText("Баланс");
 
         NumContractTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumContractTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumContractTextFieldActionPerformed(evt);
-            }
-        });
+
 
         NumContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumContractLabel.setText("Номер договора");
@@ -321,30 +301,17 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         StatusAccTextField.setEditable(false);
         StatusAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccTextField.setText("ОТКРЫТ");
-        StatusAccTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusAccTextFieldActionPerformed(evt);
-            }
-        });
+
 
         StatusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccLabel.setText("Статус лицевого счета");
 
-        INNTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                INNTextFieldKeyPressed(evt);
-            }
-        });
 
         NameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NameCompanyLabel.setText("Название предприятия");
 
         BankTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BankTextFieldKeyPressed(evt);
-            }
-        });
+
 
         BankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BankLabel.setText("Банк плательщика");
@@ -356,18 +323,10 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         KPPLabel.setText("КПП");
 
         BIKTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BIKTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BIKTextFieldKeyPressed(evt);
-            }
-        });
+
 
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        KPPTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                KPPTextFieldKeyPressed(evt);
-            }
-        });
+
 
         BankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BankAccLabel.setText("Расчетный счет");
@@ -378,24 +337,10 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         INNLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         INNLabel.setText("ИНН");
 
-        BankAccTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BankAccTextFieldKeyPressed(evt);
-            }
-        });
 
-        NumSertifTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NumSertifTextFieldKeyPressed(evt);
-            }
-        });
+
 
         DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ" }));
-        DistrictComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DistrictComboBoxActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -638,102 +583,48 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         dispose();
     }
 
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+        String data[] = readData();
+        switch(Account.addAccount(data,false)){
+            case 0:
+                JOptionPane.showMessageDialog(null,"Новый лицевой счет был успешно создан!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                break;
+            case -1:
+                JOptionPane.showMessageDialog(null,Account.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
+    }
+    /*
+     Метод считывает данные из всех полей и возвращает их в виде массива
+     */
+    private String[] readData() {
+        String data[] = new String[24];
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date_contract;
+        try{
+            date_contract = dateFormat.format(DateContractDatePicker.getDate());// дата договора
+        }catch (NullPointerException ex){
+            date_contract= null;
+        }
+        for(int i=0;i<15;i++)//считывание данных из текстовых полей(первая часть)
+            data[i]=textfields[i].getText();
+        data[15]=(String)DistrictComboBox.getSelectedItem();
+        data[16]=date_contract;
+        for(int i=15;i<textfields.length;i++)//считывание данных из текстовых полей(вторая часть)
+            data[i+2]=textfields[i].getText();
+
+        for(int i=0;i<data.length;i++)
+            if(data[i]!=null) data[i]=data[i].toUpperCase();
+        return  data;
     }
 
     private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        for(int i=0;i<textfields.length;i++)
+            if(i!=0&&i!=13&&i!=14) textfields[i].setText(null);
+        DistrictComboBox.setSelectedIndex(0);
+        DateContractDatePicker.setDate(null);
     }
 
-    private void NumAccTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
-    private void BalanceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void SurnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void MiddleNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumContractTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DateContractDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void TelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void IndexTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void AdressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void HouseTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CorpusTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void FlatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OwnerTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void StatusAccTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void ConsTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void INNTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BankTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BIKTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void KPPTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BankAccTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumSertifTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DistrictComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 }

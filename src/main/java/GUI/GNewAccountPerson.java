@@ -1,6 +1,5 @@
 package GUI;
-
-/**
+/*
  * Created by Юлия on 14.04.2017.
  */
 import WORK.Account;
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-
 public class GNewAccountPerson extends javax.swing.JDialog {
     JTextField textfields [];//массив текстовых полей
 
@@ -152,134 +150,49 @@ public class GNewAccountPerson extends javax.swing.JDialog {
 
         DistrictLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DistrictLabel.setText("Район");
-
         MiddleNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        MiddleNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MiddleNameTextFieldActionPerformed(evt);
-            }
-        });
-
         NameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NameTextFieldActionPerformed(evt);
-            }
-        });
-
         FIOLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         FIOLabel.setText("Фамилия, имя, отчество");
-
         SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SurnameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SurnameTextFieldActionPerformed(evt);
-            }
-        });
-
         NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumAccLabel.setText("№ лицевого счета");
-
         NumAccTextField.setEditable(false);
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumAccTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumAccTextFieldActionPerformed(evt);
-            }
-        });
-
         DateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateContractLabel.setText("Дата договора");
-
         AdressLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         AdressLabel.setText("Адрес");
-
         AdressTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AdressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AdressTextFieldActionPerformed(evt);
-            }
-        });
-
         HouseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         HouseLabel.setText("Дом");
-
         HouseTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        HouseTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HouseTextFieldActionPerformed(evt);
-            }
-        });
-
         CorpusLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         CorpusLabel.setText("Корпус");
-
         CorpusTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CorpusTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CorpusTextFieldActionPerformed(evt);
-            }
-        });
-
         FlatLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
         FlatLabel.setText("Квартира");
-
         FlatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        FlatTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FlatTextFieldActionPerformed(evt);
-            }
-        });
-
         OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerLabel.setText("Владелец");
-
         OwnerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OwnerTextFieldActionPerformed(evt);
-            }
-        });
-
         ConsTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ConsTypeLabel.setText("Категория потребителей");
-
         IndexLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         IndexLabel.setText(" Индекс");
-
         TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TelephoneLabel.setText("Телефон");
-
         ConsTypeTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ConsTypeTextField.setText("ФИЗИЧЕСКОЕ ЛИЦО");
         ConsTypeTextField.setEnabled(false);
-        ConsTypeTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConsTypeTextFieldActionPerformed(evt);
-            }
-        });
-
         TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TelephoneTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TelephoneTextFieldActionPerformed(evt);
-            }
-        });
-
         IndexTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        IndexTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IndexTextFieldActionPerformed(evt);
-            }
-        });
 
         OkButton.setText("ОК");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    OkButtonActionPerformed(evt);
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    OkButtonActionPerformed();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -289,39 +202,24 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         CancelButton.setText("Отмена");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                CancelButtonActionPerformed();
             }
         });
 
-        DateContractDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateContractDatePickerActionPerformed(evt);
-            }
-        });
 
         ClearButton.setText("Очистить форму");
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
+                ClearButtonActionPerformed();
             }
         });
 
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BalanceTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BalanceTextFieldActionPerformed(evt);
-            }
-        });
 
         BalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BalanceLabel.setText("Баланс");
 
         NumContractTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumContractTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumContractTextFieldActionPerformed(evt);
-            }
-        });
 
         NumContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumContractLabel.setText("Номер договора");
@@ -329,21 +227,11 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         StatusAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccTextField.setText("ОТКРЫТ");
         StatusAccTextField.setEnabled(false);
-        StatusAccTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusAccTextFieldActionPerformed(evt);
-            }
-        });
 
         StatusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccLabel.setText("Статус лицевого счета");
 
         DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ" }));
-        DistrictComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DistrictComboBoxActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -510,14 +398,13 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void CancelButtonActionPerformed() {
         dispose();
 
     }
 
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
-        String data[] = readData();
-       switch(Account.addAccount(data,true)){
+    private void OkButtonActionPerformed() throws Exception {
+       switch(Account.addAccount(readData(),true)){
            case 0:
                JOptionPane.showMessageDialog(null,"Новый лицевой счет был успешно создан!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);
                dispose();
@@ -527,7 +414,6 @@ public class GNewAccountPerson extends javax.swing.JDialog {
                break;
        }
     }
-
     /*
     Метод считывает данные из всех полей и возвращает их в виде массива
      */
@@ -549,76 +435,10 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         return  data;
     }
 
-    private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void ClearButtonActionPerformed() {
+        for(int i=0;i<textfields.length;i++)
+            if(i!=0&&i!=13&&i!=14) textfields[i].setText(null);
+        DistrictComboBox.setSelectedIndex(0);
+        DateContractDatePicker.setDate(null);
     }
-
-    private void NumAccTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void BalanceTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void SurnameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void MiddleNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumContractTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DateContractDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void TelephoneTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void IndexTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void AdressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void HouseTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CorpusTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void FlatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OwnerTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void StatusAccTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void ConsTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DistrictComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
 }

@@ -76,7 +76,7 @@ public class Methods {
         return count;
     }
     /*
-     * Проверяет входную строку на математичесое число
+     * Проверяет входную строку на математическое число
      * Возвращает true | false
      */
     public static boolean isDigit(String str) {
@@ -101,15 +101,13 @@ public class Methods {
     * Возвращает true | false
     */
     public static boolean isStreet(String str){
-        return  str.matches("[а-яА-Яa-zA-z]+\\.[\\s*[а-яА-Яa-zA-z0-9]+]+");
+        return  str.matches("[а-яА-Яa-zA-z]+[\\.\\s*[а-яА-Яa-zA-z0-9]+]+");
     }
     /*
     * Проверяет входную строку
     * Возвращает true: если строка содержит буквы,если строка содержит цифры,если строка содержит буквы и цифры
     * */
     public static boolean isLetterOrDigit(String str){
-        return str.matches("\\w*");
+        return str.matches("[[а-яА-Яa-zA-z]*[0-9]*]*");
     }
-
-
 }

@@ -6,7 +6,7 @@ import java.io.File;
 public class FileFilter extends javax.swing.filechooser.FileFilter {
     String ext, description;
 
-    FileFilter(String ext, String description) {
+    FileFilter(String ext) {
         this.ext = ext;
     }
 
