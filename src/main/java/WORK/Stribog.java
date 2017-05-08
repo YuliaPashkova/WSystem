@@ -10,7 +10,6 @@ import java.math.BigInteger;
  * Реализует хеширование по алгоритму "Стрибог"
  */
 public class Stribog {
-    private static BufferedReader in = null;
     private static BigInteger A[] = new BigInteger[64];
     private static BigInteger Sbox[] = new BigInteger[256];
     private static BigInteger Tau [] = {
@@ -48,62 +47,45 @@ public class Stribog {
         }
     }
 
-   public static  void main(String[]args) throws IOException {
-        Stribog stribog = new Stribog(256);
-       System.out.println(stribog.getHash("Julia"));
-    }
-
     private void initA() throws IOException {
         byte initial[] = new byte[8];
-        try {
-            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\A.txt"));
-            //В цикле построчно считываем файл
+        try (BufferedReader in = new BufferedReader(new FileReader("src\\main\\resources\\matrix_stribog\\A.txt"))) {//В цикле построчно считываем файл
             String s;
             int k = 0; //счетчик для А
             while ((s = in.readLine()) != null) {
                 for (int i = 0, j = 0; i < 16; j++) {
-                    initial[j] = (byte)(Integer.parseInt(s.substring(i, i+=2), 16));
+                    initial[j] = (byte) (Integer.parseInt(s.substring(i, i += 2), 16));
                 }
                 A[k++] = new BigInteger(1, initial);
             }
-        } finally {
-            in.close();
         }
     }
     private void initSbox() throws IOException {
-        try {
-            byte initial[] = new byte[]{(byte) 0x00};
-            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\Sbox.txt"));
-            //В цикле построчно считываем файл
+        byte initial[] = new byte[]{(byte) 0x00};
+        try (BufferedReader in = new BufferedReader(new FileReader("src\\main\\resources\\matrix_stribog\\Sbox.txt"))) {//В цикле построчно считываем файл
             String s;
             int k = 0; //счетчик для Sbox
             while ((s = in.readLine()) != null) {
-                initial[0] = (byte)(Integer.parseInt(s, 16));
+                initial[0] = (byte) (Integer.parseInt(s, 16));
                 Sbox[k++] = new BigInteger(1, initial);
             }
-        } finally {
-            in.close();
         }
 
     }
     private void initC() throws IOException {
-        try {
-            byte initial[] = new byte[]{(byte) 0x00};
-            String temp[]; //строку по пробелу разделяем и сюда пишем(по байтам в каждую ячейку)
-            in = new BufferedReader(new FileReader("\\src\\main\\resources\\matrix_stribog\\C.txt"));
-            //В цикле построчно считываем файл
+        byte initial[] = new byte[]{(byte) 0x00};
+        String temp[]; //строку по пробелу разделяем и сюда пишем(по байтам в каждую ячейку)
+        try (BufferedReader in = new BufferedReader(new FileReader("src\\main\\resources\\matrix_stribog\\C.txt"))) {//В цикле построчно считываем файл
             String s;
             int j = 0; //счетчик для строк (12)
             while ((s = in.readLine()) != null) {
                 temp = s.split(" ");
-                for(int i = 0; i < temp.length; i++){
+                for (int i = 0; i < temp.length; i++) {
                     initial[0] = (byte) (Integer.parseInt(temp[i], 16));
                     C[j][i] = new BigInteger(1, initial);
                 }
                 j++; //следующая 64-значная строка
             }
-        } finally {
-            in.close();
         }
     }
     private BigInteger[] AddModulo512(BigInteger[] a, BigInteger[] b) {
@@ -339,11 +321,12 @@ public class Stribog {
         for(int i = 0; i < message.length; i++)
             message[i] = new BigInteger(1, new byte[]{initial[i]});
         //основой метод
-        BigInteger[] rez = G.Work(message);
-        byte res[] = new byte[32];
-        for(int i = 0; i < rez.length; i++)
-            res[i] = rez[i].byteValue();
-        return new String(res);
+        BigInteger[] rez = Work(message);
+        String result = "";
+
+        for (BigInteger aRez : rez)
+            result += Integer.toHexString(aRez.intValue());
+        return result;
     }
 }
 
