@@ -7,7 +7,6 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -454,15 +453,6 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
         ResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ResultTable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                try {
-                    ResultTableKeyPressed(evt);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
         jScrollPane1.setViewportView(ResultTable);
 
@@ -564,6 +554,7 @@ public class GAccount extends javax.swing.JFrame {
 
         NewWatermeterMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         NewWatermeterMenuItem.setText("Новый водомер");
+        NewWatermeterMenuItem.setEnabled(false);
         NewWatermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewWatermeterMenuItemActionPerformed(evt);
@@ -573,6 +564,7 @@ public class GAccount extends javax.swing.JFrame {
 
         NewWaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         NewWaterconMenuItem.setText("Новый водомерный узел");
+        NewWaterconMenuItem.setEnabled(false);
         NewWaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewWaterconMenuItemActionPerformed(evt);
@@ -630,6 +622,7 @@ public class GAccount extends javax.swing.JFrame {
         MenuBar.add(CatalogMenu);
 
         OrderMenu.setText("Заказы");
+        OrderMenu.setEnabled(false);
 
         NewOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         NewOrderMenuItem.setText("Новый заказ");
@@ -1110,7 +1103,6 @@ public class GAccount extends javax.swing.JFrame {
             int result = Account.searchAccount(data);
             if (result == 0) {//если что-то найдено
                 Account.account = null;//обнуление абонента
-                ResultTable.setRowSelectionInterval(0, 0);
                 ResultTable.requestFocus();
             } else {
                 deleteRows();//удаление строк из таблицы
@@ -1157,28 +1149,15 @@ public class GAccount extends javax.swing.JFrame {
 
     //по клику на строке таблицы
     private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
-        if(evt.getClickCount()==2&&!change_mode){
-            ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
-            NumAccTextField.requestFocus();
-            ClickOnTable();
-            ResultTable.requestFocus();
-        }
-    }
-    //по нажатию enter на таблице
-    private void ResultTableKeyPressed(java.awt.event.KeyEvent evt) throws Exception {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
-            ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
-            NumAccTextField.requestFocus();
-            ClickOnTable();
-            ResultTable.requestFocus();
-        }
+        if(evt.getClickCount()==1&&!change_mode)ClickOnTable();
     }
 
-    /*
-    Метод отправляет номер аккаунта и тип абонента,происходит поиск расширенных данных.
-    Затем данные выводятся в форму
-     */
     public void ClickOnTable() throws Exception {
+        NewWatermeterMenuItem.setEnabled(true);
+        NewWaterconMenuItem.setEnabled(true);
+        OrderMenu.setEnabled(true);
+        ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
+        NumAccTextField.requestFocus();
         //получение номера лицевого счета с выделенной строки
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
         String cons_type = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3));
@@ -1186,7 +1165,7 @@ public class GAccount extends javax.swing.JFrame {
         if(cons_type.equals("ФИЗИЧЕСКОЕ ЛИЦО")) ContactsButton.setEnabled(false);
         else ContactsButton.setEnabled(true);
 
-         Account.showAccount(num_acc, cons_type);//вызов метода заполнения формы по клику
+        Account.showAccount(num_acc, cons_type);//вызов метода заполнения формы по клику
 
         DistrictComboBox.setSelectedItem(Account.names_indexes[0]);
         NumAccTextField.setText(Integer.toString(Account.account.num_account));
@@ -1226,8 +1205,7 @@ public class GAccount extends javax.swing.JFrame {
         setConditionFields(false,true);
         SearchButton.setEnabled(false);
         DeleteAccMenuItem.setEnabled(true);
-
-
+        ResultTable.requestFocus();
     }
 
 
@@ -1255,8 +1233,13 @@ public class GAccount extends javax.swing.JFrame {
         contact.deleteRows();
         NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
         int result=Contact.searchContact(NUM_ACC);
-        if(result==0) contact.setVisible(true);
-        else JOptionPane.showMessageDialog(null, "По лицевому счету с номером "+NUM_ACC+" не найдено контактных лиц!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        if(result==-1) {
+            contact.NameCompanyTextField.setText(Contact.getCompany(NUM_ACC));
+            JOptionPane.showMessageDialog(null, "По лицевому счету с номером " + NUM_ACC + " не найдено контактных лиц!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        }
+        contact.setVisible(true);
+
+
     }
 
     private void DateContractDatePickerMouseClicked(java.awt.event.MouseEvent evt) {
@@ -1323,7 +1306,7 @@ public class GAccount extends javax.swing.JFrame {
         if (n == 0) {
             Account.deleteAccount(num_acc);
             JOptionPane.showMessageDialog(null, "Лицевой счет с номером "+num_acc+" был удален!", "Удаление лицевого счета", JOptionPane.INFORMATION_MESSAGE);
-            deleteRows();//очистка таблицы
+            model.removeRow(ResultTable.getSelectedRow());//удаление строки из таблицы
             CleanFields();
             setConditionFields(true,true);
             SearchButton.setEnabled(true);
@@ -1405,7 +1388,7 @@ public class GAccount extends javax.swing.JFrame {
             SearchButton.setEnabled(true);
             DeleteAccMenuItem.setEnabled(false);
             ChangeAccMenuItem.setEnabled(false);
-            change_state_buttons(false);
+            changeStateButtonsForChangeMode(false);
 
         }
         else{//выход
@@ -1418,13 +1401,13 @@ public class GAccount extends javax.swing.JFrame {
             CleanFields();
             deleteRows();
             ResultTable.requestFocus();
-            change_state_buttons(true);
+            changeStateButtonsForChangeMode(true);
         }
     }
     /**
      * Изменяет состояние кнопок и вкладок при входе/выходе из режима изменений
      */
-    private void change_state_buttons(boolean sost) {
+    private void changeStateButtonsForChangeMode(boolean sost) {
         SummBalanceButton.setEnabled(sost);
         CountAccButton.setEnabled(sost);
         ClearButton.setEnabled(sost);
@@ -1452,8 +1435,22 @@ public class GAccount extends javax.swing.JFrame {
         for(int i=0;i<textfields.length;i++) textfields[i].setText(null);
         for(int i=0;i<comboboxes.length;i++) comboboxes[i].setSelectedIndex(0);
         DateContractDatePicker.setDate(null);
+        setDefaultConditionButton();
     }
-    /*Принимает company : true - юр.лицо,false- физ.лицо
+    /*
+    Метод блокирует все кнопки,которые должны быть заблокированы при открытии программы
+    */
+    private void setDefaultConditionButton(){
+        ContactsButton.setEnabled(false);
+        WatermeterButton.setEnabled(false);
+        WaterconButton.setEnabled(false);
+        NewWatermeterMenuItem.setEnabled(false);
+        NewWaterconMenuItem.setEnabled(false);
+        OrderMenu.setEnabled(false);
+        ChangeAccMenuItem.setEnabled(false);
+        DeleteAccMenuItem.setEnabled(false);
+    }
+    /* Принимает company : true - юр.лицо,false- физ.лицо
      * Принимает sost: true или false
      * Делает активными/неактивными поля соответственно
      */

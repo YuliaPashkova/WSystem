@@ -516,7 +516,7 @@ public class Account {
                             error = "Поле \"ФИО\" не может быть пустым!";
                             return -1;
                         }
-                        if (s.length() > 100) {//проверка улицы
+                        if (s.length() > 100) {//проверка фио
                             error = "Поле \"ФИО\" содержит много символов!";
                             return -1;
                         }
@@ -1093,7 +1093,6 @@ public class Account {
                             resSet.getString("name_company")
                     );
                 if (inTable)
-
                     GAccount.AddRowTable(account);//запись в таблицу
                 else {
                     getNamesFromIndexes(account.adres, account.bank, type);//получить названия по индексам

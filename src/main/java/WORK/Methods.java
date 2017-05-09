@@ -110,4 +110,12 @@ public class Methods {
     public static boolean isLetterOrDigit(String str){
         return str.matches("[[а-яА-Яa-zA-z]*[0-9]*]*");
     }
+
+    /*
+   * Проверяет входную строку
+   * Возвращает true: если строка подходит под формат email
+   * */
+    public static boolean isEmail(String str){
+        return str.matches("[[0-9]*\\.*\\_*\\-*[a-zA-z]+\\.*\\_*\\-*[0-9]*]+\\@[a-zA-z]+\\.[a-zA-z]+");
+    }
 }
