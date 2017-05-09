@@ -1,4 +1,6 @@
 package GUI;
+import WORK.Access;
+
 import javax.swing.*;
 /*
  * Created by Юлия on 18.04.2017.
@@ -131,7 +133,7 @@ public class GWatermeter extends javax.swing.JDialog {
         ClearMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Карточка водомера");
+        setTitle("Карточка водомера ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);

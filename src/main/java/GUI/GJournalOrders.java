@@ -1,4 +1,6 @@
 package GUI;
+import WORK.Access;
+
 import javax.swing.*;
 /**
  * Created by Юлия on 20.04.2017.
@@ -88,7 +90,7 @@ public class GJournalOrders extends javax.swing.JDialog {
         ResultTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Журнал заказов");
+        setTitle("Журнал заказов ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
 

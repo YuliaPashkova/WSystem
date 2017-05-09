@@ -1,5 +1,7 @@
 package GUI;
 
+import WORK.Access;
+
 import javax.swing.*;
 
 /**
@@ -48,7 +50,7 @@ public class GCloseOrder extends javax.swing.JDialog {
         CancelButton = new javax.swing.JButton();
         CloseOrderButton = new javax.swing.JButton();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Закрытие заказа");
+        setTitle("Закрытие заказа ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);

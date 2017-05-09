@@ -1,4 +1,6 @@
 package GUI;
+import WORK.Access;
+
 import javax.swing.*;
 /**
  * Created by Юлия on 19.04.2017.
@@ -88,7 +90,7 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         StatusComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Новое водомерное подключение");
+        setTitle("Новое водомерное подключение ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);

@@ -2,6 +2,7 @@ package GUI;
 /*
  * Created by Юлия on 14.04.2017.
  */
+import WORK.Access;
 import WORK.Account;
 import WORK.Connect;
 import WORK.Methods;
@@ -141,7 +142,7 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Новый лицевой счет (физ.лицо)");
+        setTitle("Новый лицевой счет типа \"физ.лицо\" ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setBounds(new java.awt.Rectangle(300, 150, 0, 0));

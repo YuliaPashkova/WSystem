@@ -1,5 +1,6 @@
 package GUI;
 
+import WORK.Access;
 import WORK.Contact;
 import WORK.Methods;
 import javax.swing.*;
@@ -99,7 +100,7 @@ public class GContacts extends javax.swing.JDialog {
             PrintMenu = new javax.swing.JMenu();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-            setTitle("Контактные лица");
+            setTitle("Контактные лица ("+ Access.name_operator+")");
             ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
             setIconImage(icon.getImage());
             setResizable(false);

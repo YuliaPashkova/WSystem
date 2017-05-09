@@ -1,9 +1,14 @@
 package GUI;
 
+import WORK.Access;
 import WORK.Connect;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import static WORK.Connect.conntoDB;
 
 /**
  * Created by Юлия on 13.04.2017.
@@ -14,10 +19,11 @@ public class GTitle extends javax.swing.JFrame {
     private javax.swing.JLabel PasswordLabel;
     private javax.swing.JPasswordField PasswordTextField;
     private javax.swing.JLabel UserNameLabel;
-
     private javax.swing.JTextField UserNameTextField;
 
-    public GTitle() {
+
+    public GTitle() throws Exception {
+        conntoDB();
         initComponents();
     }
 
@@ -35,7 +41,11 @@ public class GTitle extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GTitle().setVisible(true);
+                try {
+                    new GTitle().setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -63,7 +73,11 @@ public class GTitle extends javax.swing.JFrame {
 
         PasswordTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                PasswordTextFieldKeyPressed(evt);
+                try {
+                    PasswordTextFieldKeyPressed(evt);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -81,7 +95,11 @@ public class GTitle extends javax.swing.JFrame {
         GoButton.setText("Войти");
         GoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GoButtonActionPerformed();
+                try {
+                    GoButtonActionPerformed();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -129,11 +147,32 @@ public class GTitle extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void GoButtonActionPerformed() {
+    private void GoButtonActionPerformed() throws Exception {
         login();
     }
-
-    private void login() {
+    /*
+    * Метод осуществляет вход в систему
+    * */
+    private void login() throws Exception {
+        int result = Access.login(UserNameTextField.getText(), PasswordTextField.getText());
+        switch (result) {
+            case 1://логин  и пароль введены верно
+                    GAccount gaccount = new GAccount();
+                    gaccount.setVisible(true);
+                break;
+            case 2:
+                JOptionPane.showMessageDialog(null, "Логин или пароль введены неверно!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+            case 3:
+                JOptionPane.showMessageDialog(null, "Введите логин и пароль!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+            case 4:
+                JOptionPane.showMessageDialog(null, "Введите логин!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+            case 5:
+                JOptionPane.showMessageDialog(null, "Введите пароль!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 
     private void ExitButtonActionPerformed() throws Exception {
@@ -141,7 +180,7 @@ public class GTitle extends javax.swing.JFrame {
         System.exit(0);
     }
 
-    private void PasswordTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
+    private void PasswordTextFieldKeyPressed(java.awt.event.KeyEvent evt) throws Exception {
         if (evt.getKeyCode()== KeyEvent.VK_ENTER) login();
     }
 }

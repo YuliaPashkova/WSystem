@@ -1,4 +1,6 @@
 package GUI;
+import WORK.Access;
+
 import javax.swing.*;
 /*
  * Created by Юлия on 18.04.2017.
@@ -113,7 +115,7 @@ public class GNewWatermeter extends javax.swing.JDialog {
         InstalledComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Новый водомер");
+        setTitle("Новый водомер ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);

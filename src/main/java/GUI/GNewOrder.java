@@ -1,5 +1,7 @@
 package GUI;
 
+import WORK.Access;
+
 import javax.swing.*;
 
 /**
@@ -89,7 +91,7 @@ public class GNewOrder extends javax.swing.JDialog {
         OkButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Новый заказ");
+        setTitle("Новый заказ ("+ Access.name_operator+")");
 
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());

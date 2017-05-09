@@ -1,4 +1,5 @@
 package GUI;
+import WORK.Access;
 import WORK.Account;
 import WORK.Connect;
 import com.mxrck.autocompleter.TextAutoCompleter;
@@ -177,7 +178,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Новый лицевой счет (юр.лицо)");
+        setTitle("Новый лицевой счет типа \"юр.лицо\" ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setBounds(new java.awt.Rectangle(300, 150, 0, 0));

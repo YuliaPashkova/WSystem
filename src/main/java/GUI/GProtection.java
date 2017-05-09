@@ -2,6 +2,8 @@ package GUI;
 /*
  * Created by Юлия on 27.04.2017.
  */
+import WORK.Access;
+
 import java.io.File;
 import javax.swing.*;
 
@@ -65,7 +67,7 @@ public class GProtection extends javax.swing.JDialog {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
-        setTitle("Шифрование данных");
+        setTitle("Шифрование данных ("+ Access.name_operator+")");
 
         ChooseDataButton.setText("Выбрать файлы SQL");
         ChooseDataButton.addActionListener(new java.awt.event.ActionListener() {
@@ -205,12 +207,12 @@ public class GProtection extends javax.swing.JDialog {
       */
     public void setMode(boolean mode) {
         if(mode){
-            setTitle("Шифрование дампа БД");
+            setTitle("Шифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Зашифровать данные");
             setVisible(true);
         }
         else{
-            setTitle("Дешифрование данных");
+            setTitle("Дешифрвание данных ("+ Access.name_operator+")");
             CryptButton.setText("Дешифровать данные");
             setVisible(true);
         }

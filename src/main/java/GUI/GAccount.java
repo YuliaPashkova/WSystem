@@ -1,8 +1,5 @@
 package GUI;
-import WORK.Account;
-import WORK.Connect;
-import WORK.Contact;
-import WORK.Methods;
+import WORK.*;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
@@ -28,7 +25,6 @@ public class GAccount extends javax.swing.JFrame {
     JComboBox comboboxes[];//массив комбобоксов
     String new_data[];//массив новых данных
     String old_data[];//массив старых данных
-
 
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
@@ -268,7 +264,7 @@ public class GAccount extends javax.swing.JFrame {
         }
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Лицевой счет");
+        setTitle("Лицевой счет ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);
@@ -1153,10 +1149,12 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     public void ClickOnTable() throws Exception {
+        WaterconButton.setEnabled(true);
+        WatermeterButton.setEnabled(true);
         NewWatermeterMenuItem.setEnabled(true);
         NewWaterconMenuItem.setEnabled(true);
         OrderMenu.setEnabled(true);
-        ChangeAccMenuItem.setEnabled(true);//разблокировать функцию изменения
+        ChangeAccMenuItem.setEnabled(true);
         NumAccTextField.requestFocus();
         //получение номера лицевого счета с выделенной строки
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));

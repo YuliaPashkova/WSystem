@@ -1,4 +1,6 @@
 package GUI;
+import WORK.Access;
+
 import javax.swing.*;
 /*
  * Created by Юлия on 19.04.2017.
@@ -110,7 +112,7 @@ public class GWaterconnection extends javax.swing.JDialog {
         ShowWatermetersMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Карточка водопроводного подключения");
+        setTitle("Карточка водопроводного подключения ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);
