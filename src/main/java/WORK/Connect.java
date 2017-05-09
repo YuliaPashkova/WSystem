@@ -24,19 +24,23 @@ public class Connect {
     //для выпадающих списков
     public static void retrieveStreet() throws SQLException {//улица
         Statement stmt=connection.createStatement();
-        String query="select street from watermeter.cat_street";
+        String query="select street from cat_street";
         rs = stmt.executeQuery(query);
     }
     public static void retrieveBank() throws SQLException {//банк
         Statement stmt=connection.createStatement();
-        String query="select bank from watermeter.cat_bank";
+        String query="select bank from cat_bank";
         rs = stmt.executeQuery(query);
     }
     public static void retrieveIndex() throws SQLException {//индекс
         Statement stmt=connection.createStatement();
-        String query="select indx from watermeter.cat_index";
+        String query="select indx from cat_index";
         rs = stmt.executeQuery(query);
     }
 
-
+    public static void retrieveObject() throws SQLException {
+        Statement stmt=connection.createStatement();
+        String query="select object_con from cat_object";
+        rs = stmt.executeQuery(query);
+    }
 }

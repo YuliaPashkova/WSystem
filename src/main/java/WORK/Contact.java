@@ -8,7 +8,6 @@ import java.sql.Statement;
  * Created by Юлия on 08.05.2017.
  */
 public class Contact {
-
     public static String company;
     public static int id;
     public static String FIO;
@@ -20,19 +19,19 @@ public class Contact {
     private static int num_account;
     private static Statement statement;
 
-    public Contact(int id,int num_account, String FIO, String post, String email, String telephone
+    private Contact(int id, int num_account, String FIO, String post, String email, String telephone
     ) {
-        this.id=id;
-        this.num_account = num_account;
-        this.FIO = FIO;
-        this.post = post;
-        this.email = email;
-        this.telephone = telephone;
+        Contact.id =id;
+        Contact.num_account = num_account;
+        Contact.FIO = FIO;
+        Contact.post = post;
+        Contact.email = email;
+        Contact.telephone = telephone;
     }
 
     /*
-    Метод формирует запрос для поиска контактного по данным,полученным из формы
-    Принимает массив с данными
+    Метод формирует запрос для поиска контактного лица по номеру аккаунта
+    Принимает номер аккаунта
     */
     public static int searchContact(String num_account) throws SQLException {
         contact = null;

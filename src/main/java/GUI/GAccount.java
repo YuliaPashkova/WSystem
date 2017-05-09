@@ -9,8 +9,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-
 import static WORK.Connect.close;
 import static WORK.Connect.conntoDB;
 
@@ -268,11 +266,6 @@ public class GAccount extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         DistrictLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DistrictLabel.setText("Район");
@@ -394,21 +387,10 @@ public class GAccount extends javax.swing.JFrame {
         SearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    SearchButtonActionPerformed(evt);
+                    SearchButtonActionPerformed();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-        });
-
-        DateContractDatePicker.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                DateContractDatePickerMouseClicked(evt);
-            }
-        });
-        DateContractDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateContractDatePickerActionPerformed(evt);
             }
         });
 
@@ -417,7 +399,7 @@ public class GAccount extends javax.swing.JFrame {
         WatermeterButton.setEnabled(false);
         WatermeterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WatermeterButtonActionPerformed(evt);
+                WatermeterButtonActionPerformed();
             }
         });
 
@@ -455,7 +437,11 @@ public class GAccount extends javax.swing.JFrame {
         WaterconButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\vodomerniy_uzel.jpg")); // NOI18N
         WaterconButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WaterconButtonActionPerformed(evt);
+                try {
+                    WaterconButtonActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         WaterconButton.setEnabled(false);
@@ -463,14 +449,14 @@ public class GAccount extends javax.swing.JFrame {
         ClearButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\ikonka-korziny.jpg")); // NOI18N
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
+                ClearButtonActionPerformed();
             }
         });
 
         CountAccButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\n_icon.jpg")); // NOI18N
         CountAccButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CountAccButtonActionPerformed(evt);
+                CountAccButtonActionPerformed();
             }
         });
 
@@ -478,7 +464,7 @@ public class GAccount extends javax.swing.JFrame {
         SummBalanceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    SummBalanceButtonActionPerformed(evt);
+                    SummBalanceButtonActionPerformed();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -489,7 +475,7 @@ public class GAccount extends javax.swing.JFrame {
         ContactsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    ContactsButtonActionPerformed(evt);
+                    ContactsButtonActionPerformed();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -515,7 +501,7 @@ public class GAccount extends javax.swing.JFrame {
         NewAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    NewAccMenuItemActionPerformed(evt);
+                    NewAccMenuItemActionPerformed();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -528,7 +514,7 @@ public class GAccount extends javax.swing.JFrame {
         ChangeAccMenuItem.setEnabled(false);
         ChangeAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChangeAccMenuItemActionPerformed(evt);
+                ChangeAccMenuItemActionPerformed();
             }
         });
         ChangesMenu.add(ChangeAccMenuItem);
@@ -539,7 +525,7 @@ public class GAccount extends javax.swing.JFrame {
         DeleteAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    DeleteAccMenuItemActionPerformed(evt);
+                    DeleteAccMenuItemActionPerformed();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -553,7 +539,7 @@ public class GAccount extends javax.swing.JFrame {
         NewWatermeterMenuItem.setEnabled(false);
         NewWatermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewWatermeterMenuItemActionPerformed(evt);
+                NewWatermeterMenuItemActionPerformed();
             }
         });
         ChangesMenu.add(NewWatermeterMenuItem);
@@ -563,7 +549,7 @@ public class GAccount extends javax.swing.JFrame {
         NewWaterconMenuItem.setEnabled(false);
         NewWaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewWaterconMenuItemActionPerformed(evt);
+                NewWaterconMenuItemActionPerformed();
             }
         });
         ChangesMenu.add(NewWaterconMenuItem);
@@ -577,7 +563,7 @@ public class GAccount extends javax.swing.JFrame {
         WatermeterMenuItem.setText("Водомеры");
         WatermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WatermeterMenuItemActionPerformed(evt);
+                WatermeterMenuItemActionPerformed();
             }
         });
         CatalogMenu.add(WatermeterMenuItem);
@@ -586,7 +572,11 @@ public class GAccount extends javax.swing.JFrame {
         WaterconMenuItem.setText("Водомерные узлы");
         WaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WaterconMenuItemActionPerformed(evt);
+                try {
+                    WaterconMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         CatalogMenu.add(WaterconMenuItem);
@@ -595,12 +585,12 @@ public class GAccount extends javax.swing.JFrame {
         OrdersMenuItem.setText("Журнал заказов");
         OrdersMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                OrdersMenuItemMouseClicked(evt);
+                OrdersMenuItemMouseClicked();
             }
         });
         OrdersMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OrdersMenuItemActionPerformed(evt);
+                OrdersMenuItemActionPerformed();
             }
         });
         CatalogMenu.add(OrdersMenuItem);
@@ -610,7 +600,7 @@ public class GAccount extends javax.swing.JFrame {
         HistoryMenuItem.setText("История изменений");
         HistoryMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HistoryMenuItemActionPerformed(evt);
+                HistoryMenuItemActionPerformed();
             }
         });
         CatalogMenu.add(HistoryMenuItem);
@@ -624,7 +614,7 @@ public class GAccount extends javax.swing.JFrame {
         NewOrderMenuItem.setText("Новый заказ");
         NewOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewOrderMenuItemActionPerformed(evt);
+                NewOrderMenuItemActionPerformed();
             }
         });
         OrderMenu.add(NewOrderMenuItem);
@@ -633,7 +623,7 @@ public class GAccount extends javax.swing.JFrame {
         CloseOrderMenuItem.setText("Закрыть заказ");
         CloseOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CloseOrderMenuItemActionPerformed(evt);
+                CloseOrderMenuItemActionPerformed();
             }
         });
         OrderMenu.add(CloseOrderMenuItem);
@@ -646,7 +636,7 @@ public class GAccount extends javax.swing.JFrame {
         NoticeDeptMenuItem.setText("Сформировать извещение о долге");
         NoticeDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NoticeDeptMenuItemActionPerformed(evt);
+                NoticeDeptMenuItemActionPerformed();
             }
         });
         DocumentsMenu.add(NoticeDeptMenuItem);
@@ -655,7 +645,7 @@ public class GAccount extends javax.swing.JFrame {
         PatternDeptMenuItem.setText("Шаблон извещения о долге");
         PatternDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PatternDeptMenuItemActionPerformed(evt);
+                PatternDeptMenuItemActionPerformed();
             }
         });
         DocumentsMenu.add(PatternDeptMenuItem);
@@ -664,7 +654,7 @@ public class GAccount extends javax.swing.JFrame {
         ListDeptorsMenuItem.setText("Список должников");
         ListDeptorsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ListDeptorsMenuItemActionPerformed(evt);
+                ListDeptorsMenuItemActionPerformed();
             }
         });
         DocumentsMenu.add(ListDeptorsMenuItem);
@@ -676,7 +666,7 @@ public class GAccount extends javax.swing.JFrame {
         EncryptDataMenuItem.setText("Шифрование дампа базы данных");
         EncryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EncryptDataMenuItemActionPerformed(evt);
+                EncryptDataMenuItemActionPerformed();
             }
         });
         DataProtectionMenu.add(EncryptDataMenuItem);
@@ -684,7 +674,7 @@ public class GAccount extends javax.swing.JFrame {
         DecryptDataMenuItem.setText("Дешифрование дампа базы данных");
         DecryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DecryptDataMenuItemActionPerformed(evt);
+                DecryptDataMenuItemActionPerformed();
             }
         });
         DataProtectionMenu.add(DecryptDataMenuItem);
@@ -695,7 +685,7 @@ public class GAccount extends javax.swing.JFrame {
         ExitProgrammMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
-                    ExitProgrammMenuMouseClicked(evt);
+                    ExitProgrammMenuMouseClicked();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -963,7 +953,7 @@ public class GAccount extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+    private void SearchButtonActionPerformed() throws Exception {
         if(change_mode)makeChanges();//если включен режим изменения
         else gatherDataForSearch();
     }
@@ -1090,8 +1080,7 @@ public class GAccount extends javax.swing.JFrame {
 
         //подсчет null полей
         int count_null = 0;//количество null полей
-        for (int i = 0; i < data.length; i++)
-            if (data[i] == null) count_null++;
+        for (String aData : data) if (aData == null) count_null++;
 
         if (count_null == data.length) {//если ничего не введено
             JOptionPane.showMessageDialog(null, "Выберите критерии поиска и повторите попытку!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
@@ -1109,38 +1098,31 @@ public class GAccount extends javax.swing.JFrame {
 
 
     //карточка водомера
-    private void WatermeterButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void WatermeterButtonActionPerformed() {
         GWatermeter wm = new GWatermeter(true, this);
     }
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {
-        // TODO add your handling code here:
-    }
-
     //карточка водомерного подключения
-    private void WaterconButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void WaterconButtonActionPerformed() throws SQLException {
         GWaterconnection wc = new GWaterconnection(true, this);
+        wc.deleteRows();
+        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        int result=Waterconnection.searchWaterconnection(NUM_ACC);
+        if(result==-1) {
+            JOptionPane.showMessageDialog(null, "По лицевому счету с номером " + NUM_ACC + " не найдено водомерных подключений!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        }
+        wc.setVisible(true);
     }
 
-    private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void ClearButtonActionPerformed() {
         CleanFields();
         deleteRows();//очистка таблицы
         SearchButton.setEnabled(true);
         setConditionFields(true,true);  //активные поля
     }
 
-    private void OrdersMenuItemMouseClicked(java.awt.event.MouseEvent evt) {
+    private void OrdersMenuItemMouseClicked() {
 
-    }
-
-    private void SurnameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
-
-
-
-    private void DateContractDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
     }
 
     //по клику на строке таблицы
@@ -1148,7 +1130,7 @@ public class GAccount extends javax.swing.JFrame {
         if(evt.getClickCount()==1&&!change_mode)ClickOnTable();
     }
 
-    public void ClickOnTable() throws Exception {
+    private void ClickOnTable() throws Exception {
         WaterconButton.setEnabled(true);
         WatermeterButton.setEnabled(true);
         NewWatermeterMenuItem.setEnabled(true);
@@ -1208,12 +1190,12 @@ public class GAccount extends javax.swing.JFrame {
 
 
 
-    private void CountAccButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void CountAccButtonActionPerformed() {
         JOptionPane.showMessageDialog(null, "Найдено лицевых счетов: " + ResultTable.getRowCount(), "Количество лицевых счетов", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //суммарный долг по счетам
-    private void SummBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+    private void SummBalanceButtonActionPerformed() throws SQLException {
         double balance;
         String num_accs = "";
         for (int i = 0; i < ResultTable.getRowCount(); i++)
@@ -1226,7 +1208,7 @@ public class GAccount extends javax.swing.JFrame {
         }
     }
 
-    private void ContactsButtonActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+    private void ContactsButtonActionPerformed() throws SQLException {
         GContacts contact = new GContacts(this);
         contact.deleteRows();
         NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
@@ -1236,15 +1218,9 @@ public class GAccount extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "По лицевому счету с номером " + NUM_ACC + " не найдено контактных лиц!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
         }
         contact.setVisible(true);
-
-
     }
 
-    private void DateContractDatePickerMouseClicked(java.awt.event.MouseEvent evt) {
-
-    }
-
-    private void ChangeAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void ChangeAccMenuItemActionPerformed() {
         boolean company=false;//если изменяем юр.лицо
         if(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3)).equals("ЮРИДИЧЕСКОЕ ЛИЦО"))
             company=true;
@@ -1254,7 +1230,7 @@ public class GAccount extends javax.swing.JFrame {
         ConsTypeComboBox.setEnabled(false);//нельзя изменять тип лица
     }
 
-    private void NewAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+    private void NewAccMenuItemActionPerformed() throws SQLException {
         Object[] options = {"Физическое лицо",
                 "Юридическое лицо",
                 "Отмена"};
@@ -1278,27 +1254,25 @@ public class GAccount extends javax.swing.JFrame {
         }
     }
 
-    private void NoticeDeptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NoticeDeptMenuItemActionPerformed() {
         // TODO add your handling code here:
     }
 
-    private void PatternDeptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void PatternDeptMenuItemActionPerformed() {
     }
 
-    private void ListDeptorsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void ListDeptorsMenuItemActionPerformed() {
     }
 
     //шифрование дампа бд
-    private void EncryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void EncryptDataMenuItemActionPerformed() {
         GProtection p = new GProtection(true, this);//режим шифрования
     }
     //удаление лицевого счета
-    private void DeleteAccMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+    private void DeleteAccMenuItemActionPerformed() throws SQLException {
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0)); //получение номера счета
         Object[] options = {"Да", "Нет"};
-        int n = JOptionPane.showOptionDialog(null, "Удалить лицевой счет с номером "+num_acc+" ?",
+        int n = JOptionPane.showOptionDialog(null, "Удалить лицевой счет с номером "+num_acc+" ? Так же будут удалены все водоменые подключения,\n водомеры, заказы, контактные лица,связанные с лицевым счетом.",
                 "Подтверждение удаления", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         if (n == 0) {
@@ -1313,53 +1287,53 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //новый водомер
-    private void NewWatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NewWatermeterMenuItemActionPerformed() {
         GNewWatermeter nw = new GNewWatermeter(this);
         nw.setVisible(true);
     }
 
     //новое водомерное подключение
-    private void NewWaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NewWaterconMenuItemActionPerformed() {
         GNewWaterconnection wc = new GNewWaterconnection(this);
         wc.setVisible(true);
     }
 
     //журнал водомеров
-    private void WatermeterMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void WatermeterMenuItemActionPerformed() {
         GWatermeter wm = new GWatermeter(false, this);
     }
 
     //журнал водомерных подключений
-    private void WaterconMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void WaterconMenuItemActionPerformed() throws SQLException {
         GWaterconnection wc = new GWaterconnection(false, this);
     }
 
     //журнал заказов
-    private void OrdersMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void OrdersMenuItemActionPerformed() {
         GJournalOrders jo = new GJournalOrders(this);
         jo.setVisible(true);
     }
 
-    private void HistoryMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void HistoryMenuItemActionPerformed() {
         // TODO add your handling code here:
     }
 
-    private void NewOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void NewOrderMenuItemActionPerformed() {
         GNewOrder no = new GNewOrder(this);
         no.setVisible(true);
     }
 
-    private void CloseOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void CloseOrderMenuItemActionPerformed() {
         GCloseOrder co = new GCloseOrder(this);
         co.setVisible(true);
     }
 
     //дешифрование дампа бд
-    private void DecryptDataMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+    private void DecryptDataMenuItemActionPerformed() {
         GProtection p = new GProtection(false, this);//режим дешифрования
     }
 
-    private void ExitProgrammMenuMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
+    private void ExitProgrammMenuMouseClicked() throws Exception {
         Object[] options = {"Да", "Нет"};
         int n = JOptionPane.showOptionDialog(null, "Выйти из программы?",
                 "Подтверждение выхода", JOptionPane.YES_NO_OPTION,
@@ -1377,8 +1351,6 @@ public class GAccount extends javax.swing.JFrame {
      */
     private void changeMode(boolean mode,boolean company) {
         if(mode){//включить режим изменения
-
-
             change_mode = true;//флаг изменения
             SearchButton.setText("Изменить");
             ResultTable.setEnabled(false);
@@ -1387,7 +1359,6 @@ public class GAccount extends javax.swing.JFrame {
             DeleteAccMenuItem.setEnabled(false);
             ChangeAccMenuItem.setEnabled(false);
             changeStateButtonsForChangeMode(false);
-
         }
         else{//выход
             change_mode=false;
