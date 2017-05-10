@@ -5,6 +5,9 @@ import com.mxrck.autocompleter.TextAutoCompleter;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 /*
  * Created by Юлия on 19.04.2017.
  */
@@ -13,6 +16,7 @@ public class GWaterconnection extends javax.swing.JDialog {
     static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
     JTextField textfields [];//массив текстовых полей
     JComboBox comboboxes[];//массив комбобоксов
+    private String old_data[];//массив старых данных
     private boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить ВП",иначе false)
     private javax.swing.JMenuItem AcceptChangesMenuItem;
     private javax.swing.JMenuItem ChangeModeMenuItem;
@@ -131,8 +135,8 @@ public class GWaterconnection extends javax.swing.JDialog {
         ClearMenuItem = new javax.swing.JMenuItem();
         WatermetersMenu = new javax.swing.JMenu();
         ShowWatermetersMenuItem = new javax.swing.JMenuItem();
-        //AUTOCOMPLETERS
 
+        //AUTOCOMPLETERS
         TextAutoCompleter objectcomplete = new TextAutoCompleter(ObjectConTextField);
         Connect.retrieveObject();
         while (Connect.rs.next()) {
@@ -233,14 +237,19 @@ public class GWaterconnection extends javax.swing.JDialog {
         TypeConComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TypeConComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"НЕ ВЫБРАНО","ОДИНОЧНОЕ", "КОЛЛЕКТИВНОЕ" }));
 
-        EditMenu.setText("Изменения");
-
+        EditMenu.setText("Редактирование");
+        EditMenu.setEnabled(false);
         ChangesMenu.setText("Изменения");
+
 
         ChangeModeMenuItem.setText("Включить режим изменения");
         ChangeModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChangeModeMenuItemActionPerformed(evt);
+                try {
+                    ChangeModeMenuItemActionPerformed(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(ChangeModeMenuItem);
@@ -248,7 +257,11 @@ public class GWaterconnection extends javax.swing.JDialog {
         AcceptChangesMenuItem.setText("Принять изменения");
         AcceptChangesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AcceptChangesMenuItemActionPerformed(evt);
+                try {
+                    AcceptChangesMenuItemActionPerformed(evt);
+                } catch (SQLException | ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(AcceptChangesMenuItem);
@@ -288,7 +301,7 @@ public class GWaterconnection extends javax.swing.JDialog {
         MenuBar.add(JournalWatconMenu);
 
         WatermetersMenu.setText("Водомеры");
-        //WatermetersMenu.setEnabled(false);
+        WatermetersMenu.setEnabled(false);
 
         ShowWatermetersMenuItem.setText("Открыть водомеры текущего ВП");
         ShowWatermetersMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -297,7 +310,7 @@ public class GWaterconnection extends javax.swing.JDialog {
             }
         });
         WatermetersMenu.add(ShowWatermetersMenuItem);
-        ShowWatermetersMenuItem.setEnabled(false);
+       // ShowWatermetersMenuItem.setEnabled(false);
         MenuBar.add(WatermetersMenu);
 
         setJMenuBar(MenuBar);
@@ -433,8 +446,11 @@ public class GWaterconnection extends javax.swing.JDialog {
     }
 
     private void clickOnTable() throws SQLException {
+        ChangeModeMenuItem.setEnabled(true);
         ShowWatermetersMenuItem.setEnabled(true);
         ChangesMenu.setEnabled(true);
+        EditMenu.setEnabled(true);
+        AcceptChangesMenuItem.setEnabled(false);
         DeleteMenuItem.setEnabled(true);
         WatermetersMenu.setEnabled(true);
         Waterconnection.showWaterconnection(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0)));
@@ -452,12 +468,104 @@ public class GWaterconnection extends javax.swing.JDialog {
         ResultTable.requestFocus();
     }
 
-    private void ChangeModeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void ChangeModeMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException {
+        changeMode(true);
+        old_data=readData();//считать все текущие данные
+    }
+    /*
+     Метод считывает данные из всех полей и возвращает их в виде массива
+     */
+    private String[] readData() {
+        String datafields [] = new String [11];
+        for(int i=0;i<textfields.length;i++)//считывание данных
+            datafields[i]=textfields[i].getText();
+        for(int i=textfields.length,j=0;i<comboboxes.length +textfields.length;i++,j++)
+            datafields[i]=(String)comboboxes[j].getSelectedItem();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date_TY;
+        try{
+            date_TY = dateFormat.format(DateTYDatePicker.getDate());//
+        }catch (NullPointerException ex){
+            date_TY= null;
+        }
+        datafields[9]=date_TY;
+        datafields[10]=NoteTextArea.getText();
+        for(int i=0;i<datafields.length;i++)
+            if(datafields[i]!=null) datafields[i]=datafields[i].toUpperCase();
+        return datafields;
+    }
+    /*
+     * Изменение данных
+     */
+    private void AcceptChangesMenuItemActionPerformed(java.awt.event.ActionEvent evt) throws SQLException, ParseException {
+        String[] new_data = readData();
+        String local_error="";//если один из комбобоксов не выбран
+        boolean loc_error=false;//ошибка в комбобоксах
+        if(new_data[7].equals("НЕ ВЫБРАНО")){
+            loc_error=true;
+            local_error="Выберите принадлежность ВП!";
+        }
+        if(new_data[8].equals("НЕ ВЫБРАНО")){
+            loc_error=true;
+            local_error="Выберите вид подключения!";
+        }
+        if(new_data[6].equals("НЕ ВЫБРАНО")){
+            loc_error=true;
+            local_error="Выберите состояние!";
+        }
+        if(loc_error) JOptionPane.showMessageDialog(null,local_error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else {
+            if (Methods.haveNewValues(Methods.compareData(old_data, new_data)) == 0) {//данные не изменялись
+                JOptionPane.showMessageDialog(null, "Данные не были изменены. Выход из режима редактирования...", "Выход", JOptionPane.INFORMATION_MESSAGE);
+                changeMode(false);//выход из режима редактирования
+            } else {
+                Object[] options = {"Да", "Нет"};
+                if (JOptionPane.showOptionDialog(null, "Принять изменения?", "Подтверждение", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, options, options[0]) == 0)//если да,то изменить бд
+                    switch (Waterconnection.changeWaterconnection(new_data)) {
+                        case 0:// успешное изменение
+                            JOptionPane.showMessageDialog(null, "Изменение данных прошло успешно! Выход из режима редактирования...", "Результат изменения", JOptionPane.INFORMATION_MESSAGE);
+                            old_data = null;
+                            changeMode(false);//выход из режима редактирования
+                            break;
+                        case -1:
+                            JOptionPane.showMessageDialog(null, Waterconnection.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                            break;
+                    }
+                else if (JOptionPane.showOptionDialog(null, "Выйти из режима редактирования?",
+                        "Подтверждение", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == 0) {//Если да, то выйти из режима редактирования
+                    changeMode(false);//выход из режима редактирования
+                }
+            }
+        }
     }
 
-    private void AcceptChangesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    /*
+    * Производит необходимые действия при входе/выходе из режима редактирования
+    * Принимает mode (true-вход/false-выход)
+    */
+    private void changeMode(boolean mode) throws SQLException {
+        if(mode){
+            change_mode=true;
+            JOptionPane.showMessageDialog(null,"Измените данные, затем нажмите \"Принять изменения\"", "Режим изменения", JOptionPane.INFORMATION_MESSAGE);
+            ResultTable.setEnabled(false);
+            DeleteMenuItem.setEnabled(false);
+            ChangeModeMenuItem.setEnabled(false);
+            AcceptChangesMenuItem.setEnabled(true);
+            WatermetersMenu.setEnabled(false);
+            setConditionFields(true);
+
+        }else{
+            change_mode=false;
+            ResultTable.setEnabled(true);
+            EditMenu.setEnabled(false);
+            AcceptChangesMenuItem.setEnabled(false);
+            setConditionFields(false);
+            cleanFields();
+            deleteRows();
+            Waterconnection.searchWaterconnection(GAccount.NUM_ACC);
+            ResultTable.requestFocus();
+        }
     }
 
     private void DeleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -495,8 +603,8 @@ public class GWaterconnection extends javax.swing.JDialog {
     private void setWatconMode(boolean mode) {
         if(mode){
             setTitle("Карточка водомерного подключения");
-            EditMenu.setEnabled(true);//включение вкладки "редактирование"
-            WatermetersMenu.setEnabled(true);
+           // EditMenu.setEnabled(true);//включение вкладки "редактирование"
+           // WatermetersMenu.setEnabled(true);
             JournalWatconMenu.setEnabled(false);//отключени вкладки "журнал водомеров"
             CodeWatconTextField.setEditable(false);
             NumTYTextField.setEditable(false);
@@ -512,8 +620,8 @@ public class GWaterconnection extends javax.swing.JDialog {
         }
         else{
             setTitle("Справочник водомерных подключений");
-            EditMenu.setEnabled(false);//отключение вкладки "редактирование"
-            WatermetersMenu.setEnabled(false);
+           // EditMenu.setEnabled(false);//отключение вкладки "редактирование"
+           // WatermetersMenu.setEnabled(false);
             JournalWatconMenu.setEnabled(true);//включение вкладки "журнал водомеров"
             CodeWatconTextField.setEditable(true);
             NumTYTextField.setEditable(true);
@@ -535,13 +643,26 @@ public class GWaterconnection extends javax.swing.JDialog {
     }
 
     //очистка полей
-    public  void cleanFields(){
+    private void cleanFields(){
         for(int i=0;i<textfields.length;i++) textfields[i].setText(null);
         for(int i=0;i<comboboxes.length;i++)comboboxes[i].setSelectedIndex(0);
         DateTYDatePicker.setDate(null);
         WatermetersMenu.setEnabled(false);
         ChangesMenu.setEnabled(false);
         NoteTextArea.setText(null);
+    }
+    /*
+     * Принимает cond: true или false
+     * Делает активными/неактивными поля соответственно
+     */
+    private void setConditionFields(boolean cond) {
+        for (int i=1;i<textfields.length;i++)//код изменить нельзя
+            textfields[i].setEditable(cond);
+        for (int i=0;i<comboboxes.length;i++)
+            comboboxes[i].setEnabled(cond);
+        DateTYDatePicker.setEditable(cond);
+        NoteTextArea.setEditable(cond);
+
     }
 }
 

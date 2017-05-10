@@ -336,6 +336,9 @@ public class Account {
         if (changed_adres) {//если хотя бы одно поле адреса было изменено
             int result = checkAdresFields(new_adres);//проверка поля адреса на содержимое
             if (result == 0)
+                //проверить,есть ли такой адрес в таблице адресов,если есть то получить его ид,если нет,то добавить
+
+
                 id_adres = changeAdres(new_data[0], new_adres);//new_data[0]- номер аккаунта,который не изменяется
             else return result;//вернуть ошибку
         }
@@ -849,10 +852,10 @@ public class Account {
     }
 
     /*
-    * Метод получает последний номер аккаунта в таблице table
+    * Метод получает последний номер аккаунта в таблице account
     * */
-    public static int getLastNumAccount(String table) throws SQLException {
-        String query = "select MAX(num_account) AS result from " + table;
+    public static int getLastNumAccount() throws SQLException {
+        String query = "select MAX(num_account) AS result from account ";
         int num_account = -1;
         statement = Connect.connection.createStatement();
         ResultSet resSet = null; //отправка запроса
@@ -936,6 +939,9 @@ public class Account {
         for (int i=0;i<adres.length;i++)adres[i]=adres[i].replaceAll("\\*","");//удаление звездочек (адрес)
         for (int i=0;i<account_data.length;i++)account_data[i]=account_data[i].replaceAll("\\*","");//удаление звездочек (поля для физ.лица)
 
+
+
+        //нужно найти,есть ли же такой адрес в таблице,если есть,то вернуть индекс,если нет,то добавить новый
         account_data[5] = Integer.toString(addNewAdres(adres));//добавление адреса
         receiveQueryNewAccount(account_data,true);//физ.лицо
         if(!account)receiveQueryNewAccount( account_data_company,false);//если юр.лицо
@@ -945,9 +951,8 @@ public class Account {
     /*
     * Метод составляет запрос на добавление нового лицевого счета и выполняет его
     * account = true - физ.лицо,false-юр.лицо
-    *
     */
-    private static int receiveQueryNewAccount(String[] data,boolean account) throws SQLException {
+    private static void receiveQueryNewAccount(String[] data,boolean account) throws SQLException {
         String column [];
         String query;
         if(account) {//если физ.лицо
@@ -959,10 +964,10 @@ public class Account {
             query ="insert into account_company (";
         }
 
-        for (int i=0;i<column.length;i++)query+=column[i]+",";
+        for (String aColumn : column) query += aColumn + ",";
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
         query+=") values (";
-        for (int i=0;i<data.length;i++)query+="\""+data[i]+"\",";
+        for (String aData : data) query += "\"" + aData + "\",";
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
         query+=")";
         statement = Connect.connection.createStatement();
@@ -973,7 +978,6 @@ public class Account {
             e.printStackTrace();
         }
         statement.close();
-        return 0;
     }
     /*
     * Метод добавляет новый адрес в таблицу adres

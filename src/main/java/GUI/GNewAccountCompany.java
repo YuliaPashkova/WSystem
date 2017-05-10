@@ -77,7 +77,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
 
 
         };
-        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount("account")+1));//получение номера аккаунта
+        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount()+1));//получение номера аккаунта
     }
 
     public static void main(String args[]) {

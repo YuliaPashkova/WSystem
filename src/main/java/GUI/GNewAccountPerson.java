@@ -60,7 +60,7 @@ public class GNewAccountPerson extends javax.swing.JDialog {
                 CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
                 OwnerTextField,StatusAccTextField,ConsTypeTextField
         };
-        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount("account")+1));//получение номера аккаунта
+        NumAccTextField.setText(Integer.toString(Account.getLastNumAccount()+1));//получение номера аккаунта
     }
 
     public static void main(String args[]) {
@@ -401,7 +401,6 @@ public class GNewAccountPerson extends javax.swing.JDialog {
 
     private void CancelButtonActionPerformed() {
         dispose();
-
     }
 
     private void OkButtonActionPerformed() throws Exception {

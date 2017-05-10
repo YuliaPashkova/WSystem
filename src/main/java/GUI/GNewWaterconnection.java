@@ -1,11 +1,22 @@
 package GUI;
 import WORK.Access;
+import WORK.Account;
+import WORK.Connect;
+import WORK.Waterconnection;
+import com.mxrck.autocompleter.TextAutoCompleter;
 
 import javax.swing.*;
-/**
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+/*
  * Created by Юлия on 19.04.2017.
  */
 public class GNewWaterconnection extends javax.swing.JDialog {
+    private JTextField textfields [];//массив текстовых полей
+    private JComboBox comboboxes[];//массив комбобоксов
     private javax.swing.JButton CancelButton;
     private javax.swing.JButton ClearButton;
     private javax.swing.JLabel CodeWatconLabel;
@@ -32,9 +43,13 @@ public class GNewWaterconnection extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> TypeConComboBox;
     private javax.swing.JLabel TypeConLabel;
     private javax.swing.JScrollPane jScrollPane2;
-    public GNewWaterconnection(java.awt.Frame parent) {
+    public GNewWaterconnection(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
+        textfields=new JTextField[]{CodeWatconTextField,NumTYTextField,ObjectConTextField,OwnerTerTextField,
+                LocationTextField,DepthTextField};
+        comboboxes =new JComboBox[]{StatusComboBox,OwnerComboBox,TypeConComboBox};
+        CodeWatconTextField.setText(Integer.toString(Waterconnection.getLastCode()+1));//получение номера аккаунта
     }
 
     public static void main(String args[]) {
@@ -51,13 +66,17 @@ public class GNewWaterconnection extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewWaterconnection(null).setVisible(true);
+                try {
+                    new GNewWaterconnection(null).setVisible(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
     @SuppressWarnings("unchecked")
-    private void initComponents() {
+    private void initComponents() throws SQLException {
 
         CodeWatconLabel = new javax.swing.JLabel();
         CodeWatconTextField = new javax.swing.JTextField();
@@ -89,6 +108,13 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         TypeConComboBox = new javax.swing.JComboBox<>();
         StatusComboBox = new javax.swing.JComboBox<>();
 
+        //AUTOCOMPLETERS
+        TextAutoCompleter objectcomplete = new TextAutoCompleter(ObjectConTextField);
+        Connect.retrieveObject();
+        while (Connect.rs.next()) {
+            objectcomplete.addItem(Connect.rs.getString("object_con"));
+        }
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новое водомерное подключение ("+ Access.name_operator+")");
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
@@ -99,30 +125,16 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         CodeWatconLabel.setText("Код ВП");
 
         CodeWatconTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CodeWatconTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CodeWatconTextFieldActionPerformed(evt);
-            }
-        });
+        CodeWatconTextField.setEditable(false);
 
         NumTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NumTYLabel.setText("№ ТУ");
 
         NumTYTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumTYTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumTYTextFieldActionPerformed(evt);
-            }
-        });
 
         DateTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateTYLabel.setText("Дата ТУ");
 
-        DateTYDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateTYDatePickerActionPerformed(evt);
-            }
-        });
 
         StatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusLabel.setText("Состояние");
@@ -137,21 +149,11 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         TypeConLabel.setText("Вид подключения");
 
         ObjectConTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ObjectConTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ObjectConTextFieldActionPerformed(evt);
-            }
-        });
 
         OwnerTerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerTerLabel.setText("Принадлежность территории");
 
         OwnerTerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerTerTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OwnerTerTextFieldActionPerformed(evt);
-            }
-        });
 
         LocationLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         LocationLabel.setText("Местонахождение ВП");
@@ -160,18 +162,9 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         DepthLabel.setText("Глубина (м)");
 
         LocationTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        LocationTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LocationTextFieldActionPerformed(evt);
-            }
-        });
 
         DepthTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DepthTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DepthTextFieldActionPerformed(evt);
-            }
-        });
+
 
         NoteLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         NoteLabel.setText("Примечание");
@@ -184,47 +177,36 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         ClearButton.setText("Очистить форму");
         ClearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
+                ClearButtonActionPerformed();
             }
         });
 
         OkButton.setText("ОК");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OkButtonActionPerformed(evt);
+                try {
+                    OkButtonActionPerformed();
+                } catch (ParseException | SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         CancelButton.setText("Отмена");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                CancelButtonActionPerformed();
             }
         });
 
         OwnerComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГУПС ВОДОКАНАЛ", "АБОНЕНТ" }));
-        OwnerComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OwnerComboBoxActionPerformed(evt);
-            }
-        });
 
         TypeConComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TypeConComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ОДИНОЧНОЕ", "КОЛЛЕКТИВНОЕ" }));
-        TypeConComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TypeConComboBoxActionPerformed(evt);
-            }
-        });
 
         StatusComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "РАБОЧЕЕ", "НЕ РАБОЧЕЕ" }));
-        StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusComboBoxActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -357,55 +339,50 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void CodeWatconTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+
+    private void ClearButtonActionPerformed() {
+        //очистка полей
+        for(int i=1;i<textfields.length;i++) textfields[i].setText(null);
+        for (JComboBox comboboxe : comboboxes) comboboxe.setSelectedIndex(0);
+        DateTYDatePicker.setDate(null);
+        NoteTextArea.setText(null);
     }
 
-    private void NumTYTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void OkButtonActionPerformed() throws ParseException, SQLException {
+        switch(Waterconnection.addWaterconnection(readData())){
+            case 0:
+                JOptionPane.showMessageDialog(null,"Новое водомерное подключение было создано!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                break;
+            case -1:
+                JOptionPane.showMessageDialog(null,Waterconnection.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 
-    private void DateTYDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void CancelButtonActionPerformed() {
+        dispose();
     }
-
-    private void ObjectConTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OwnerTerTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void LocationTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DepthTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void ClearButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OwnerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void TypeConComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    /*
+     Метод считывает данные из всех полей и возвращает их в виде массива
+     */
+    private String[] readData() {
+        String datafields [] = new String [11];
+        for(int i=0;i<textfields.length;i++)//считывание данных
+            datafields[i]=textfields[i].getText();
+        for(int i=textfields.length,j=0;i<comboboxes.length +textfields.length;i++,j++)
+            datafields[i]=(String)comboboxes[j].getSelectedItem();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date_TY;
+        try{
+            date_TY = dateFormat.format(DateTYDatePicker.getDate());//
+        }catch (NullPointerException ex){
+            date_TY= null;
+        }
+        datafields[9]=date_TY;
+        datafields[10]=NoteTextArea.getText();
+        for(int i=0;i<datafields.length;i++)
+            if(datafields[i]!=null) datafields[i]=datafields[i].toUpperCase();
+        return datafields;
     }
 }

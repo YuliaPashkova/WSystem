@@ -8,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
 import static WORK.Contact.company;
 
-/**
+/*
  * Created by Юлия on 15.04.2017.
  */
 public class GContacts extends javax.swing.JDialog {
@@ -33,7 +33,6 @@ public class GContacts extends javax.swing.JDialog {
         private javax.swing.JTextField MiddleNameTextField;
         private javax.swing.JLabel NameCompanyLabel;
         private javax.swing.JTextField NameTextField;
-        private javax.swing.JMenu PrintMenu;
         private javax.swing.JLabel SurnameLabel;
         private javax.swing.JTextField SurnameTextField;
         private javax.swing.JLabel TelephoneLabel;
@@ -97,7 +96,6 @@ public class GContacts extends javax.swing.JDialog {
             AddModeContactMenuItem = new javax.swing.JMenuItem();
             AddNewContactMenuItem = new javax.swing.JMenuItem();
             DeleteMenuItem = new javax.swing.JMenuItem();
-            PrintMenu = new javax.swing.JMenu();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             setTitle("Контактные лица ("+ Access.name_operator+")");
@@ -242,9 +240,6 @@ public class GContacts extends javax.swing.JDialog {
             EditMenu.add(DeleteMenuItem);
 
             jMenuBar1.add(EditMenu);
-
-            PrintMenu.setText("Печать");
-            jMenuBar1.add(PrintMenu);
 
             setJMenuBar(jMenuBar1);
 
@@ -401,12 +396,11 @@ public class GContacts extends javax.swing.JDialog {
         private void addMode(boolean mode) throws SQLException {
         if(mode){
             add_mode=true;
+            AddNewContactMenuItem.setEnabled(true);
+            AddModeContactMenuItem.setEnabled(false);
             ResultTable.setEnabled(false);
             ChangesMenu.setEnabled(false);
             DeleteMenuItem.setEnabled(false);
-            AddModeContactMenuItem.setEnabled(false);
-            AcceptChangesMenuItem.setEnabled(true);
-            PrintMenu.setEnabled(false);
             setConditionFields(true);
             cleanFieldsForAddMode();
             JOptionPane.showMessageDialog(null,"Введите данные,затем нажмите \"Добавить новое контактное лицо\"", "Режим добавления", JOptionPane.INFORMATION_MESSAGE);
@@ -418,7 +412,6 @@ public class GContacts extends javax.swing.JDialog {
             DeleteMenuItem.setEnabled(false);
             AddModeContactMenuItem.setEnabled(true);
             AcceptChangesMenuItem.setEnabled(false);
-            PrintMenu.setEnabled(true);
             cleanFields();
             setConditionFields(false);
             //обновление таблицы
@@ -441,8 +434,6 @@ public class GContacts extends javax.swing.JDialog {
             DeleteMenuItem.setEnabled(false);
             AddMenu.setEnabled(false);
             setConditionFields(true);
-            PrintMenu.setEnabled(false);
-            AcceptChangesMenuItem.setEnabled(true);
             ChangeModeMenuItem.setEnabled(false);
         }
         else{//выход
@@ -457,7 +448,6 @@ public class GContacts extends javax.swing.JDialog {
             cleanFields();
             deleteRows();
             Contact.searchContact(GAccount.NUM_ACC);
-            PrintMenu.setEnabled(true);
             ResultTable.requestFocus();
         }
     }
@@ -498,6 +488,7 @@ public class GContacts extends javax.swing.JDialog {
         Затем данные выводятся в форму
         */
         private void clickOnTable() throws SQLException {
+            AddNewContactMenuItem.setEnabled(false);
             ChangesMenu.setEnabled(true);
             DeleteMenuItem.setEnabled(true);
             Contact.showContact(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0)));

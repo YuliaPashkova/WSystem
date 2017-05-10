@@ -545,11 +545,15 @@ public class GAccount extends javax.swing.JFrame {
         ChangesMenu.add(NewWatermeterMenuItem);
 
         NewWaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        NewWaterconMenuItem.setText("Новый водомерный узел");
+        NewWaterconMenuItem.setText("Новое водомерное подключение");
         NewWaterconMenuItem.setEnabled(false);
         NewWaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewWaterconMenuItemActionPerformed();
+                try {
+                    NewWaterconMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(NewWaterconMenuItem);
@@ -569,7 +573,7 @@ public class GAccount extends javax.swing.JFrame {
         CatalogMenu.add(WatermeterMenuItem);
 
         WaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        WaterconMenuItem.setText("Водомерные узлы");
+        WaterconMenuItem.setText("Водомерные подключения");
         WaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -963,41 +967,52 @@ public class GAccount extends javax.swing.JFrame {
     * */
     private void makeChanges() throws Exception {
         new_data=readData();//считывание новых данных
-        if(new_data[20].equals("НЕ ВЫБРАНО"))new_data[20]=old_data[20];//если изменилось на "не выбрано",выбрать предыдущее значение
-        if(new_data[22].equals("НЕ ВЫБРАНО"))new_data[22]=old_data[22];
-
-        //сравнение данных и проверка на изменение данных
-       if(Methods.haveNewValues(Methods.compareData(old_data,new_data))==0) {//данные не изменялись
-           JOptionPane.showMessageDialog(null, "Данные не были изменены. Выход из режима редактирования...", "Выход", JOptionPane.INFORMATION_MESSAGE);
-           NumAccTextField.setEditable(true);
-           ConsTypeComboBox.setEnabled(true);
-           changeMode(false,true);//выход из режима редактирования
-       }
-       else {
-           Object[] options = { "Да", "Нет" };
-           if (JOptionPane.showOptionDialog(null, "Принять изменения?", "Подтверждение", JOptionPane.YES_NO_OPTION,
-               JOptionPane.QUESTION_MESSAGE, null, options, options[0]) == 0)//если да,то изменить бд
-               switch(Account.changeData(new_data)){
-                   case 0:// успешное изменение
-                       JOptionPane.showMessageDialog(null,"Изменение данных прошло успешно! Выход из режима редактирования...", "Результат изменения", JOptionPane.INFORMATION_MESSAGE);
-                       NumAccTextField.setEditable(true);
-                       ConsTypeComboBox.setEnabled(true);
-                       new_data=null;//очистка
-                       old_data=null;
-                       changeMode(false,true);//выход из режима редактирования
-                       break;
-                   case -1:
-                       JOptionPane.showMessageDialog(null,Account.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
-                       break;
-               }
-           else if (JOptionPane.showOptionDialog(null, "Выйти из режима редактирования?",
-                   "Подтверждение", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == 0) {//Если да, то выйти из режима редактирования
-               changeMode(false,true);//выход из режима редактирования
-               NumAccTextField.setEditable(true);
-               ConsTypeComboBox.setEnabled(true);
-           }
-       }
-
+        String local_error="";//если один из комбобоксов не выбран
+        boolean loc_error=false;//ошибка в комбобоксах
+        if(new_data[20].equals("НЕ ВЫБРАНО")){//район
+            loc_error=true;
+            local_error="Выберите район!";
+        }
+         if(new_data[22].equals("НЕ ВЫБРАНО")){//статус счета
+             loc_error=true;
+             local_error="Выберите статус счета!";
+         }
+        if(loc_error) JOptionPane.showMessageDialog(null,local_error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else {
+            //сравнение данных и проверка на изменение данных
+            if (Methods.haveNewValues(Methods.compareData(old_data, new_data)) == 0) {//данные не изменялись
+                JOptionPane.showMessageDialog(null, "Данные не были изменены. Выход из режима редактирования...", "Выход", JOptionPane.INFORMATION_MESSAGE);
+                setDefaultConditionButton();
+                NumAccTextField.setEditable(true);
+                ConsTypeComboBox.setEnabled(true);
+                changeMode(false, true);//выход из режима редактирования
+            } else {
+                Object[] options = {"Да", "Нет"};
+                if (JOptionPane.showOptionDialog(null, "Принять изменения?", "Подтверждение", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, options, options[0]) == 0)//если да,то изменить бд
+                    switch (Account.changeData(new_data)) {
+                        case 0:// успешное изменение
+                            JOptionPane.showMessageDialog(null, "Изменение данных прошло успешно! Выход из режима редактирования...", "Результат изменения", JOptionPane.INFORMATION_MESSAGE);
+                            NumAccTextField.setEditable(true);
+                            ConsTypeComboBox.setEnabled(true);
+                            new_data = null;//очистка
+                            old_data = null;
+                            changeMode(false, true);//выход из режима редактирования
+                            setDefaultConditionButton();
+                            break;
+                        case -1:
+                            JOptionPane.showMessageDialog(null, Account.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                            break;
+                    }
+                else if (JOptionPane.showOptionDialog(null, "Выйти из режима редактирования?",
+                        "Подтверждение", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == 0) {//Если да, то выйти из режима редактирования
+                    changeMode(false, true);//выход из режима редактирования
+                    setDefaultConditionButton();
+                    NumAccTextField.setEditable(true);
+                    ConsTypeComboBox.setEnabled(true);
+                }
+            }
+        }
     }
 
     /*
@@ -1010,7 +1025,7 @@ public class GAccount extends javax.swing.JFrame {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date_contract;
         try{
-            date_contract = dateFormat.format(DateContractDatePicker.getDate());//старая дата договора
+            date_contract = dateFormat.format(DateContractDatePicker.getDate());//дата договора
         }catch (NullPointerException ex){
             date_contract= null;
         }
@@ -1131,6 +1146,7 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ClickOnTable() throws Exception {
+        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
         WaterconButton.setEnabled(true);
         WatermeterButton.setEnabled(true);
         NewWatermeterMenuItem.setEnabled(true);
@@ -1211,7 +1227,6 @@ public class GAccount extends javax.swing.JFrame {
     private void ContactsButtonActionPerformed() throws SQLException {
         GContacts contact = new GContacts(this);
         contact.deleteRows();
-        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
         int result=Contact.searchContact(NUM_ACC);
         if(result==-1) {
             contact.NameCompanyTextField.setText(Contact.getCompany(NUM_ACC));
@@ -1293,7 +1308,7 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //новое водомерное подключение
-    private void NewWaterconMenuItemActionPerformed() {
+    private void NewWaterconMenuItemActionPerformed() throws SQLException {
         GNewWaterconnection wc = new GNewWaterconnection(this);
         wc.setVisible(true);
     }
@@ -1306,6 +1321,7 @@ public class GAccount extends javax.swing.JFrame {
     //журнал водомерных подключений
     private void WaterconMenuItemActionPerformed() throws SQLException {
         GWaterconnection wc = new GWaterconnection(false, this);
+        wc.setVisible(true);
     }
 
     //журнал заказов

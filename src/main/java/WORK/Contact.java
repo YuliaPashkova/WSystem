@@ -127,25 +127,14 @@ public class Contact {
   * Принимает new_data - новые данные, String id - ид
   * */
     public static int changeContact(String[] new_data, String id) throws SQLException {
-        boolean changed = false;//флаг изменения полей
-
         String data [] = new String[4];
         data [0]=new_data[0]+" "+new_data[1]+" "+new_data[2];//фио
         data [1]=new_data[3];//должность
         data [2]=new_data[5];//email
         data [3]=new_data[4];//телефон
-
-        for (String aData : data)
-            if (aData.contains("*")) {
-                changed = true;
-                break;
-            }
-        if(changed){
-            int result = checkContactFields(data);//проверка полей  на содержимое
+        int result = checkContactFields(data);//проверка полей  на содержимое
             if (result == 0) receivingQueryForChanging(data,id);//изменение полей
             else return result;
-        }
-
         return  0;
     }
     /*
