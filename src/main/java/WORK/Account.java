@@ -18,7 +18,7 @@ public class Account {
     public static String names_indexes[];
     public static Account account;
     public static String error;//текст ошибки
-    public static Statement statement;
+    private static Statement statement;
 
     public int num_account;
     //физ.лицо
@@ -26,41 +26,41 @@ public class Account {
     public double balance;
     public Date date_contract;
     public int num_contract;
-    public int adres;
     public String owner_flat;
     public String cons_type;
     public String telephone;
     public String acc_status;
-    //юр.лицо
-    public int bank;
     public int kpp;
     public int bik;
     public long pay_account;
     public long num_cert;
     public long INN;
     public String name_company;
+    private int adres;
+    //юр.лицо
+    private int bank;
 
-    public Account() {
+    private Account() {
     }
 
     //для юр.лиц
-    public Account(int num_account,
-                   String FIO,
-                   double balance,
-                   Date date_contract,
-                   int num_contract,
-                   int adres,
-                   String owner_flat,
-                   String cons_type,
-                   String telephone,
-                   String acc_status,
-                   int bank,
-                   int kpp,
-                   int bik,
-                   long pay_account,
-                   long num_cert,
-                   long INN,
-                   String name_company
+    private Account(int num_account,
+                    String FIO,
+                    double balance,
+                    Date date_contract,
+                    int num_contract,
+                    int adres,
+                    String owner_flat,
+                    String cons_type,
+                    String telephone,
+                    String acc_status,
+                    int bank,
+                    int kpp,
+                    int bik,
+                    long pay_account,
+                    long num_cert,
+                    long INN,
+                    String name_company
 
     ) {
         this.num_account = num_account;
@@ -83,16 +83,16 @@ public class Account {
     }
 
     //для физ.лиц
-    public Account(int num_account,
-                   String FIO,
-                   double balance,
-                   Date date_contract,
-                   int num_contract,
-                   int adres,
-                   String owner_flat,
-                   String cons_type,
-                   String telephone,
-                   String acc_status
+    private Account(int num_account,
+                    String FIO,
+                    double balance,
+                    Date date_contract,
+                    int num_contract,
+                    int adres,
+                    String owner_flat,
+                    String cons_type,
+                    String telephone,
+                    String acc_status
     ) {
         this.num_account = num_account;
         this.FIO = FIO;
@@ -115,12 +115,10 @@ public class Account {
         String query;
         if (cons_type.equals("ФИЗИЧЕСКОЕ ЛИЦО")) {//для физ.лица
             query = "select * from account where num_account=" + num_acc;
-            account = new Account();
-            account.receivingQueryForSearch(query, false, true);
+            receivingQueryForSearch(query, false, true);
         } else {//для юр.лица
             query = "select * from account JOIN account_company ON account.num_account=account_company.num_account and account.num_account=" + num_acc;
-            account = new Account();
-            account.receivingQueryForSearch(query, false, false);
+            receivingQueryForSearch(query, false, false);
         }
     }
 
@@ -162,8 +160,8 @@ public class Account {
                 query += "adres IN " + data[5] + " and "; //если адрес не пуст,добавляем в запрос
             if (data[1] != null) query += "FIO like '%" + data[1] + "%'";
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
-            account = new Account();
-            return account.receivingQueryForSearch(query, true, true); //0-найдено,-1-не найдено
+            //account = new Account();
+            return receivingQueryForSearch(query, true, true); //0-найдено,-1-не найдено
         }
         //если заполнено хотя бы одно поле для юр.лиц
         else {
@@ -194,7 +192,7 @@ public class Account {
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
 
             account = new Account();
-            return account.receivingQueryForSearch(query, true, false);
+            return receivingQueryForSearch(query, true, false);
         }
     }
 
@@ -321,6 +319,8 @@ public class Account {
         boolean changed_fieldsComp = false;//флаг изменения полей для юр.лица (true - хотя бы одно поле было изменено)
 
         String new_adres[] = new String[6];
+        String new_data_acc[] = new String[10];//данные из полей для физ.лица
+
         new_adres[0] = new_data[20];//район
         new_adres[1] = new_data[6];//улица
         new_adres[2] = new_data[7];//дом
@@ -328,24 +328,26 @@ public class Account {
         new_adres[4] = new_data[8];//корпус
         new_adres[5] = new_data[10];//индекс
 
-        for (int i = 0; i < new_adres.length; i++)
-            if (new_adres[i].contains("*")) {
+        for (String new_adre : new_adres)
+            if (new_adre.contains("*")) {
                 changed_adres = true;
                 break;
             }
         if (changed_adres) {//если хотя бы одно поле адреса было изменено
+            int check_adres;
             int result = checkAdresFields(new_adres);//проверка поля адреса на содержимое
-            if (result == 0)
-                //проверить,есть ли такой адрес в таблице адресов,если есть то получить его ид,если нет,то добавить
-
-
-                id_adres = changeAdres(new_data[0], new_adres);//new_data[0]- номер аккаунта,который не изменяется
+            if (result == 0) {//если нет ошибки
+                for(int i=0;i<new_adres.length;i++)new_adres[i]=new_adres[i].replaceAll("\\*","");
+                check_adres = getIdFromAdres(new_adres);
+                if (check_adres != -1)  id_adres = check_adres;//если такой адрес уже есть в системе
+                else id_adres = addNewAdres(new_adres);//иначе добавляем новый
+                changeAdres(new_data[0], String.valueOf(id_adres));//изменяем адрес
+            }
             else return result;//вернуть ошибку
         }
 
-
         //работа с полями для физ.лица,сборка данных в массив,удобный для использования
-        String new_data_acc[] = new String[10];//данные из полей для физ.лица
+
         new_data_acc[0] = new_data[0];//номер лицевого счета
         new_data_acc[1] = new_data[1] + " " + new_data[2] + " " + new_data[3];//ФИО
         new_data_acc[2] = new_data[4];//баланс
@@ -357,8 +359,8 @@ public class Account {
         new_data_acc[8] = new_data[11];//телефон
         new_data_acc[9] = new_data[22];//статус аккаунта
 
-        for (int i = 0; i < new_data_acc.length; i++)
-            if (new_data_acc[i].contains("*")) {
+        for (String aNew_data_acc : new_data_acc)
+            if (aNew_data_acc.contains("*")) {
                 changed_fieldsAcc = true;
                 break;
             }
@@ -380,8 +382,8 @@ public class Account {
             new_data_comp[6] = new_data[17];//инн
             new_data_comp[7] = new_data[13];//название компании
 
-            for (int i = 0; i < new_data_comp.length; i++)
-                if (new_data_comp[i].contains("*")) {
+            for (String aNew_data_comp : new_data_comp)
+                if (aNew_data_comp.contains("*")) {
                     changed_fieldsComp = true;
                     break;
                 }
@@ -402,7 +404,7 @@ public class Account {
      * -1 - если ошибка
      * */
     private static int checkAccountCompFields(String[] new_data_comp) {
-        String s = "";
+        String s;
         for (int i = 1; i < new_data_comp.length; i++)// 0-номер счета
             if (new_data_comp[i].contains("*")) {//если поле было изменено
                 s = new_data_comp[i].replaceAll("\\*", "");//убираем звездочку
@@ -508,7 +510,7 @@ public class Account {
     * -1 - если ошибка
     * */
     private static int checkAccountFields(String[] new_data_acc) throws ParseException {
-        String s = "";
+        String s;
         for (int i = 1; i < new_data_acc.length; i++)// 0-номер счета, 7 - тип потребителя,5- адрес,9 - статус аккаунта, их проверять не надо
             if (new_data_acc[i].contains("*")) {//если поле было изменено
                 s = new_data_acc[i].replaceAll("\\*", "");//убираем звездочку
@@ -631,7 +633,7 @@ public class Account {
     * -1 - ошибка
     */
     private static int checkAdresFields(String[] new_adres) {
-        String s = "";
+        String s;
         for (int i = 1; i < new_adres.length; i++)
             if (new_adres[i].contains("*")) {//если поле было изменено
                 s = new_adres[i].replaceAll("\\*", "");//убираем звездочку
@@ -761,66 +763,10 @@ public class Account {
 
     /*
     * Метод изменяет адрес
-    * Принимает номер аккаунта и новый адрес
+    * Принимает номер аккаунта и айди нового адреса
     * */
-    private static int changeAdres(String num_acc, String[] new_adres) throws Exception {
-        String query = "select adres from account where num_account = " + num_acc;//ищем айди старого адреса
-        int id_adres = -1;//ид старого адреса
-
-        statement = Connect.connection.createStatement();
-        ResultSet resSet = null; //отправка запроса
-        try {
-            statement = Connect.connection.createStatement();
-            resSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        if (resSet != null && resSet.isBeforeFirst()) {
-            while (resSet.next()) {
-                id_adres = resSet.getInt("adres");
-            }
-        }
-        statement.close();
-
-        query = "update adres set ";
-        for (int i = 0; i < new_adres.length; i++) {
-            if (new_adres[i].contains("*"))//если поле содержит звездочку
-                switch (i) {
-                    case 0://район
-                        int id_district = getIndex(new_adres[i].replaceAll("\\*", ""), 0);//получаем индекс района, передаем название района
-                        query += "id_district = " + id_district + ",";
-                        break;
-                    case 1://улица
-                        int id_street = getIndex(new_adres[i].replaceAll("\\*", ""), 1);//получаем индекс улицы, передаем название улицы
-                        if (id_street == -1) {
-                            addNewData(new_adres[i].replaceAll("\\*", ""), 0);//если нет,то добавить в базу
-                            id_street = getIndex(new_adres[i].replaceAll("\\*", ""), 1);//получаем индекс новой улицы
-                        }
-                        query += "id_street = " + id_street + ",";//если такая улица уже есть в базе
-                        break;
-                    case 2://дом
-                        query += "house = \"" + new_adres[i].replaceAll("\\*", "") + "\",";
-                        break;
-                    case 3://квартира
-                        query += "flat = \"" + new_adres[i].replaceAll("\\*", "") + "\" ,";
-                        break;
-                    case 4://корпус
-                        query += "corpus =\"" + new_adres[i].replaceAll("\\*", "") + "\" ,";
-                        break;
-                    case 5://индекс
-                        int id_index = getIndex(new_adres[i].replaceAll("\\*", ""), 2);//получаем индекс индекса, передаем название индекса
-                        if (id_index == -1) {
-                            addNewData(new_adres[i].replaceAll("\\*", ""), 1);//если нет,то добавить в базу
-                            id_index = getIndex(new_adres[i].replaceAll("\\*", ""), 2);//получаем индекс нового индекса
-                        }
-                        query += "id_index = " + id_index;
-                        break;
-                }
-        }
-        //обрезаем последнюю запятую
-        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
-        query += " where id_adres = " + id_adres;
-        System.out.println(query);
+    private static void changeAdres(String num_acc, String id_adrs) throws Exception {
+        String query="update account set adres = "+id_adrs+" where num_account = "+num_acc;
         //выполняем запрос
         statement = Connect.connection.createStatement();
         try {
@@ -829,7 +775,6 @@ public class Account {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return id_adres;
     }
 
     /*
@@ -939,13 +884,12 @@ public class Account {
         for (int i=0;i<adres.length;i++)adres[i]=adres[i].replaceAll("\\*","");//удаление звездочек (адрес)
         for (int i=0;i<account_data.length;i++)account_data[i]=account_data[i].replaceAll("\\*","");//удаление звездочек (поля для физ.лица)
 
+        int chec_adres=getIdFromAdres(adres);
+        if(chec_adres!=-1)account_data[5]= String.valueOf(chec_adres);//если такой адрес уже есть в системе
+        else account_data[5] = Integer.toString(addNewAdres(adres));//добавление адреса
 
-
-        //нужно найти,есть ли же такой адрес в таблице,если есть,то вернуть индекс,если нет,то добавить новый
-        account_data[5] = Integer.toString(addNewAdres(adres));//добавление адреса
         receiveQueryNewAccount(account_data,true);//физ.лицо
         if(!account)receiveQueryNewAccount( account_data_company,false);//если юр.лицо
-
         return 0;
     }
     /*
@@ -1053,7 +997,7 @@ public class Account {
     * boolean inTable - заполняется таблица из формы,иначе - из таблицы в форму
     * boolean type -  true - физ.лицо,false - юр.лицо
     * */
-    private int receivingQueryForSearch(String q, boolean inTable, boolean type) throws Exception {
+    private static int receivingQueryForSearch(String q, boolean inTable, boolean type) throws Exception {
         ResultSet resSet = null; //отправка запроса
         try {
             statement = Connect.connection.createStatement();
@@ -1116,10 +1060,10 @@ public class Account {
     * type - физ.лицо(true) или юр.лицо(false)
     * Заполняет глобальный массив данными
     * */
-    private void getNamesFromIndexes(int id_adres, int id_bank, boolean type) throws SQLException {
+    private static void getNamesFromIndexes(int id_adres, int id_bank, boolean type) throws SQLException {
         //расшифровываем адрес
-        String query_adr = "select * from adres where id_adres=" + id_adres;
-        String[] adres = getAdres(query_adr);
+
+        String[] adres = getAdresFromId(id_adres);
         String bank = "";
         statement = Connect.connection.createStatement();
         ResultSet resSet = null; //отправка запроса
@@ -1152,7 +1096,8 @@ public class Account {
     * Расшифровывает названия по индексам
     * Возвращает адрес в нормальном виде
     * */
-    private String[] getAdres(String query) throws SQLException {
+    private static String[] getAdresFromId(int id_adres) throws SQLException {
+        String query = "select * from adres where id_adres=" + id_adres;
         String adres_ind[] = new String[6];//0-район,1-улица,2-дом,3-квартира,4-корпус,5-индекс
         //получение "цифрового" адреса
         statement = Connect.connection.createStatement();
@@ -1210,5 +1155,55 @@ public class Account {
         adres[5] = new_adres[2];//индекс
 
         return adres;
+    }
+
+    /*
+    * Получает ИД адреса по данным адреса
+    * Принимает адрес
+    * Возвращает его айди
+    * */
+    private static int getIdFromAdres(String [] adres) throws Exception {
+        int id_adres=-1;
+        String query ="select id_adres from adres where ";
+        String column[]=Methods.getColumnName("adres").split(" ");
+        for(int i=0,j=1;i<adres.length;i++,j++){
+            switch (i){
+                case 0://район
+                    int id_district = getIndex(adres[i],0);
+                    query+=column[j]+" = \""+id_district +"\""+ " and ";
+                    break;
+                case 1://улица
+                    int id_street = getIndex(adres[i],1);
+                    query+=column[j]+" = \""+id_street+"\""+ " and ";
+                    break;
+                case 2://дом
+                case 3://квартира
+                case 4: //корпус
+                    query+=column[j]+" = \""+adres[i]+"\""+ " and ";
+                    break;
+                case 5://индекс
+                    int id_index=getIndex(adres[i],2);
+                    query+=column[j]+" = \""+id_index+"\""+ " and ";
+                    break;
+            }
+        }
+        if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
+        statement = Connect.connection.createStatement();
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            while (resSet.next()) {
+                id_adres = resSet.getInt("id_adres");
+            }
+            statement.close();
+            return  id_adres;
+        }
+        statement.close();
+        return id_adres;
     }
 }

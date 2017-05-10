@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 public class GNewAccountPerson extends javax.swing.JDialog {
-    JTextField textfields [];//массив текстовых полей
+    private JTextField textfields [];//массив текстовых полей
 
     private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;

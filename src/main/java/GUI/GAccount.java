@@ -514,7 +514,11 @@ public class GAccount extends javax.swing.JFrame {
         ChangeAccMenuItem.setEnabled(false);
         ChangeAccMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChangeAccMenuItemActionPerformed();
+                try {
+                    ChangeAccMenuItemActionPerformed();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(ChangeAccMenuItem);
@@ -958,14 +962,14 @@ public class GAccount extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void SearchButtonActionPerformed() throws Exception {
-        if(change_mode)makeChanges();//если включен режим изменения
-        else gatherDataForSearch();
+        if(change_mode)change();//если включен режим изменения
+        else search();
     }
 
     /*
     * Метод осуществляет изменение данных
     * */
-    private void makeChanges() throws Exception {
+    private void change() throws Exception {
         new_data=readData();//считывание новых данных
         String local_error="";//если один из комбобоксов не выбран
         boolean loc_error=false;//ошибка в комбобоксах
@@ -982,10 +986,10 @@ public class GAccount extends javax.swing.JFrame {
             //сравнение данных и проверка на изменение данных
             if (Methods.haveNewValues(Methods.compareData(old_data, new_data)) == 0) {//данные не изменялись
                 JOptionPane.showMessageDialog(null, "Данные не были изменены. Выход из режима редактирования...", "Выход", JOptionPane.INFORMATION_MESSAGE);
-                setDefaultConditionButton();
                 NumAccTextField.setEditable(true);
                 ConsTypeComboBox.setEnabled(true);
                 changeMode(false, true);//выход из режима редактирования
+                setDefaultConditionButton();
             } else {
                 Object[] options = {"Да", "Нет"};
                 if (JOptionPane.showOptionDialog(null, "Принять изменения?", "Подтверждение", JOptionPane.YES_NO_OPTION,
@@ -1043,7 +1047,7 @@ public class GAccount extends javax.swing.JFrame {
     /*
     * Метод собирает данные для поиска,затем вызвает метод поиска
     * */
-    private void gatherDataForSearch() throws Exception {
+    private void search() throws Exception {
         String data[] = new String[23];//данные из текстовых полей
         data[0] = NumAccTextField.getText().trim();
 
@@ -1130,7 +1134,7 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void ClearButtonActionPerformed() {
-        CleanFields();
+        cleanFields();
         deleteRows();//очистка таблицы
         SearchButton.setEnabled(true);
         setConditionFields(true,true);  //активные поля
@@ -1142,11 +1146,12 @@ public class GAccount extends javax.swing.JFrame {
 
     //по клику на строке таблицы
     private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws Exception {
-        if(evt.getClickCount()==1&&!change_mode)ClickOnTable();
+        if(evt.getClickCount()==1&&!change_mode)clickOnTable();
     }
 
-    private void ClickOnTable() throws Exception {
+    private void clickOnTable() throws Exception {
         NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        cleanFields();
         WaterconButton.setEnabled(true);
         WatermeterButton.setEnabled(true);
         NewWatermeterMenuItem.setEnabled(true);
@@ -1235,7 +1240,7 @@ public class GAccount extends javax.swing.JFrame {
         contact.setVisible(true);
     }
 
-    private void ChangeAccMenuItemActionPerformed() {
+    private void ChangeAccMenuItemActionPerformed() throws Exception {
         boolean company=false;//если изменяем юр.лицо
         if(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 3)).equals("ЮРИДИЧЕСКОЕ ЛИЦО"))
             company=true;
@@ -1294,7 +1299,7 @@ public class GAccount extends javax.swing.JFrame {
             Account.deleteAccount(num_acc);
             JOptionPane.showMessageDialog(null, "Лицевой счет с номером "+num_acc+" был удален!", "Удаление лицевого счета", JOptionPane.INFORMATION_MESSAGE);
             model.removeRow(ResultTable.getSelectedRow());//удаление строки из таблицы
-            CleanFields();
+            cleanFields();
             setConditionFields(true,true);
             SearchButton.setEnabled(true);
             DeleteAccMenuItem.setEnabled(false);
@@ -1365,7 +1370,7 @@ public class GAccount extends javax.swing.JFrame {
      * Принимает mode (true-вход/false-выход)
      * company: true- юр.лицо,false-физ.лицо
      */
-    private void changeMode(boolean mode,boolean company) {
+    private void changeMode(boolean mode,boolean company) throws Exception {
         if(mode){//включить режим изменения
             change_mode = true;//флаг изменения
             SearchButton.setText("Изменить");
@@ -1383,8 +1388,8 @@ public class GAccount extends javax.swing.JFrame {
             ChangeAccMenuItem.setEnabled(false);
             DeleteAccMenuItem.setEnabled(false);
             setConditionFields(true,company);//активные поля
-            CleanFields();
             deleteRows();
+            cleanFields();
             ResultTable.requestFocus();
             changeStateButtonsForChangeMode(true);
         }
@@ -1416,7 +1421,7 @@ public class GAccount extends javax.swing.JFrame {
     /*
      * Очищает поля в форме
      */
-    private void CleanFields() {
+    private void cleanFields() {
         for(int i=0;i<textfields.length;i++) textfields[i].setText(null);
         for(int i=0;i<comboboxes.length;i++) comboboxes[i].setSelectedIndex(0);
         DateContractDatePicker.setDate(null);
