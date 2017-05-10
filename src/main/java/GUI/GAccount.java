@@ -149,8 +149,8 @@ public class GAccount extends javax.swing.JFrame {
     //добавление в таблицу новой строки
     public static void AddRowTable(Account account) {
         model.addRow(new Object[]{
-                account.num_account, Methods.Zero(Double.toString(Account.account.balance)),
-                account.FIO, account.cons_type});
+                account.num_account, Methods.Zero(Double.toString(Account.balance)),
+                Account.FIO, Account.cons_type});
     }
 
     private void initComponents() throws SQLException {
@@ -1108,6 +1108,8 @@ public class GAccount extends javax.swing.JFrame {
             if (result == 0) {//если что-то найдено
                 Account.account = null;//обнуление абонента
                 ResultTable.requestFocus();
+                ResultTable.setRowSelectionInterval(0, 0);
+                clickOnTable();
             } else {
                 deleteRows();//удаление строк из таблицы
                 JOptionPane.showMessageDialog(null, "Не найдено!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
@@ -1118,7 +1120,7 @@ public class GAccount extends javax.swing.JFrame {
 
     //карточка водомера
     private void WatermeterButtonActionPerformed() {
-        GWatermeter wm = new GWatermeter(true, this);
+        GWatermeter wm = new GWatermeter(this,true);
     }
 
     //карточка водомерного подключения
@@ -1130,7 +1132,7 @@ public class GAccount extends javax.swing.JFrame {
         if(result==-1) {
             JOptionPane.showMessageDialog(null, "По лицевому счету с номером " + NUM_ACC + " не найдено водомерных подключений!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
         }
-        wc.setVisible(true);
+        else  wc.setVisible(true);
     }
 
     private void ClearButtonActionPerformed() {
@@ -1170,18 +1172,18 @@ public class GAccount extends javax.swing.JFrame {
 
         DistrictComboBox.setSelectedItem(Account.names_indexes[0]);
         NumAccTextField.setText(Integer.toString(Account.account.num_account));
-        ConsTypeComboBox.setSelectedItem(Account.account.cons_type);
-        BalanceTextField.setText(Methods.Zero(Double.toString(Account.account.balance)));
-        String FIO[] = Account.account.FIO.split(" ");
+        ConsTypeComboBox.setSelectedItem(Account.cons_type);
+        BalanceTextField.setText(Methods.Zero(Double.toString(Account.balance)));
+        String FIO[] = Account.FIO.split(" ");
         SurnameTextField.setText(FIO[0]);
         NameTextField.setText(FIO[1]);
         MiddleNameTextField.setText(FIO[2]);
-        NumContractTextField.setText(Integer.toString(Account.account.num_contract));
+        NumContractTextField.setText(Integer.toString(Account.num_contract));
 
-        DateContractDatePicker.setDate(Account.account.date_contract);
+        DateContractDatePicker.setDate(Account.date_contract);
 
-        StatusAccComboBox.setSelectedItem(Account.account.acc_status);
-        TelephoneTextField.setText(Account.account.telephone);
+        StatusAccComboBox.setSelectedItem(Account.acc_status);
+        TelephoneTextField.setText(Account.telephone);
         AdressTextField.setText(Account.names_indexes[1]);
         HouseTextField.setText(Account.names_indexes[2]);
 
@@ -1192,16 +1194,16 @@ public class GAccount extends javax.swing.JFrame {
         else CorpusTextField.setText(Account.names_indexes[4]);
 
         IndexTextField.setText(Account.names_indexes[5]);
-        OwnerTextField.setText(Account.account.owner_flat);
+        OwnerTextField.setText(Account.owner_flat);
 
         if (cons_type.equals("ЮРИДИЧЕСКОЕ ЛИЦО")) {//юр.лицо
-            NameCompanyTextField.setText(Account.account.name_company);
-            NumSertifTextField.setText(Long.toString(Account.account.num_cert));
+            NameCompanyTextField.setText(Account.name_company);
+            NumSertifTextField.setText(Long.toString(Account.num_cert));
             BankTextField.setText(Account.names_indexes[6]);
-            BankAccTextField.setText(Long.toString(Account.account.pay_account));
-            INNTextField.setText(Long.toString(Account.account.INN));
-            KPPTextField.setText(Long.toString(Account.account.kpp));
-            BIKTextField.setText(Long.toString(Account.account.bik));
+            BankAccTextField.setText(Long.toString(Account.pay_account));
+            INNTextField.setText(Long.toString(Account.INN));
+            KPPTextField.setText(Long.toString(Account.kpp));
+            BIKTextField.setText(Long.toString(Account.bik));
         }
         setConditionFields(false,true);
         SearchButton.setEnabled(false);
@@ -1320,7 +1322,7 @@ public class GAccount extends javax.swing.JFrame {
 
     //журнал водомеров
     private void WatermeterMenuItemActionPerformed() {
-        GWatermeter wm = new GWatermeter(false, this);
+        GWatermeter wm = new GWatermeter( this,false);
     }
 
     //журнал водомерных подключений
@@ -1422,8 +1424,8 @@ public class GAccount extends javax.swing.JFrame {
      * Очищает поля в форме
      */
     private void cleanFields() {
-        for(int i=0;i<textfields.length;i++) textfields[i].setText(null);
-        for(int i=0;i<comboboxes.length;i++) comboboxes[i].setSelectedIndex(0);
+        for (JTextField textfield : textfields) textfield.setText(null);
+        for (JComboBox comboboxe : comboboxes) comboboxe.setSelectedIndex(0);
         DateContractDatePicker.setDate(null);
         setDefaultConditionButton();
     }
@@ -1444,7 +1446,7 @@ public class GAccount extends javax.swing.JFrame {
      * Принимает sost: true или false
      * Делает активными/неактивными поля соответственно
      */
-    public void setConditionFields(boolean sost,boolean company) {
+    private void setConditionFields(boolean sost, boolean company) {
         //для всех лиц
         for(int i=0;i<13;i++) textfields[i].setEnabled(sost);
         DateContractDatePicker.setEditable(sost);

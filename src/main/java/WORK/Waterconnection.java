@@ -220,7 +220,7 @@ public class Waterconnection {
     * Принимает строкое значеие
     * Возвращает индекс
     * */
-    private static int getIndexOfObject(String s) throws SQLException {
+    public static int getIndexOfObject(String s) throws SQLException {
         String query = "select id from cat_object where object_con = \"" + s + "\"";
         int ind = -1;
         statement = Connect.connection.createStatement();
@@ -430,5 +430,20 @@ public class Waterconnection {
         }
         statement.close();
         return -1;
+    }
+
+    /*
+    * Метод ищет ВП по введенным данным из формы (data)
+    * */
+    public static int searchWaterconnectionFromJournal(String[] data) throws SQLException {
+        waterconnection=null;
+        String column[]=Methods.getColumnName("waterconnection").split(" ");
+        String query = "select * from  waterconnection where ";
+        for (int i = 0; i < data.length; i++)
+                if (data[i] != null)
+                    query += column[i] + "=\"" + data[i] + "\"" + " and ";
+
+        if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
+        return receivingQueryForSearch(query, true);
     }
 }

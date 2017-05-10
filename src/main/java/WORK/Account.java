@@ -18,27 +18,25 @@ public class Account {
     public static String names_indexes[];
     public static Account account;
     public static String error;//текст ошибки
-    private static Statement statement;
-
-    public int num_account;
     //физ.лицо
-    public String FIO;
-    public double balance;
-    public Date date_contract;
-    public int num_contract;
-    public String owner_flat;
-    public String cons_type;
-    public String telephone;
-    public String acc_status;
-    public int kpp;
-    public int bik;
-    public long pay_account;
-    public long num_cert;
-    public long INN;
-    public String name_company;
-    private int adres;
-    //юр.лицо
-    private int bank;
+    public static String FIO;
+    public static double balance;
+    public static Date date_contract;
+    public static int num_contract;
+    public static String owner_flat;
+    public static String cons_type;
+    public static String telephone;
+    public static String acc_status;
+    public static int kpp;
+    public static int bik;
+    public static long pay_account;
+    public static long num_cert;
+    public static long INN;
+    public static String name_company;
+    private static Statement statement;
+    private static int adres;
+    private static  int bank;
+    public int num_account;
 
     private Account() {
     }
@@ -64,22 +62,22 @@ public class Account {
 
     ) {
         this.num_account = num_account;
-        this.FIO = FIO;
-        this.balance = balance;
-        this.date_contract = date_contract;
-        this.num_contract = num_contract;
-        this.adres = adres;
-        this.owner_flat = owner_flat;
-        this.cons_type = cons_type;
-        this.telephone = telephone;
-        this.acc_status = acc_status;
-        this.bank = bank;
-        this.kpp = kpp;
-        this.bik = bik;
-        this.pay_account = pay_account;
-        this.num_cert = num_cert;
-        this.INN = INN;
-        this.name_company = name_company;
+        Account.FIO = FIO;
+        Account.balance = balance;
+        Account.date_contract = date_contract;
+        Account.num_contract = num_contract;
+        Account.adres = adres;
+        Account.owner_flat = owner_flat;
+        Account.cons_type = cons_type;
+        Account.telephone = telephone;
+        Account.acc_status = acc_status;
+        Account.bank = bank;
+        Account.kpp = kpp;
+        Account.bik = bik;
+        Account.pay_account = pay_account;
+        Account.num_cert = num_cert;
+        Account.INN = INN;
+        Account.name_company = name_company;
     }
 
     //для физ.лиц
@@ -95,15 +93,15 @@ public class Account {
                     String acc_status
     ) {
         this.num_account = num_account;
-        this.FIO = FIO;
-        this.balance = balance;
-        this.date_contract = date_contract;
-        this.num_contract = num_contract;
-        this.adres = adres;
-        this.owner_flat = owner_flat;
-        this.cons_type = cons_type;
-        this.telephone = telephone;
-        this.acc_status = acc_status;
+        Account.FIO = FIO;
+        Account.balance = balance;
+        Account.date_contract = date_contract;
+        Account.num_contract = num_contract;
+        Account.adres = adres;
+        Account.owner_flat = owner_flat;
+        Account.cons_type = cons_type;
+        Account.telephone = telephone;
+        Account.acc_status = acc_status;
     }
 
     /*
@@ -134,18 +132,10 @@ public class Account {
         //затем нужно проверить,заполнено ли хотя бы одно поле для юр.лиц
         //если заполнено, то составить запрос на объединение двух таблиц через JOIN
         String column_account[] = getColumnName("watermeter.account").split(" ");//получение имен колонок таблицы account
-        //подсчет пустых полей
-        int counter = 0;
-        for (String d : data) if (!(d == null)) counter++;// нахождение количества ненулевых критериев запроса
-        if (counter == 0) return -1;//если введена пустая строка
+
         //обработка адреса
         String address[] = new String[6];
-
         System.arraycopy(data, 10, address, 0, 6);//копирование полей адреса
-        //for(int i=0;i<address.length;i++)address[i]+="*";//для проверки полей на корректность нужно добавить звезды
-       // if(checkAdresFields(address)!=0)return -1;//если адрес введен неправильно,то вернуть -1
-        //for(int i=0;i<address.length;i++)address[i].replaceAll("\\*","");//убрать звезды
-
         data[5] = checkAddress(address);//проверка,заполнено ли хотя бы одно поле адреса и формирование индексов подходящих адресов
         if (data[5].equals("not found")) return -1;//ничего не найдено,дальше нет смысла проверять
         //если поля для юр.лиц не заполнены
@@ -160,7 +150,6 @@ public class Account {
                 query += "adres IN " + data[5] + " and "; //если адрес не пуст,добавляем в запрос
             if (data[1] != null) query += "FIO like '%" + data[1] + "%'";
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
-            //account = new Account();
             return receivingQueryForSearch(query, true, true); //0-найдено,-1-не найдено
         }
         //если заполнено хотя бы одно поле для юр.лиц
@@ -1043,7 +1032,7 @@ public class Account {
                 if (inTable)
                     GAccount.AddRowTable(account);//запись в таблицу
                 else {
-                    getNamesFromIndexes(account.adres, account.bank, type);//получить названия по индексам
+                    getNamesFromIndexes(adres, bank, type);//получить названия по индексам
                 }
             }
             statement.close();

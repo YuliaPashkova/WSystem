@@ -1,11 +1,18 @@
 package GUI;
 import WORK.Access;
+import WORK.Waterconnection;
+import WORK.Watermeter;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+
 /*
  * Created by Юлия on 18.04.2017.
  */
 public class GWatermeter extends javax.swing.JDialog {
+    private static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+    public javax.swing.JTextField CodeWatconTextField;
     private javax.swing.JMenuItem AcceptChangesMenuItem;
     private javax.swing.JLabel CaliberLabel;
     private javax.swing.JTextField CaliberTextField;
@@ -15,7 +22,6 @@ public class GWatermeter extends javax.swing.JDialog {
     private javax.swing.JLabel CheckLastIndicatLabel;
     private javax.swing.JMenuItem ClearMenuItem;
     private javax.swing.JLabel CodeWatconLabel;
-    private javax.swing.JTextField CodeWatconTextField;
     private org.jdesktop.swingx.JXDatePicker DateCheckDatePicker;
     private javax.swing.JLabel DateCheckLabel;
     private org.jdesktop.swingx.JXDatePicker DateSetDatePicker;
@@ -47,10 +53,21 @@ public class GWatermeter extends javax.swing.JDialog {
     private javax.swing.JLabel TypeLabel;
     private javax.swing.JTextField TypeTextField;
     private javax.swing.JScrollPane jScrollPane1;
-    public GWatermeter(boolean mode,java.awt.Frame parent) {
+
+    public GWatermeter(javax.swing.JDialog parent, boolean mode) {
         super(parent, true);
         initComponents();
         setWMode(mode);
+    }
+
+    public GWatermeter(GAccount parent, boolean mode) {
+        super(parent, true);
+        initComponents();
+        setWMode(mode);
+    }
+
+    public GWatermeter() {
+        initComponents();
     }
 
     public static void main(String args[]) {
@@ -67,8 +84,15 @@ public class GWatermeter extends javax.swing.JDialog {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GWatermeter(true,null).setVisible(true);
+                new GWatermeter().setVisible(true);
             }
+        });
+    }
+
+    //добавление в таблицу новой строки
+    public static void AddRowTable() throws SQLException {
+        model.addRow(new Object[]{
+                Watermeter.num_acc,Watermeter.code_watcon,Watermeter.serial_num,Watermeter.inv_num,Watermeter.type
         });
     }
 
@@ -142,11 +166,6 @@ public class GWatermeter extends javax.swing.JDialog {
         CodeWatconLabel.setText("Код ВП");
 
         CodeWatconTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CodeWatconTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CodeWatconTextFieldActionPerformed(evt);
-            }
-        });
 
         TypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         TypeLabel.setText("Тип водомера");
@@ -157,31 +176,16 @@ public class GWatermeter extends javax.swing.JDialog {
         InventNumLabel.setText("Инвентарный №");
 
         InventNumTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        InventNumTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InventNumTextFieldActionPerformed(evt);
-            }
-        });
 
         SerialNumLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         SerialNumLabel.setText("Заводской №");
 
         SerialNumTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SerialNumTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SerialNumTextFieldActionPerformed(evt);
-            }
-        });
 
         ReleaseYearLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         ReleaseYearLabel.setText("Год выпуска");
 
         ReleaseYearTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ReleaseYearTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ReleaseYearTextFieldActionPerformed(evt);
-            }
-        });
 
         DateCheckLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateCheckLabel.setText("Поверка");
@@ -190,20 +194,10 @@ public class GWatermeter extends javax.swing.JDialog {
         CaliberLabel.setText("Калибр");
 
         CaliberTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CaliberTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CaliberTextFieldActionPerformed(evt);
-            }
-        });
 
         InstalledlLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         InstalledlLabel.setText("Установлен (кем)");
 
-        DateSetDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateSetDatePickerActionPerformed(evt);
-            }
-        });
 
         DateSetLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DateSetLabel.setText("Дата установки");
@@ -212,32 +206,11 @@ public class GWatermeter extends javax.swing.JDialog {
         PrimIndicatLabel.setText("Начальные показания");
 
         PrimIndicatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        PrimIndicatTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PrimIndicatTextFieldActionPerformed(evt);
-            }
-        });
 
-        DateCheckDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateCheckDatePickerActionPerformed(evt);
-            }
-        });
 
         EnterExploitLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         EnterExploitLabel.setText("Ввод в экспл.");
 
-        EnterExploitDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EnterExploitDatePickerActionPerformed(evt);
-            }
-        });
-
-        SealDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SealDatePickerActionPerformed(evt);
-            }
-        });
 
         SealLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         SealLabel.setText("Опломбирован");
@@ -246,20 +219,10 @@ public class GWatermeter extends javax.swing.JDialog {
         LastIndicatLabel.setText("Последние показания");
 
         LastIndicatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        LastIndicatTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LastIndicatTextFieldActionPerformed(evt);
-            }
-        });
 
         CheckLastIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         CheckLastIndicatLabel.setText("Дата снятия последних показаний");
 
-        CheckLastIndicatDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckLastIndicatDatePickerActionPerformed(evt);
-            }
-        });
 
         StatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusLabel.setText("Состояние");
@@ -282,22 +245,23 @@ public class GWatermeter extends javax.swing.JDialog {
         });
         ResultTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ResultTableMouseClicked(evt);
+                try {
+                    ResultTableMouseClicked(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
+        ResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
         jScrollPane1.setViewportView(ResultTable);
 
         InstalledComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГУПС ВОДОКАНАЛ", "АБОНЕНТ" }));
 
         StatusComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "РАБОЧЕЕ", "НЕ РАБОЧЕЕ" }));
-        StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusComboBoxActionPerformed(evt);
-            }
-        });
 
-        EditMenu.setText("Изменения");
+        EditMenu.setText("Редактирование");
 
         ChangesMenu.setText("Изменения");
 
@@ -318,6 +282,7 @@ public class GWatermeter extends javax.swing.JDialog {
         ChangesMenu.add(AcceptChangesMenuItem);
 
         EditMenu.add(ChangesMenu);
+        EditMenu.setEnabled(false);
 
         DeleteMenuItem.setText("Удалить текущий водомер");
         DeleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -500,8 +465,30 @@ public class GWatermeter extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) {
-        // TODO add your handling code here:
+    private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
+        clickOnTable();
+    }
+
+    private void clickOnTable() throws SQLException {
+        EditMenu.setEnabled(true);
+        AcceptChangesMenuItem.setEnabled(false);
+        Watermeter.showWatermeter(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 2)));
+        CodeWatconTextField.setText(String.valueOf(Watermeter.code_watcon));
+        TypeTextField.setText(Watermeter.type);
+        InventNumTextField.setText(String.valueOf(Watermeter.inv_num));
+        SerialNumTextField.setText(String.valueOf(Watermeter.serial_num));
+        ReleaseYearTextField.setText(String.valueOf(Watermeter.year_release));
+        CaliberTextField.setText(String.valueOf(Watermeter.caliber));
+        StatusComboBox.setSelectedItem(Watermeter.status);
+        DateSetDatePicker.setDate(Watermeter.date_set);
+        InstalledComboBox.setSelectedItem(Watermeter.installed);
+        EnterExploitDatePicker.setDate(Watermeter.enter_exploit);
+        SealDatePicker.setDate(Watermeter.seal);
+        DateCheckDatePicker.setDate(Watermeter.date_check);
+        PrimIndicatTextField.setText(String.valueOf(Watermeter.prim_indications));
+        CheckLastIndicatDatePicker.setDate(Watermeter.check_last_indic);
+        LastIndicatTextField.setText(String.valueOf(Watermeter.last_indications));
+
     }
 
     private void AcceptChangesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -524,57 +511,11 @@ public class GWatermeter extends javax.swing.JDialog {
         // TODO add your handling code here:
     }
 
-    private void CodeWatconTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    //удаление строк в таблице
+    public void deleteRows() {
+        model.setRowCount(0);
     }
 
-    private void InventNumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void ReleaseYearTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void SerialNumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CaliberTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DateSetDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void EnterExploitDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void SealDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DateCheckDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void PrimIndicatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void LastIndicatTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void CheckLastIndicatDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
     /*
    * Устаналивает режим работы формы Водомер.
    * Если mode-true, то форма работает в качестве карточки водомера
@@ -583,7 +524,6 @@ public class GWatermeter extends javax.swing.JDialog {
     public void setWMode(boolean mode) {
         if(mode){
             setTitle("Карточка водомера");
-            EditMenu.setEnabled(true);//включение вкладки "редактирование"
             JournalWMMenu.setEnabled(false);//отключени вкладки "журнал водомеров"
             CodeWatconTextField.setEditable(false);
             TypeTextField.setEditable(false);
@@ -600,7 +540,6 @@ public class GWatermeter extends javax.swing.JDialog {
             PrimIndicatTextField.setEditable(false);
             LastIndicatTextField.setEditable(false);
             CheckLastIndicatDatePicker.setEditable(false);
-            setVisible(true);
         }
         else{
             setTitle("Справочник водомеров");
@@ -621,8 +560,6 @@ public class GWatermeter extends javax.swing.JDialog {
             PrimIndicatTextField.setEditable(true);
             LastIndicatTextField.setEditable(true);
             CheckLastIndicatDatePicker.setEditable(true);
-            setVisible(true);
         }
-
     }
 }
