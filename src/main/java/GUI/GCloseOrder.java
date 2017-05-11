@@ -4,7 +4,7 @@ import WORK.Access;
 
 import javax.swing.*;
 
-/**
+/*
  * Created by Юлия on 15.04.2017.
  */
 
@@ -16,9 +16,6 @@ public class GCloseOrder extends javax.swing.JDialog {
     private javax.swing.JTextField NumOrderTextField;
 
     public GCloseOrder(java.awt.Frame parent) {
-        //вызываем конструктор базового класса, т.о. сообщаем, что переданное в качестве аргумента
-        // окно parent является родительским для данного; true - диалог модальный (блокирует выполнение
-        // родительского окна до завершение работы дочернего)
         super(parent, true);
         initComponents();
     }

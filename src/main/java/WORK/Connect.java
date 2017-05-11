@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connect {
-    static final String USERNAME = "root";
-    static final String PASSWORD = "root";
-    static final String URL = "jdbc:mysql://localhost:3306/watermeter";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
+    private static final String URL = "jdbc:mysql://localhost:3306/watermeter";
     public static ResultSet rs;
     static Connection connection;
 
@@ -37,8 +37,7 @@ public class Connect {
         String query="select indx from cat_index";
         rs = stmt.executeQuery(query);
     }
-
-    public static void retrieveObject() throws SQLException {
+    public static void retrieveObject() throws SQLException {//объект подключения
         Statement stmt=connection.createStatement();
         String query="select object_con from cat_object";
         rs = stmt.executeQuery(query);

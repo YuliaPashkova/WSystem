@@ -51,13 +51,11 @@ public class GNewOrder extends javax.swing.JDialog {
         } catch (ClassNotFoundException | InstantiationException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(GNewOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GNewOrder(null).setVisible(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new GNewOrder(null).setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -136,20 +134,14 @@ public class GNewOrder extends javax.swing.JDialog {
         NoteScrollPane.setViewportView(NoteTextArea);
 
         CancelButton.setText("Отмена");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed();
-            }
-        });
+        CancelButton.addActionListener(evt -> CancelButtonActionPerformed());
 
         OkButton.setText("Принять");
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    OkButtonActionPerformed();
-                } catch (ParseException | SQLException e) {
-                    e.printStackTrace();
-                }
+        OkButton.addActionListener(evt -> {
+            try {
+                OkButtonActionPerformed();
+            } catch (ParseException | SQLException e) {
+                e.printStackTrace();
             }
         });
 
