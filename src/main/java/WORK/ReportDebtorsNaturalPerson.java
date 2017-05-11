@@ -127,11 +127,11 @@ public class ReportDebtorsNaturalPerson {
                 "and adres.id_district = cat_district.id\n" +
                 "and adres.id_street = cat_street.id";
         Statement statement = Connect.connection.createStatement();
+        InfoAbonent ia = new InfoAbonent("", 0, "", "","", 0, "-", 0);
         for(int i = 0; i < acc.length; i++){ //по каждому лицевому счету добываем информацию
             //к запросу добавляется очередной лицевой счет
             ResultSet resSet = statement.executeQuery(query + " and num_account =" + acc[i]);
             //пустой абонент, корпус по умолчанию "-"
-            InfoAbonent ia = new InfoAbonent("", 0, "", "","", 0, "-", 0);
             while (resSet.next()) {
                 //очередной абонент
                 ia.fio = resSet.getString("FIO");
