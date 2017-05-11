@@ -1,8 +1,10 @@
 package WORK;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Rob on 07.05.2017.
@@ -24,19 +26,24 @@ public class Magma {
     private byte key[][] = new byte[8][4];
     private int sync[] = new int[8];
 
-    private void initKey(String pathKey) throws IOException {
-       // пример:
+    private static PrintWriter log = null;
+
+    //1 - ошибка, 0 - все отлично
+    private int initKey(String pathKey) throws IOException {
+        // пример:
         // byte k[][] = {
         //        {0x00, 0x11, 0x22, 0x33},//first 32 bit of key
         //        {0x04, 0x10, 0x34, 0x26},
-         //       {0x30, 0x08, 0x02, 0x54},
-         //       {0x46, 0x67, 0x21, 0x06},
-         //       {0x34, 0x67, 0x76, 0x39},
-         //       {0x14, 0x79, 0x51, 0x54},
-         //       {0x25, 0x76, 0x00, 0x09},
-          //      {0x58, 0x47, 0x29, 0x31} //all 256 bit
-       // };
+        //       {0x30, 0x08, 0x02, 0x54},
+        //       {0x46, 0x67, 0x21, 0x06},
+        //       {0x34, 0x67, 0x76, 0x39},
+        //       {0x14, 0x79, 0x51, 0x54},
+        //       {0x25, 0x76, 0x00, 0x09},
+        //      {0x58, 0x47, 0x29, 0x31} //all 256 bit
+        // };
         try (BufferedReader in = new BufferedReader(new FileReader(pathKey))) {//В цикле построчно считываем файл
+            File f = new File(pathKey);
+            if (f.length() != 102) throw new EOFException();
             String s;
             String temp[];
             int j = 0; //счетчик для строк (12)
@@ -46,19 +53,49 @@ public class Magma {
                     key[j][i] = (byte) (Integer.parseInt(temp[i], 16));
                 j++; //следующая 64-значная строка
             }
+        } catch (FileNotFoundException ex) {
+            log.println(getTime() + " Файл с ключом " + pathKey + " не найден.");
+            log.println(getTime() + " Процесс остановлен.");
+            log.close();
+            return 1;
+        } catch (EOFException ex) {
+            log.println(getTime() + " Файл с ключом " + pathKey + " неверный или поврежден.");
+            log.println("Формат файла с ключом должен иметь следующий вид:");
+            log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX");
+            log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX,");
+            log.println("где ХХ - число в шестандцатеричной системе счисления.");
+            log.println("Пример ключа:\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n" +
+                    "   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n");
+            return 1;
         }
-
+        return 0;
     }
-    private void initSync(String pathSync) throws IOException {
+
+    private int initSync(String pathSync) throws IOException {
         ////синхропосылка открытого типа
         //пример: 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28
         ///
         try (BufferedReader in = new BufferedReader(new FileReader(pathSync))) {
+            File f = new File(pathSync);
+            if (f.length() != 23) throw new EOFException();
             String s = in.readLine();
             String temp[] = s.split(" ");
             for (int i = 0; i < temp.length; i++)
                 sync[i] = (byte) (Integer.parseInt(temp[i], 16));
+        } catch (FileNotFoundException ex) {
+            log.println(getTime() + " Файл с начальным заполнителем " + pathSync + " не найден.");
+            log.println(getTime() + " Процесс остановлен.");
+            log.close();
+            return 1;
+        } catch (EOFException ex) {
+            log.println(getTime() + " Файл с начальным заполнителем " + pathSync + " неверный или поврежден.");
+            log.print("Формат файла с начальным заполнителем должен иметь следующий вид:");
+            log.println("XX XX XX XX XX XX XX XX,");
+            log.println("где ХХ - число в шестандцатеричной системе счисления.");
+            log.println("Пример начального заполнителя: FF FF FF FF FF FF FF FF");
+            return 1;
         }
+        return 0;
     }
 
     /**
@@ -70,10 +107,10 @@ public class Magma {
      * @param pathSync - путь к файлу с синхропосылкой
      * @param pathLog - путь к файлу для лога
      */
-    public void decryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
-        encryption(pathIn, pathOut, pathKey, pathSync, pathLog);
+    public static void decryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
+        //1 - дешифрование
+        work(pathIn, pathOut, pathKey, pathSync, pathLog, 1);
     }
-
     /**
      * Осуществляет шифрование файлов, находищхся в папке pathIn
      *
@@ -84,18 +121,55 @@ public class Magma {
      * @param pathLog - путь к файлу для лога
      *
      */
-    public void encryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception {
-        /*
-        TODO pathLog
-        TODO папки
-        */
-        Magma g = new Magma();
-        g.initKey(pathKey);
-        g.initSync(pathSync);
+    public static void encryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
+        //0 - шифрование
+        work(pathIn, pathOut, pathKey, pathSync, pathLog, 0);
+    }
 
+    private static void work(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog, int typeWork) throws Exception {
+        Magma g = new Magma();
+        //PrintWriter обеспечит возможности записи в файл
+        log  = new PrintWriter(pathLog);
+        log.println(g.getDate());
+        log.print(g.getTime() + " Получаю список файлов... ");
+
+        String[] files = g.getFiles(pathIn, typeWork);
+        log.println(" в директории " + pathIn + " найдено " + files.length + " файла(ов).");
+        if(files.length > 0) {
+            log.println("Список файлов:");
+            for (String file : files) log.println("    " + file);
+        } else {
+            log.println(g.getTime() + " Файлы не найдены.");
+            log.println(g.getTime() + " Процесс остановлен.");
+        }
+
+        String fileType = typeWork == 1 ? ".sql" : ".mgm";
+
+        log.println("\n" + g.getTime() + " Инициализирую массив ключей из файла " + pathKey);
+        if(g.initKey(pathKey) == 1){
+            log.println(g.getTime() + " Процесс остановлен.");
+            log.close();
+            return;
+        }
+        log.println(g.getTime() + " Инициализирую начальный заполнитель из файла " + pathSync);
+        if(g.initSync(pathSync) == 1){
+            log.println(g.getTime() +  " Процесс остановлен.");
+            log.close();
+            return;
+        }
+
+        log.println(g.getTime() + " Создаю директорию \"out\" для результата.");
+        if(! new File(pathIn + "out").mkdirs()){
+            log.println(g.getTime() + " Ошибка создания директории \"out\".");
+            log.close();
+            return;
+        }
+
+        log.println("\n" + g.getTime() + " Процесс " + (typeWork == 0? "шифрования" : "дешифрования") + " начат...");
+        log.println("________________________________");
         //шифруем синхропосылку
         //N(N1, N2)
-        int N[] = g.SimpleReplacMode(sync);
+        int N[] = g.SimpleReplacMode(g.sync);
 
         //синхропосылка = начальный заполнитель РГПЧ
         //шифруем в режиме простой замены
@@ -103,41 +177,40 @@ public class Magma {
         //на основе шифрованной синхропосылки получаем первое число из РГПЧ
         N = g.GeneratorOfNumber(N);
 
-        File folder = new File("F://Windows");
+        for (String file1 : files) {
+            log.println(g.getTime() + " Работаю с файлом \"" + file1 + "\"");
+            byte data[] = new byte[8]; //данные для шифрования
+            DataInputStream dis = new DataInputStream(new FileInputStream(pathIn + file1));
+            DataOutputStream dos = new DataOutputStream(new FileOutputStream(pathOut + "out\\" + file1.substring(0, file1.length() - 4) + fileType));
+            int count = dis.read(data);//читает в data и возвращает кол-во считанных байтов в count
+            while (count != -1) {
+                //шифруем первое число
+                N = g.SimpleReplacMode(N);
+                //за раз может зашифровать 2х32 бит данных
+                byte N0[] = new byte[]{(byte) ((N[0] & 0xFF000000L) >> 24), (byte) ((N[0] & 0x00FF0000) >> 16), (byte) ((N[0] & 0x0000FF00) >> 8), (byte) (N[0] & 0x000000FF)};
+                byte N1[] = new byte[]{(byte) ((N[1] & 0xFF000000L) >> 24), (byte) ((N[1] & 0x00FF0000) >> 16), (byte) ((N[1] & 0x0000FF00) >> 8), (byte) (N[1] & 0x000000FF)};
+                //N01 = N0 + N1
+                byte N01[] = new byte[8];
+                System.arraycopy(N0, 0, N01, 0, N0.length);
+                System.arraycopy(N1, 0, N01, 4, N1.length);
 
-        String[] files = folder.list(new FilenameFilter() {
-        @Override public boolean accept(File folder, String name) {
-            return name.endsWith(".txt");
+                for (int w = 0; w < count; w++)
+                    data[w] = (byte) (data[w] ^ N01[w]);
+
+                dos.write(data, 0, count); //пишем столько байт, сколько считали
+                count = dis.read(data);
+
+                //получаем новое псевдослучайное число на основе прошлого шифрованного
+                if (count != -1) N = g.GeneratorOfNumber(N);
+            }
+            log.println(g.getTime() + " Файл \"" + file1 + "\" успешно " + (typeWork == 0? " зашифрован" : " дешифрован"));
+            log.println("________________________________");
+            dis.close();
+            dos.close();
         }
 
-    });
-
-        byte data[] = new byte[8]; //данные для шифрования
-        DataInputStream dis = new DataInputStream(new FileInputStream(pathIn));
-        DataOutputStream dos = new DataOutputStream(new FileOutputStream(pathOut));
-        int count = dis.read(data);//читает в data и возвращает кол-во считанных байтов в count
-        while(count != -1){
-            //шифруем первое число
-            N = g.SimpleReplacMode(N);
-            //за раз может зашифровать 2х32 бит данных
-            byte N0[] = new byte[]{(byte)((N[0] & 0xFF000000L)>>24), (byte)((N[0] & 0x00FF0000)>>16), (byte)((N[0] & 0x0000FF00)>>8), (byte)(N[0] & 0x000000FF)};
-            byte N1[] = new byte[]{(byte)((N[1] & 0xFF000000L)>>24), (byte)((N[1] & 0x00FF0000)>>16), (byte)((N[1] & 0x0000FF00)>>8), (byte)(N[1] & 0x000000FF)};
-            //N01 = N0 + N1
-            byte N01 [] = new byte[8];
-            System.arraycopy(N0, 0, N01, 0, N0.length);
-            System.arraycopy(N1, 0, N01, 4, N1.length);
-
-            for(int w = 0; w < count; w++)
-                data[w] = (byte) (data[w] ^ N01[w]);
-
-            dos.write(data, 0, count); //пишем столько байт, сколько считали
-            count = dis.read(data);
-
-            //получаем новое псевдослучайное число на основе прошлого шифрованного
-            if(count != -1) N = g.GeneratorOfNumber(N);
-        }
-        dis.close();
-        dos.close();
+        log.println(g.getTime() +  " Процесс завершен.\n");
+        log.close();
 
     }
     private int[] SimpleReplacMode(int [] N) throws Exception {
@@ -200,6 +273,25 @@ public class Magma {
         Q[1] += 1;
 
         return Q;
+    }
+
+    private String[] getFiles(String pathIn, int typeWork){
+        File folder = new File(pathIn);
+        return folder.list((File folder1, String name) -> {
+            if(typeWork == 1) return name.endsWith(".mgm");
+            return name.endsWith(".sql");
+        });
+    }
+
+    private String getDate(){
+        Locale local = new Locale("ru","RU");
+        DateFormat df = DateFormat.getDateInstance (DateFormat.DEFAULT, local);
+        return df.format(new Date());
+    }
+    private String getTime(){
+        Locale local = new Locale("ru","RU");
+        DateFormat df = DateFormat.getTimeInstance (DateFormat.DEFAULT, local);
+        return df.format(new Date());
     }
 
 }
