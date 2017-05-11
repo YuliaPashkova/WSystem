@@ -158,7 +158,7 @@ public class Magma {
             return;
         }
 
-        log.println(g.getTime() + " Создаю директорию \"out\" для результата.");
+        log.println(g.getTime() + " В директории " + pathIn + " создаю директорию \"out\" для результата.");
         if(! new File(pathIn + "out").mkdirs()){
             log.println(g.getTime() + " Ошибка создания директории \"out\".");
             log.close();

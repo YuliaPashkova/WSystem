@@ -314,7 +314,6 @@ public class Stribog {
      * @return хэш строки m
      */
     public  String getHash(String m) throws IOException {
-        Stribog G = new Stribog(256);
         byte initial[] = m.getBytes(); //строку в байты
         BigInteger[] message = new BigInteger[initial.length];
         //initil = сообщение, записываем по байтно его в message
