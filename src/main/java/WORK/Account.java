@@ -65,7 +65,6 @@ public class Account {
         //затем нужно проверить,заполнено ли хотя бы одно поле для юр.лиц
         //если заполнено, то составить запрос на объединение двух таблиц через JOIN
         String column_account[] = getColumnName("watermeter.account").split(" ");//получение имен колонок таблицы account
-
         //обработка адреса
         String address[] = new String[6];
         System.arraycopy(data, 10, address, 0, 6);//копирование полей адреса
@@ -232,8 +231,7 @@ public class Account {
     * Метод анализирует новые данные и изменяет в БД
     * Возвращает
     * 0 - без ошибок
-    *
-    * */
+    */
     public static int changeData(String[] new_data) throws Exception {
         int id_adres = -1;
         boolean changed_adres = false;//флаг изменения адреса (true - адрес был изменен)
@@ -269,7 +267,6 @@ public class Account {
         }
 
         //работа с полями для физ.лица,сборка данных в массив,удобный для использования
-
         new_data_acc[0] = new_data[0];//номер лицевого счета
         new_data_acc[1] = new_data[1] + " " + new_data[2] + " " + new_data[3];//ФИО
         new_data_acc[2] = new_data[4];//баланс
@@ -291,8 +288,6 @@ public class Account {
             if (result == 0) changeDataAcc(new_data_acc);//изменение полей для физ.лица
             else return result;
         }
-
-
         if (new_data_acc[7].equals("ЮРИДИЧЕСКОЕ ЛИЦО")) {
             String new_data_comp[] = new String[8];//данные из полей для юр.лица
             new_data_comp[0] = new_data[0];//номер лицевого счета
@@ -309,7 +304,6 @@ public class Account {
                     changed_fieldsComp = true;
                     break;
                 }
-
             if (changed_fieldsComp) {//если хотя бы одно поле  было изменено
                 int result = checkAccountCompFields(new_data_comp);//проверка полей для юр.лица на содержимое
                 //тут должна быть проверка на содержимое полей
@@ -332,94 +326,37 @@ public class Account {
                 s = new_data_comp[i].replaceAll("\\*", "");//убираем звездочку
                 switch (i) {
                     case 1://банк
-                        if (s.equals("")) {
-                            error = "Поле \"Банк плательщика\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() > 50) {
-                            error = "Поле \"Банк плательщика\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Банк плательщика\" не может быть пустым!";return -1;}
+                        if (s.length() > 50) {error = "Поле \"Банк плательщика\" содержит много символов!";return -1;}
                         break;
                     case 2://кпп
-                        if (s.equals("")) {
-                            error = "Поле \"КПП\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"КПП\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() != 9) {
-                            error = "Поле \"КПП\" должно содержать 9 символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"КПП\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"КПП\" должно содержать только цифры!";return -1;}
+                        if (s.length() != 9) {error = "Поле \"КПП\" должно содержать 9 символов!";return -1;}
                         break;
                     case 3://бик
-                        if (s.equals("")) {
-                            error = "Поле \"БИК\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"БИК\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() != 9) {
-                            error = "Поле \"БИК\" должно содержать 9 символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"БИК\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"БИК\" должно содержать только цифры!";return -1;}
+                        if (s.length() != 9) {error = "Поле \"БИК\" должно содержать 9 символов!";return -1;}
                         break;
                     case 4://расчетный счет
-                        if (s.equals("")) {
-                            error = "Поле \"Расчетный счет\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"Расчетный счет\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() != 18) {
-                            error = "Поле \"Расчетный счет\" должно содержать 18 символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Расчетный счет\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"Расчетный счет\" должно содержать только цифры!";return -1;}
+                        if (s.length() != 18) {error = "Поле \"Расчетный счет\" должно содержать 18 символов!";return -1;}
                         break;
                     case 5://номер сертификата
-                        if (s.equals("")) {
-                            error = "Поле \"№ свидетельства\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"№ свидетельства\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() != 15) {
-                            error = "Поле \"№ свидетельства\" должно содержать 15 символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"№ свидетельства\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"№ свидетельства\" должно содержать только цифры!";return -1;}
+                        if (s.length() != 15) {error = "Поле \"№ свидетельства\" должно содержать 15 символов!";return -1;}
                         break;
                     case 6://инн
-                        if (s.equals("")) {
-                            error = "Поле \"ИНН\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"ИНН\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() != 10) {
-                            error = "Поле \"ИНН\" должно содержать 10 символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"ИНН\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"ИНН\" должно содержать только цифры!";return -1;}
+                        if (s.length() != 10) {error = "Поле \"ИНН\" должно содержать 10 символов!";return -1;}
                         break;
                     case 7://название компании
-                        if (s.equals("")) {
-                            error = "Поле \"Название компании\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() > 45) {
-                            error = "Поле \"Название компании\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Название компании\" не может быть пустым!";return -1;}
+                        if (s.length() > 45) {error = "Поле \"Название компании\" содержит много символов!";return -1;}
                         break;
                 }
             }
@@ -505,66 +442,27 @@ public class Account {
                 s = new_adres[i].replaceAll("\\*", "");//убираем звездочку
                 switch (i) {//район проверять не нужно
                     case 1://проверка улицы
-                        if (s.equals("")) {
-                            error = "Поле \"Улица\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() > 50) {//проверка улицы
-                            error = "Поле \"Улица\" содержит много символов!";
-                            return -1;
-                        }
-                        if (!Methods.isStreet(s)) {
-                            error = "Поле \"Улица\" содержит недопустимые символы или имеет неправильный формат!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Улица\" не может быть пустым!";return -1;}
+                        if (s.length() > 50) {error = "Поле \"Улица\" содержит много символов!";return -1;}
+                        if (!Methods.isStreet(s)) {error = "Поле \"Улица\" содержит недопустимые символы или имеет неправильный формат!";return -1;}
                         break;
                     case 2: //дом
-                        if (!Methods.isLetterOrDigit(s)) {
-                            error = "Поле \"Дом\" должно содержать  цифры или буквы!";
-                            return -1;
-                        }
-                        if (s.equals("")) {
-                            error = "Поле \"Дом\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() > 4) {
-                            error = "Поле \"Дом\" содержит много символов!";
-                            return -1;
-                        }
+                        if (!Methods.isLetterOrDigit(s)) {error = "Поле \"Дом\" должно содержать  цифры или буквы!";return -1;}
+                        if (s.equals("")) {error = "Поле \"Дом\" не может быть пустым!";return -1;}
+                        if (s.length() > 4) {error = "Поле \"Дом\" содержит много символов!";return -1;}
                         break;
                     case 3://квартира
-                        if (s.length() > 3) {
-                            error = "Поле \"Квартира\" содержит много символов!";
-                            return -1;
-                        }
-                        if ((!Methods.isOnlyDigit(s) && !s.equals(""))) {
-                            error = "Поле \"Квартира\" должно содержать только цифры!";
-                            return -1;
-                        }
+                        if (s.length() > 3) {error = "Поле \"Квартира\" содержит много символов!";return -1;}
+                        if ((!Methods.isOnlyDigit(s) && !s.equals(""))) {error = "Поле \"Квартира\" должно содержать только цифры!";return -1;}
                         break;
                     case 4://корпус
-                        if (!Methods.isLetterOrDigit(s)) {
-                            error = "Поле \"Корпус\" должно содержать  цифры или буквы!";
-                            return -1;
-                        }
-                        if (s.length() > 3) {
-                            error = "Поле \"Корпус\" содержит много символов!";
-                            return -1;
-                        }
+                        if (!Methods.isLetterOrDigit(s)) {error = "Поле \"Корпус\" должно содержать  цифры или буквы!";return -1;}
+                        if (s.length() > 3) {error = "Поле \"Корпус\" содержит много символов!";return -1;}
                         break;
                     case 5://индекс
-                        if (s.equals("")) {
-                            error = "Поле \"Индекс\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() != 6) {
-                            error = "Поле \"Индекс\" должно содержать 6 символов!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s) || s.contains("-")) {
-                            error = "Поле \"Индекс\" должно содержать только цифры!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Индекс\" не может быть пустым!";return -1;}
+                        if (s.length() != 6) {error = "Поле \"Индекс\" должно содержать 6 символов!";return -1;}
+                        if (!Methods.isOnlyDigit(s) || s.contains("-")) {error = "Поле \"Индекс\" должно содержать только цифры!";return -1;}
                         break;
                 }
             }
@@ -993,7 +891,6 @@ public class Account {
         columns[2] = "indx";
         //название по индексам
         String new_adres[] = new String[3];//0-район,1-улица,2- индекс
-
         for (int i = 0; i < queries.length; i++) {
             resSet = null;
             try {
@@ -1008,7 +905,6 @@ public class Account {
             }
         }
         statement.close();
-
         String adres[] = new String[6];
         adres[0] = new_adres[0];//район
         adres[1] = new_adres[1];//улица
@@ -1016,7 +912,6 @@ public class Account {
         adres[3] = adres_ind[3];//квартира
         adres[4] = adres_ind[4];//корпус
         adres[5] = new_adres[2];//индекс
-
         return adres;
     }
 

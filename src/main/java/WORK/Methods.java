@@ -5,11 +5,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
+/*
  * Created by Юлия on 02.05.2017.
  */
 public class Methods {
-    static Statement statement;
+    private static Statement statement;
 
     /* Метод возвращает имена колонок таблицы
      * nameTable - имя таблицы, для которой надо получить массив имен колонок
@@ -25,7 +25,7 @@ public class Methods {
             c += rsmd.getColumnName(i) + " ";
         return c;
     }
-    /**
+    /*
      * Рассчитывает суммарный баланс по лицевым счетам, которые находятся в таблице результата
      * Принимает строку,содержащую номера лицевых счетов
      * Возвращает суммарный баланс
@@ -43,7 +43,7 @@ public class Methods {
         }
         return balance;
     }
-    /**
+    /*
      * Добавляет нули к числу типа double, если требуется
      * Возвращает строку типа Х.00 | Х.Х0
      **/
@@ -65,7 +65,7 @@ public class Methods {
             if(!old_data[i].equals(new_data[i]))new_data[i]+="*";//если данные разные,то добавить звездочку
         return new_data;
     }
-    /**
+    /*
      * Метод подсчитывает и возвращает количество измененных полей
      **/
     public static int haveNewValues(String data[]) {

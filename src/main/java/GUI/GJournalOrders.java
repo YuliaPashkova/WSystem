@@ -54,11 +54,7 @@ public class GJournalOrders extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(GJournalOrders.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GJournalOrders(null).setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new GJournalOrders(null).setVisible(true));
     }
 
     //добавление в таблицу новой строки
@@ -112,13 +108,11 @@ public class GJournalOrders extends javax.swing.JDialog {
 
         searchButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         searchButton.setText("Поиск");
-        searchButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    SearchButtonActionPerformed();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        searchButton.addActionListener(evt -> {
+            try {
+                SearchButtonActionPerformed();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
@@ -137,11 +131,7 @@ public class GJournalOrders extends javax.swing.JDialog {
 
         clearButton.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         clearButton.setText("Очистить форму");
-        clearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed();
-            }
-        });
+        clearButton.addActionListener(evt -> ClearButtonActionPerformed());
         typeWorkLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         typeWorkLabel.setText("Тип работы");
 

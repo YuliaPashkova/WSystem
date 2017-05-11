@@ -3,16 +3,13 @@ package GUI;
  * Created by Юлия on 27.04.2017.
  */
 import WORK.Access;
+import WORK.Magma;
 
 import java.io.File;
 import javax.swing.*;
 
 public class GProtection extends javax.swing.JDialog {
-
-    private javax.swing.JButton ChooseDataButton;
-    private javax.swing.JButton ChooseKeyButton;
-    private javax.swing.JButton ChooseLogButton;
-    private javax.swing.JButton ChooseSynchroButton;
+    private static boolean mode=true;//true - шифрование,false - дешифрование
     private javax.swing.JButton CryptButton;
     private javax.swing.JFileChooser DataFileChooser;
     private javax.swing.JFileChooser KeyFileChooser;
@@ -22,7 +19,7 @@ public class GProtection extends javax.swing.JDialog {
     private javax.swing.JTextField PathLogTextField;
     private javax.swing.JTextField PathSynchroTextField;
     private javax.swing.JFileChooser SynchroFileChooser;
-    public GProtection(boolean mode,java.awt.Frame parent) {
+    GProtection(boolean mode, java.awt.Frame parent) {
         super(parent, true);
         initComponents();
         setMode(mode);
@@ -40,11 +37,7 @@ public class GProtection extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(GProtection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GProtection(true,null).setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new GProtection(true,null).setVisible(true));
     }
 
     private void initComponents() {
@@ -52,11 +45,11 @@ public class GProtection extends javax.swing.JDialog {
         KeyFileChooser = new javax.swing.JFileChooser();
         LogFileChooser = new javax.swing.JFileChooser();
         SynchroFileChooser = new javax.swing.JFileChooser();
-        ChooseDataButton = new javax.swing.JButton();
+        JButton chooseDataButton = new JButton();
         CryptButton = new javax.swing.JButton();
-        ChooseKeyButton = new javax.swing.JButton();
-        ChooseLogButton = new javax.swing.JButton();
-        ChooseSynchroButton = new javax.swing.JButton();
+        JButton chooseKeyButton = new JButton();
+        JButton chooseLogButton = new JButton();
+        JButton chooseSynchroButton = new JButton();
         PathDataTextField = new javax.swing.JTextField();
         PathKeyTextField = new javax.swing.JTextField();
         PathLogTextField = new javax.swing.JTextField();
@@ -69,40 +62,26 @@ public class GProtection extends javax.swing.JDialog {
         setIconImage(icon.getImage());
         setTitle("Шифрование данных ("+ Access.name_operator+")");
 
-        ChooseDataButton.setText("Выбрать файлы SQL");
-        ChooseDataButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChooseDataButtonActionPerformed(evt);
-            }
-        });
+        chooseDataButton.setText("Выбрать файлы SQL");
+        chooseDataButton.addActionListener(this::ChooseDataButtonActionPerformed);
 
         CryptButton.setText("Зашифровать данные");
-        CryptButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CryptButtonActionPerformed(evt);
+        CryptButton.addActionListener((evt) -> {
+            try {
+                CryptButtonActionPerformed();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-        ChooseKeyButton.setText("Выбрать файл с ключом");
-        ChooseKeyButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChooseKeyButtonActionPerformed(evt);
-            }
-        });
+        chooseKeyButton.setText("Выбрать файл с ключом");
+        chooseKeyButton.addActionListener(this::ChooseKeyButtonActionPerformed);
 
-        ChooseLogButton.setText("Выбрать файл для лога");
-        ChooseLogButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChooseLogButtonActionPerformed(evt);
-            }
-        });
+        chooseLogButton.setText("Выбрать файл для лога");
+        chooseLogButton.addActionListener(this::ChooseLogButtonActionPerformed);
 
-        ChooseSynchroButton.setText("Выбрать файл с синхропосылкой");
-        ChooseSynchroButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ChooseSynchroButtonActionPerformed(evt);
-            }
-        });
+        chooseSynchroButton.setText("Выбрать файл с синхропосылкой");
+        chooseSynchroButton.addActionListener(this::ChooseSynchroButtonActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,10 +92,10 @@ public class GProtection extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(ChooseSynchroButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(ChooseDataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(ChooseKeyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(ChooseLogButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(chooseSynchroButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(chooseDataButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(chooseKeyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(chooseLogButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(PathDataTextField)
@@ -135,18 +114,18 @@ public class GProtection extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(ChooseDataButton)
+                                                        .addComponent(chooseDataButton)
                                                         .addComponent(PathDataTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ChooseKeyButton))
+                                                .addComponent(chooseKeyButton))
                                         .addComponent(PathKeyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ChooseLogButton)
+                                        .addComponent(chooseLogButton)
                                         .addComponent(PathLogTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ChooseSynchroButton)
+                                        .addComponent(chooseSynchroButton)
                                         .addComponent(PathSynchroTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(CryptButton)
@@ -155,7 +134,7 @@ public class GProtection extends javax.swing.JDialog {
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>
+    }
 
     private void ChooseDataButtonActionPerformed(java.awt.event.ActionEvent evt) {
         DataFileChooser.setFileFilter(new FileFilter(".sql"));
@@ -167,8 +146,17 @@ public class GProtection extends javax.swing.JDialog {
         }
     }
 
-    private void CryptButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void CryptButtonActionPerformed() throws Exception {
+        if(mode) {
+            Magma.encryption(PathDataTextField.getText(),PathDataTextField.getText(),PathKeyTextField.getText(),PathSynchroTextField.getText(),PathLogTextField.getText());//шифрование
+            JOptionPane.showMessageDialog(null, "Шифрование файлов SQL прошло успешно! Зашифрованные файлы находятся в папке с файлами SQL.", "Результат шифрования", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        }
+        else{
+            Magma.decryption(PathDataTextField.getText(),PathDataTextField.getText(),PathKeyTextField.getText(),PathSynchroTextField.getText(),PathLogTextField.getText());//дешифрование
+            JOptionPane.showMessageDialog(null, "Дешифрование файлов прошло успешно! Дешифрованные файлы находятся в папке с шифрованными файлами SQL.", "Результат дешифрования", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        }
     }
 
     private void ChooseKeyButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,16 +193,16 @@ public class GProtection extends javax.swing.JDialog {
       * Если mode-true, то шифрование данных
       * Если mode-false,то дешифрование данных
       */
-    public void setMode(boolean mode) {
-        if(mode){
+    private void setMode(boolean m) {
+        if(m){
+            mode=true;
             setTitle("Шифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Зашифровать данные");
-            setVisible(true);
         }
         else{
-            setTitle("Дешифрвание данных ("+ Access.name_operator+")");
+            mode=false;
+            setTitle("Дешифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Дешифровать данные");
-            setVisible(true);
         }
     }
 }
