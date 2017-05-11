@@ -32,39 +32,6 @@ public class Watermeter {
     public static Watermeter watermeter;
     private static Statement statement;
 
-    private  Watermeter(
-            int code_watcon,
-            String type,
-            int inv_num,
-            int serial_num,
-            int year_release,
-            Date date_check,
-            int caliber,
-            String installed,
-            Date date_set,
-            int prim_indications,
-            Date enter_exploit,
-            Date seal,//опломбирован
-            int last_indications,
-            Date check_last_indic,
-            String status){
-        Watermeter.code_watcon=code_watcon;
-        Watermeter.type =type;
-        Watermeter.inv_num =inv_num;
-        Watermeter.serial_num =serial_num;
-        Watermeter.year_release =year_release;
-        Watermeter.date_check =date_check;
-        Watermeter.caliber =caliber;
-        Watermeter.installed =installed;
-        Watermeter.date_set =date_set;
-        Watermeter.prim_indications =prim_indications;
-        Watermeter.enter_exploit =enter_exploit;
-        Watermeter.seal =seal;
-        Watermeter.last_indications =last_indications;
-        Watermeter.check_last_indic =check_last_indic;
-        Watermeter.status =status;
-    }
-
     /*
      Метод формирует запрос для поиска водомера по коду ВП (если открыть из формы ВП)
      Принимает код ВП
@@ -98,23 +65,21 @@ public class Watermeter {
 
         if (resSet != null && resSet.isBeforeFirst()) {
             while (resSet.next()) {
-                watermeter = new Watermeter(
-                        resSet.getInt("code_watcon"),
-                        resSet.getString("type"),
-                        resSet.getInt("inv_num"),
-                        resSet.getInt("serial_num"),
-                        resSet.getInt("year_release"),
-                        resSet.getDate("date_check"),
-                        resSet.getInt("caliber"),
-                        resSet.getString("installed"),
-                        resSet.getDate("date_set"),
-                        resSet.getInt("prim_indications"),
-                        resSet.getDate("enter_exploit"),
-                        resSet.getDate("seal"),
-                        resSet.getInt("last_indications"),
-                        resSet.getDate("check_last_indic"),
-                        resSet.getString("status")
-                );
+                code_watcon = resSet.getInt("code_watcon");
+                type = resSet.getString("type");
+                inv_num =resSet.getInt("inv_num");
+                serial_num =resSet.getInt("serial_num");
+                year_release = resSet.getInt("year_release");
+                date_check = resSet.getDate("date_check");
+                caliber = resSet.getInt("caliber");
+                installed = resSet.getString("installed");
+                date_set =resSet.getDate("date_set");
+                prim_indications =resSet.getInt("prim_indications");
+                enter_exploit = resSet.getDate("enter_exploit");
+                seal = resSet.getDate("seal");
+                last_indications = resSet.getInt("last_indications");
+                check_last_indic =resSet.getDate("check_last_indic");
+                status =  resSet.getString("status");
                 if (inTable) {
                     num_acc=getNumAccountFromCode();
                     GWatermeter.AddRowTable();//запись в таблицу
