@@ -1,14 +1,18 @@
 package GUI;
 
 import WORK.Access;
+import WORK.Order;
 
 import javax.swing.*;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-/**
+/*
  * Created by Юлия on 15.04.2017.
  */
 public class GNewOrder extends javax.swing.JDialog {
-    // Variables declaration - do not modify
     private javax.swing.JButton CancelButton;
     private org.jdesktop.swingx.JXDatePicker DateRealizDatePicker;
     private javax.swing.JLabel DateRealizLabel;
@@ -31,16 +35,12 @@ public class GNewOrder extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> TypeWorkComboBox;
     private javax.swing.JLabel TypeWorkLabel;
     private javax.swing.JSeparator jSeparator1;
-    public GNewOrder(java.awt.Frame parent) {
-        //вызываем конструктор базового класса, т.о. сообщаем, что переданное в качестве аргумента
-        // окно parent является родительским для данного; true - диалог модальный (блокирует выполнение
-        // родительского окна до завершение работы дочернего)
+    public GNewOrder(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
     }
 
     public static void main(String args[]) {
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Windows".equals(info.getName())) {
@@ -51,17 +51,18 @@ public class GNewOrder extends javax.swing.JDialog {
         } catch (ClassNotFoundException | InstantiationException | javax.swing.UnsupportedLookAndFeelException | IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(GNewOrder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewOrder(null).setVisible(true);
+                try {
+                    new GNewOrder(null).setVisible(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    @SuppressWarnings("unchecked")
-    private void initComponents() {
-
+    private void initComponents() throws SQLException {
         NumOrderLabel = new javax.swing.JLabel();
         NumOrderTextField = new javax.swing.JTextField();
         NumAccLabel = new javax.swing.JLabel();
@@ -100,51 +101,21 @@ public class GNewOrder extends javax.swing.JDialog {
         NumOrderLabel.setText("Номер заказа");
 
         NumOrderTextField.setEnabled(false);
-        NumOrderTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumOrderTextFieldActionPerformed(evt);
-            }
-        });
+        NumOrderTextField.setText(String.valueOf(Order.getLastNumber()+1));
 
         NumAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setEnabled(false);
-        NumAccTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NumAccTextFieldActionPerformed(evt);
-            }
-        });
+        NumAccTextField.setText(GAccount.NUM_ACC);
 
-        TypeWorkComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Не выбрано", "Установка водомера", "Снятие водомера" }));
-        TypeWorkComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TypeWorkComboBoxActionPerformed(evt);
-            }
-        });
+        TypeWorkComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "УСТАНОВКА ВОДОМЕРА", "СНЯТИЕ ВОДОМЕРА" }));
 
         TypeWorkLabel.setText("Тип работы");
 
         StatusTextField.setText("ОТКРЫТ");
         StatusTextField.setEnabled(false);
-        StatusTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StatusTextFieldActionPerformed(evt);
-            }
-        });
 
         StatusLabel.setText("Статус");
-
-        DateRegDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateRegDatePickerActionPerformed(evt);
-            }
-        });
-
-        DateRealizDatePicker.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DateRealizDatePickerActionPerformed(evt);
-            }
-        });
 
         DateRegLabel.setText("Дата оформления");
         DateRegDatePicker.setEnabled(false);
@@ -152,21 +123,11 @@ public class GNewOrder extends javax.swing.JDialog {
         DateRealizLabel.setText("Дата выполнения");
 
         OperatorTextField.setEnabled(false);
-        OperatorTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OperatorTextFieldActionPerformed(evt);
-            }
-        });
+        OperatorTextField.setText(Access.name_operator);
 
         OperatorLabel.setText("Оператор");
 
         SumLabel.setText("Сумма");
-
-        SumTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SumTextFieldActionPerformed(evt);
-            }
-        });
 
         NoteLabel.setText("Примечание");
 
@@ -177,14 +138,18 @@ public class GNewOrder extends javax.swing.JDialog {
         CancelButton.setText("Отмена");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
+                CancelButtonActionPerformed();
             }
         });
 
         OkButton.setText("Принять");
         OkButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OkButtonActionPerformed(evt);
+                try {
+                    OkButtonActionPerformed();
+                } catch (ParseException | SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -297,47 +262,43 @@ public class GNewOrder extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void TypeWorkComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void OkButtonActionPerformed() throws ParseException, SQLException {
+        switch(Order.addOrder(readData())){
+            case 0:
+                JOptionPane.showMessageDialog(null,"Заказ с номером "+NumOrderTextField.getText()+" принят!", "Формирование заказа", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+                break;
+            case -1:
+                JOptionPane.showMessageDialog(null, Order.error, "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+        }
     }
 
-    private void StatusTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private String[] readData() {
+        String data []=new String[9];
+        data[0]= NumAccTextField.getText();
+        data[1]= NumOrderTextField.getText();
+        data[2]= StatusTextField.getText();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            data[3] = dateFormat.format(DateRealizDatePicker.getDate());
+        }catch (NullPointerException ex){
+            data[3]= null;
+        }
+        data[4]= SumTextField.getText().trim();
+        try{
+            data[5] = dateFormat.format(DateRegDatePicker.getDate());
+        }catch (NullPointerException ex){
+            data[5]= null;
+        }
+        data[6]= String.valueOf(Access.id);//ид оператора
+        data[7]= String.valueOf(TypeWorkComboBox.getSelectedItem());
+        data[8]= NoteTextArea.getText().trim();
+        return data;
     }
 
-    private void DateRegDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void DateRealizDatePickerActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void SumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumOrderTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void NumAccTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OperatorTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        //какие-то действия
+    private void CancelButtonActionPerformed() {
         this.dispose(); // уничтожить окно
     }
-
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        //какие-то действия
-        this.dispose(); // уничтожить окно
-
-    }
-    // End of variables declaration
 }

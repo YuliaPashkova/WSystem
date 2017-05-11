@@ -12,8 +12,9 @@ public class Access {
     //login - NikOpl pass-mynameis12
     //login - oksana_sevas pass - 123oksana
 
-    public static String name_operator;//ФИО оператора
+    public static String name_operator="Пашкова Ю.И.";//ФИО оператора
     public static int access;//тип доступа
+    public static int id=1;//id
     private static Statement statement;
     /**
      * Метод принимает логин и пароль
@@ -50,6 +51,7 @@ public class Access {
         if(pass_bd.equals(hash_pass)) {
             getAccess(username);//получаем тип доступа
             getFIO(username);//получаем ФИО
+            getId(username);//получаем ИД
             return 1;//все ок
         }
         else{
@@ -83,6 +85,16 @@ public class Access {
         ResultSet resSet = statement.executeQuery(query);
         while (resSet.next()) {
             name_operator = resSet.getString("FIO");//получаем FIO
+        }
+        statement.close();
+    }
+    private static void getId(String username) throws SQLException {
+        String query = "select id from operator where login = \""+username+"\"";
+        statement = Connect.connection.createStatement();
+
+        ResultSet resSet = statement.executeQuery(query);
+        while (resSet.next()) {
+            id = Integer.parseInt(resSet.getString("id"));//получаем id
         }
         statement.close();
     }

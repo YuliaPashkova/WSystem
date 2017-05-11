@@ -16,18 +16,7 @@ public class Contact {
     public static String telephone;
     public static Contact contact;
     public static String error;//текст ошибки
-    private static int num_account;
     private static Statement statement;
-
-    private Contact(int id, int num_account, String FIO, String post, String email, String telephone
-    ) {
-        Contact.id =id;
-        Contact.num_account = num_account;
-        Contact.FIO = FIO;
-        Contact.post = post;
-        Contact.email = email;
-        Contact.telephone = telephone;
-    }
 
     /*
     Метод формирует запрос для поиска контактного лица по номеру аккаунта
@@ -53,14 +42,12 @@ public class Contact {
         }
         if (resSet != null && resSet.isBeforeFirst()) {
             while (resSet.next()) {
-                contact = new Contact(
-                        resSet.getInt("id"),
-                        resSet.getInt("num_account"),
-                        resSet.getString("FIO"),
-                        resSet.getString("post"),
-                        resSet.getString("email"),
-                        resSet.getString("telephone")
-                );
+                id = resSet.getInt("id");
+                int num_account = resSet.getInt("num_account");
+                FIO = resSet.getString("FIO");
+                post = resSet.getString("post");
+                email = resSet.getString("email");
+                telephone = resSet.getString("telephone");
                 if (inTable) {
                     GContacts.AddRowTable();//запись в таблицу
                 } else {

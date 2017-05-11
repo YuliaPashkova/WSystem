@@ -29,22 +29,6 @@ public class Waterconnection {
     public static int num_account;//номер аккаунта
     private static Statement statement;
 
-    private Waterconnection(int code, String num_TY, Date date_TY, String status, String owner, int object_con,
-                            String type_con, String owner_ter, String location, int depth, String note, int num_account) {
-        Waterconnection.code = code;
-        Waterconnection.num_TY = num_TY;
-        Waterconnection.date_TY = date_TY;
-        Waterconnection.status = status;
-        Waterconnection.owner = owner;
-        Waterconnection.object_con = object_con;
-        Waterconnection.type_con = type_con;
-        Waterconnection.owner_ter = owner_ter;
-        Waterconnection.location = location;
-        Waterconnection.depth = depth;
-        Waterconnection.note = note;
-        Waterconnection.num_account = num_account;
-    }
-
     /*
      Метод формирует запрос для поиска водомерного подключения по номеру аккаунта
      Принимает номер аккаунта
@@ -70,20 +54,18 @@ public class Waterconnection {
         }
         if (resSet != null && resSet.isBeforeFirst()) {
             while (resSet.next()) {
-                waterconnection = new Waterconnection(
-                        resSet.getInt("code"),
-                        resSet.getString("num_TY"),
-                        resSet.getDate("date_TY"),
-                        resSet.getString("status"),
-                        resSet.getString("owner"),
-                        resSet.getInt("object_con"),
-                        resSet.getString("type_con"),
-                        resSet.getString("owner_ter"),
-                        resSet.getString("location"),
-                        resSet.getInt("depth"),
-                        resSet.getString("note"),
-                        resSet.getInt("num_account")
-                );
+                code = resSet.getInt("code");
+                num_TY = resSet.getString("num_TY");
+                date_TY = resSet.getDate("date_TY");
+                status = resSet.getString("status");
+                owner = resSet.getString("owner");
+                object_con = resSet.getInt("object_con");
+                type_con = resSet.getString("type_con");
+                owner_ter =resSet.getString("owner_ter");
+                location = resSet.getString("location");
+                depth = resSet.getInt("depth");
+                note =resSet.getString("note");
+                num_account = resSet.getInt("num_account");
                 if (inTable) {
                     GWaterconnection.AddRowTable();//запись в таблицу
                 } else {
@@ -251,85 +233,40 @@ public class Waterconnection {
                 s = data[i].replaceAll("\\*", "");//убираем звездочку
                 switch (i) {
                     case 1://номер ТУ
-                        if (s.equals("")) {
-                            error = "Поле \"Номер ТУ\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isLetterOrDigit(s)) {
-                            error = "Поле \"Номер ТУ\" должно содержать только цифры или буквы!";
-                            return -1;
-                        }
-                        if (s.length() > 8) {
-                            error = "Поле \"Номер ТУ\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Номер ТУ\" не может быть пустым!";return -1;}
+                        if (!Methods.isLetterOrDigit(s)) {error = "Поле \"Номер ТУ\" должно содержать только цифры или буквы!";return -1;}
+                        if (s.length() > 8) {error = "Поле \"Номер ТУ\" содержит много символов!";return -1;}
                         break;
                     case 2://дата ТУ
-                        if (s.equals("null")) {
-                            error = "Поле \"Дата ТУ\" не может быть пустым!";
-                            return -1;
+                        if (s.equals("null")) {error = "Поле \"Дата ТУ\" не может быть пустым!";return -1;
                         } else {
                             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                             java.util.Date date = format.parse(s);
                             java.util.Date cur_date = new java.util.Date();
                             if (date.after(cur_date)) {
                                 error = "Поле \"Дата ТУ\" не может быть больше текущей даты!";
-                                return -1;
-                            }
-                        }
+                                return -1;}}
                         break;
                     case 5://объект подключения
-                        if (s.equals("")) {
-                            error = "Поле \"Объект подключения\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isLetter(s)) {
-                            error = "Поле \"Объект подключения\" должно содержать только буквы!";
-                            return -1;
-                        }
-                        if (s.length() > 20) {
-                            error = "Поле \"Объект подключения\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Объект подключения\" не может быть пустым!";return -1;}
+                        if (!Methods.isLetter(s)) {error = "Поле \"Объект подключения\" должно содержать только буквы!";return -1;}
+                        if (s.length() > 20) {error = "Поле \"Объект подключения\" содержит много символов!";return -1;}
                         break;
                     case 7://владелец территории
-                        if (s.equals("")) {
-                            error = "Поле \"Принадлежность территории\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOwnerTerrit(s)) {
-                            error = "Поле \"Принадлежность территории\" может содержать только бувы, цифры и знак \"минус\"!";
-                            return -1;
-                        }
-                        if (s.length() > 10) {
-                            error = "Поле \"Принадлежность территории\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Принадлежность территории\" не может быть пустым!";return -1;}
+                        if (!Methods.isOwnerTerrit(s)) {error = "Поле \"Принадлежность территории\" может содержать только бувы, цифры и знак \"минус\"!";return -1;}
+                        if (s.length() > 10) {error = "Поле \"Принадлежность территории\" содержит много символов!";return -1;}
                         break;
                     case 8://местонахождение
-                        if (s.length() > 45) {
-                            error = "Поле \"Местонахождение\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.length() > 45) {error = "Поле \"Местонахождение\" содержит много символов!";return -1;}
                         break;
                     case 9://глубина
-                        if (s.equals("")) {
-                            error = "Поле \"Глубина\" не может быть пустым!";
-                            return -1;
+                        if (s.equals("")) {error = "Поле \"Глубина\" не может быть пустым!";return -1;
                         }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"Глубина\" может содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() > 2) {
-                            error = "Поле \"Глубина\" содержит много символов!";
-                            return -1;
-                        }
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"Глубина\" может содержать только цифры!";return -1;}
+                        if (s.length() > 2) {error = "Поле \"Глубина\" содержит много символов!";return -1;}
                     case 10://примечание
-                        if (s.length() > 100) {
-                            error = "Поле \"Примечание\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.length() > 100) {error = "Поле \"Примечание\" содержит много символов!";return -1;}
                         break;
                 }
             }

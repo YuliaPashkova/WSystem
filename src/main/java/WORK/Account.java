@@ -18,7 +18,6 @@ public class Account {
     public static String names_indexes[];
     public static Account account;
     public static String error;//текст ошибки
-    //физ.лицо
     public static String FIO;
     public static double balance;
     public static Date date_contract;
@@ -33,76 +32,10 @@ public class Account {
     public static long num_cert;
     public static long INN;
     public static String name_company;
+    public static int num_account;
     private static Statement statement;
     private static int adres;
     private static  int bank;
-    public int num_account;
-
-    private Account() {
-    }
-
-    //для юр.лиц
-    private Account(int num_account,
-                    String FIO,
-                    double balance,
-                    Date date_contract,
-                    int num_contract,
-                    int adres,
-                    String owner_flat,
-                    String cons_type,
-                    String telephone,
-                    String acc_status,
-                    int bank,
-                    int kpp,
-                    int bik,
-                    long pay_account,
-                    long num_cert,
-                    long INN,
-                    String name_company
-
-    ) {
-        this.num_account = num_account;
-        Account.FIO = FIO;
-        Account.balance = balance;
-        Account.date_contract = date_contract;
-        Account.num_contract = num_contract;
-        Account.adres = adres;
-        Account.owner_flat = owner_flat;
-        Account.cons_type = cons_type;
-        Account.telephone = telephone;
-        Account.acc_status = acc_status;
-        Account.bank = bank;
-        Account.kpp = kpp;
-        Account.bik = bik;
-        Account.pay_account = pay_account;
-        Account.num_cert = num_cert;
-        Account.INN = INN;
-        Account.name_company = name_company;
-    }
-
-    //для физ.лиц
-    private Account(int num_account,
-                    String FIO,
-                    double balance,
-                    Date date_contract,
-                    int num_contract,
-                    int adres,
-                    String owner_flat,
-                    String cons_type,
-                    String telephone,
-                    String acc_status
-    ) {
-        this.num_account = num_account;
-        Account.FIO = FIO;
-        Account.balance = balance;
-        Account.date_contract = date_contract;
-        Account.num_contract = num_contract;
-        Account.adres = adres;
-        Account.owner_flat = owner_flat;
-        Account.cons_type = cons_type;
-        Account.telephone = telephone;
-        Account.acc_status = acc_status;
-    }
 
     /*
    Метод формирует запрос для отображения данных лицевого счета в форму,
@@ -506,58 +439,29 @@ public class Account {
                 switch (i) {
                     case 1://ФИО
                         String fio[] = s.trim().split("\\s\\s*");//длина должна быть равна 3 ( ФИО)
-                        if ((s.replaceAll(" ", "").equals("")) || fio.length != 3) {
-                            error = "Поле \"ФИО\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (s.length() > 100) {//проверка фио
-                            error = "Поле \"ФИО\" содержит много символов!";
-                            return -1;
-                        }
-                        if (!Methods.isLetter(s)) {
-                            error = "Поле \"ФИО\" должно содержать только буквы!";
-                            return -1;
-                        }
+                        if ((s.replaceAll(" ", "").equals("")) || fio.length != 3) {error = "Поле \"ФИО\" не может быть пустым!";return -1;}
+                        if (s.length() > 100) {error = "Поле \"ФИО\" содержит много символов!";return -1;}
+                        if (!Methods.isLetter(s)) {error = "Поле \"ФИО\" должно содержать только буквы!";return -1;}
                         break;
 
                     case 2://баланс
-                        if (s.equals("")) {
-                            error = "Поле \"Баланс\" не может быть пустым!";
-                            return -1;
+                        if (s.equals("")) {error = "Поле \"Баланс\" не может быть пустым!";return -1;}
+                        if (s.contains(",")) {new_data_acc[i] = new_data_acc[i].replaceAll(",", ".");s = s.replaceAll(",", ".");}
+                        if (s.equals(".")) {error = "Неправильный формат поля \"Баланс\"!";return -1;}
+                        if (!Methods.isDigit(s)) {error = "Поле \"Баланс\" должно содержать только цифры!";return -1;
                         }
-                        if (s.contains(",")) {
-                            new_data_acc[i] = new_data_acc[i].replaceAll(",", ".");
-                            s = s.replaceAll(",", ".");
-                        }
-                        if (s.equals(".")) {
-                            error = "Неправильный формат поля \"Баланс\"!";
-                            return -1;
-                        }
-                        if (!Methods.isDigit(s)) {
-                            error = "Поле \"Баланс\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.equals("0")) {
-                            new_data_acc[i] = "0.00*";
-                            return 0;
-                        }
-                        if (s.contains(".")) {//если есть дробная часть
-                            String[] balance = s.split("\\.");//делим на дробную и целую части
+                        if (s.equals("0")) {new_data_acc[i] = "0.00*";return 0;}
+                        if (s.contains(".")) {String[] balance = s.split("\\.");//делим на дробную и целую части
                             if (balance[1].length() > 2) {//проверка дробной части
                                 error = "Поле \"Баланс\" превышает максимальное значение!";
                                 return -1;
                             }
                         } else {
-                            if (s.length() > 6) {//проверка целой части
-                                error = "Поле \"Баланс\" превышает максимальное значение!";
-                                return -1;
-                            }
+                            if (s.length() > 6) {error = "Поле \"Баланс\" превышает максимальное значение!";return -1;}
                         }
                         break;
                     case 3://дата договора
-                        if (s.equals("null")) {
-                            error = "Поле \"Дата договора\" не может быть пустым!";
-                            return -1;
+                        if (s.equals("null")) {error = "Поле \"Дата договора\" не может быть пустым!";return -1;
                         } else {
                             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                             java.util.Date date = format.parse(s);
@@ -569,46 +473,19 @@ public class Account {
                         }
                         break;
                     case 4://номер договора
-                        if (s.equals("")) {
-                            error = "Поле \"Номер договора\" не может быть пустым!";
-                            return -1;
-                        }
-                        if ((!Methods.isOnlyDigit(s) && !s.equals(""))) {
-                            error = "Поле \"Номер договора\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() > 6) {
-                            error = "Поле \"Номер договора\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Номер договора\" не может быть пустым!";return -1;}
+                        if ((!Methods.isOnlyDigit(s) && !s.equals(""))) {error = "Поле \"Номер договора\" должно содержать только цифры!";return -1;}
+                        if (s.length() > 6) {error = "Поле \"Номер договора\" содержит много символов!";return -1;}
                         break;
                     case 6://владелец
-                        if (s.equals("")) {
-                            error = "Поле \"Владелец\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isLetter(s)) {
-                            error = "Поле \"Владелец\" должно содержать только буквы!";
-                            return -1;
-                        }
-                        if (s.length() > 100) {
-                            error = "Поле \"Владелец\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Владелец\" не может быть пустым!";return -1;}
+                        if (!Methods.isLetter(s)) {error = "Поле \"Владелец\" должно содержать только буквы!";return -1;}
+                        if (s.length() > 100) {error = "Поле \"Владелец\" содержит много символов!";return -1;}
                         break;
                     case 8://телефон
-                        if (s.equals("")) {
-                            error = "Поле \"Телефон\" не может быть пустым!";
-                            return -1;
-                        }
-                        if (!Methods.isOnlyDigit(s)) {
-                            error = "Поле \"Телефон\" должно содержать только цифры!";
-                            return -1;
-                        }
-                        if (s.length() > 11) {
-                            error = "Поле \"Телефон\" содержит много символов!";
-                            return -1;
-                        }
+                        if (s.equals("")) {error = "Поле \"Телефон\" не может быть пустым!";return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"Телефон\" должно содержать только цифры!";return -1;}
+                        if (s.length() > 11) {error = "Поле \"Телефон\" содержит много символов!";return -1;}
                         break;
                 }
             }
@@ -996,41 +873,39 @@ public class Account {
         }
         if (resSet != null && resSet.isBeforeFirst()) {
             while (resSet.next()) {
-                if (type)
-                    account = new Account(
-                            resSet.getInt("num_account"),
-                            resSet.getString("FIO"),
-                            resSet.getDouble("balance"),
-                            resSet.getDate("date_contract"),
-                            resSet.getInt("num_contract"),
-                            resSet.getInt("adres"),
-                            resSet.getString("owner_flat"),
-                            resSet.getString("cons_type"),
-                            resSet.getString("telephone"),
-                            resSet.getString("acc_status")
-                    );
-                else
-                    account = new Account(
-                            resSet.getInt("num_account"),
-                            resSet.getString("FIO"),
-                            resSet.getDouble("balance"),
-                            resSet.getDate("date_contract"),
-                            resSet.getInt("num_contract"),
-                            resSet.getInt("adres"),
-                            resSet.getString("owner_flat"),
-                            resSet.getString("cons_type"),
-                            resSet.getString("telephone"),
-                            resSet.getString("acc_status"),
-                            resSet.getInt("bank"),
-                            resSet.getInt("kpp"),
-                            resSet.getInt("bik"),
-                            resSet.getLong("pay_account"),
-                            resSet.getLong("num_cert"),
-                            resSet.getLong("INN"),
-                            resSet.getString("name_company")
-                    );
+                if (type) {
+                    Account.num_account = resSet.getInt("num_account");
+                    Account.FIO = resSet.getString("FIO");
+                    Account.balance = resSet.getDouble("balance");
+                    Account.date_contract = resSet.getDate("date_contract");
+                    Account.num_contract = resSet.getInt("num_contract");
+                    Account.adres = resSet.getInt("adres");
+                    Account.owner_flat = resSet.getString("owner_flat");
+                    Account.cons_type = resSet.getString("cons_type");
+                    Account.telephone = resSet.getString("telephone");
+                    Account.acc_status = resSet.getString("acc_status");
+                }
+                else{
+                    Account.num_account = resSet.getInt("num_account");
+                    Account.FIO = resSet.getString("FIO");
+                    Account.balance = resSet.getDouble("balance");
+                    Account.date_contract = resSet.getDate("date_contract");
+                    Account.num_contract = resSet.getInt("num_contract");
+                    Account.adres = resSet.getInt("adres");
+                    Account.owner_flat = resSet.getString("owner_flat");
+                    Account.cons_type = resSet.getString("cons_type");
+                    Account.telephone = resSet.getString("telephone");
+                    Account.acc_status = resSet.getString("acc_status");
+                    Account.bank =  resSet.getInt("bank");
+                    Account.kpp = resSet.getInt("kpp");
+                    Account.bik =  resSet.getInt("bik");
+                    Account.pay_account = resSet.getLong("pay_account");
+                    Account.num_cert = resSet.getLong("num_cert");
+                    Account.INN = resSet.getLong("INN");
+                    Account.name_company = resSet.getString("name_company");
+                }
                 if (inTable)
-                    GAccount.AddRowTable(account);//запись в таблицу
+                    GAccount.AddRowTable();//запись в таблицу
                 else {
                     getNamesFromIndexes(adres, bank, type);//получить названия по индексам
                 }
@@ -1051,7 +926,6 @@ public class Account {
     * */
     private static void getNamesFromIndexes(int id_adres, int id_bank, boolean type) throws SQLException {
         //расшифровываем адрес
-
         String[] adres = getAdresFromId(id_adres);
         String bank = "";
         statement = Connect.connection.createStatement();

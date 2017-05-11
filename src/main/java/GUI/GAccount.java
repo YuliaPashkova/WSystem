@@ -17,98 +17,56 @@ import static WORK.Connect.conntoDB;
  */
 public class GAccount extends javax.swing.JFrame {
     public static String NUM_ACC;//номер аккаунта (необходимо запомнить для контактных лиц)
-    static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
-    boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить лиц.счет",иначе false)
-    JTextField textfields [];//массив текстовых полей
-    JComboBox comboboxes[];//массив комбобоксов
-    String new_data[];//массив новых данных
-    String old_data[];//массив старых данных
+    private static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+    private boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить лиц.счет",иначе false)
+    private JTextField textfields [];//массив текстовых полей
+    private JComboBox comboboxes[];//массив комбобоксов
+    private String old_data[];//массив старых данных
 
-    private javax.swing.JLabel AdressLabel;
     private javax.swing.JTextField AdressTextField;
-    private javax.swing.JLabel BIKLabel;
     private javax.swing.JTextField BIKTextField;
-    private javax.swing.JLabel BalanceLabel;
     private javax.swing.JTextField BalanceTextField;
-    private javax.swing.JLabel BankAccLabel;
     private javax.swing.JTextField BankAccTextField;//расчетный счет
-    private javax.swing.JLabel BankLabel;
     private javax.swing.JTextField BankTextField;
     private javax.swing.JMenu CatalogMenu;
     private javax.swing.JMenuItem ChangeAccMenuItem;
-    private javax.swing.JMenu ChangesMenu;
     private javax.swing.JButton ClearButton;
-    private javax.swing.JMenuItem CloseOrderMenuItem;
     private javax.swing.JComboBox<String> ConsTypeComboBox;
-    private javax.swing.JLabel ConsTypeLabel;
     private javax.swing.JButton ContactsButton;
-    private javax.swing.JLabel CorpusLabel;
     private javax.swing.JTextField CorpusTextField;
     private javax.swing.JButton CountAccButton;
     private javax.swing.JMenu DataProtectionMenu;
     private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
-    private javax.swing.JLabel DateContractLabel;
-    private javax.swing.JMenuItem DecryptDataMenuItem;
     private javax.swing.JMenuItem DeleteAccMenuItem;
     private javax.swing.JComboBox<String> DistrictComboBox;
-    private javax.swing.JLabel DistrictLabel;
     private javax.swing.JMenu DocumentsMenu;
-    private javax.swing.JMenuItem EncryptDataMenuItem;
     private javax.swing.JMenu ExitProgrammMenu;
-    private javax.swing.JLabel FIOLabel;
-    private javax.swing.JLabel FlatLabel;
     private javax.swing.JTextField FlatTextField;
-    private javax.swing.JMenuItem HistoryMenuItem;
-    private javax.swing.JLabel HouseLabel;
     private javax.swing.JTextField HouseTextField;
-    private javax.swing.JLabel INNLabel;
     private javax.swing.JTextField INNTextField;
-    private javax.swing.JLabel IndexLabel;
     private javax.swing.JTextField IndexTextField;
-    private javax.swing.JLabel KPPLabel;
     private javax.swing.JTextField KPPTextField;
-    private javax.swing.JMenuItem ListDeptorsMenuItem;
-    private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JPopupMenu.Separator MenuSeparator;
-    private javax.swing.JPopupMenu.Separator MenuSeparator1;
     private javax.swing.JTextField MiddleNameTextField;
-    private javax.swing.JLabel NameCompanyLabel;
     private javax.swing.JTextField NameCompanyTextField;
     private javax.swing.JTextField NameTextField;
     private javax.swing.JMenuItem NewAccMenuItem;
-    private javax.swing.JMenuItem NewOrderMenuItem;
     private javax.swing.JMenuItem NewWaterconMenuItem;
     private javax.swing.JMenuItem NewWatermeterMenuItem;
-    private javax.swing.JMenuItem NoticeDeptMenuItem;
-    private javax.swing.JLabel NumAccLabel;
     private javax.swing.JTextField NumAccTextField;
-    private javax.swing.JLabel NumContractLabel;
     private javax.swing.JTextField NumContractTextField;
-    private javax.swing.JLabel NumSertifLabel;
     private javax.swing.JTextField NumSertifTextField;
     private javax.swing.JMenu OrderMenu;
-    private javax.swing.JMenuItem OrdersMenuItem;
-    private javax.swing.JLabel OwnerLabel;
     private javax.swing.JTextField OwnerTextField;
-    private javax.swing.JMenuItem PatternDeptMenuItem;
     private javax.swing.JTable ResultTable;
     private javax.swing.JButton SearchButton;
-    private javax.swing.JSeparator Separator;
-    private javax.swing.JLabel StatusAccLabel;
     private javax.swing.JComboBox<String> StatusAccComboBox;
     private javax.swing.JButton SummBalanceButton;
     private javax.swing.JTextField SurnameTextField;
-    private javax.swing.JLabel TelephoneLabel;
     private javax.swing.JTextField TelephoneTextField;
     private javax.swing.JButton WaterconButton;
-    private javax.swing.JMenuItem WaterconMenuItem;
     private javax.swing.JButton WatermeterButton;
-    private javax.swing.JMenuItem WatermeterMenuItem;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
 
-    public GAccount() throws Exception {
+    GAccount() throws Exception {
         conntoDB();
         initComponents();
         textfields = new JTextField[]{//массив текстовых полей
@@ -147,49 +105,49 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //добавление в таблицу новой строки
-    public static void AddRowTable(Account account) {
+    public static void AddRowTable() {
         model.addRow(new Object[]{
-                account.num_account, Methods.Zero(Double.toString(Account.balance)),
+                Account.num_account, Methods.Zero(Double.toString(Account.balance)),
                 Account.FIO, Account.cons_type});
     }
 
     private void initComponents() throws SQLException {
-        DistrictLabel = new javax.swing.JLabel();
-        FIOLabel = new javax.swing.JLabel();
+        JLabel districtLabel = new JLabel();
+        JLabel FIOLabel = new JLabel();
         SurnameTextField = new javax.swing.JTextField();
-        NumAccLabel = new javax.swing.JLabel();
+        JLabel numAccLabel = new JLabel();
         NumAccTextField = new javax.swing.JTextField();
-        BalanceLabel = new javax.swing.JLabel();
+        JLabel balanceLabel = new JLabel();
         BalanceTextField = new javax.swing.JTextField();
         MiddleNameTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
         NumContractTextField = new javax.swing.JTextField();
-        DateContractLabel = new javax.swing.JLabel();
-        NumContractLabel = new javax.swing.JLabel();
-        AdressLabel = new javax.swing.JLabel();
+        JLabel dateContractLabel = new JLabel();
+        JLabel numContractLabel = new JLabel();
+        JLabel adressLabel = new JLabel();
         AdressTextField = new javax.swing.JTextField();
-        HouseLabel = new javax.swing.JLabel();
+        JLabel houseLabel = new JLabel();
         HouseTextField = new javax.swing.JTextField();
-        CorpusLabel = new javax.swing.JLabel();
+        JLabel corpusLabel = new JLabel();
         CorpusTextField = new javax.swing.JTextField();
         FlatTextField = new javax.swing.JTextField();
-        OwnerLabel = new javax.swing.JLabel();
+        JLabel ownerLabel = new JLabel();
         OwnerTextField = new javax.swing.JTextField();
-        ConsTypeLabel = new javax.swing.JLabel();
-        IndexLabel = new javax.swing.JLabel();
-        TelephoneLabel = new javax.swing.JLabel();
+        JLabel consTypeLabel = new JLabel();
+        JLabel indexLabel = new JLabel();
+        JLabel telephoneLabel = new JLabel();
         IndexTextField = new javax.swing.JTextField();
         TelephoneTextField = new javax.swing.JTextField();
-        StatusAccLabel = new javax.swing.JLabel();
+        JLabel statusAccLabel = new JLabel();
         BankTextField = new javax.swing.JTextField();
-        BankLabel = new javax.swing.JLabel();
-        BIKLabel = new javax.swing.JLabel();
-        KPPLabel = new javax.swing.JLabel();
+        JLabel bankLabel = new JLabel();
+        JLabel BIKLabel = new JLabel();
+        JLabel KPPLabel = new JLabel();
         BIKTextField = new javax.swing.JTextField();
         KPPTextField = new javax.swing.JTextField();
-        BankAccLabel = new javax.swing.JLabel();
-        NumSertifLabel = new javax.swing.JLabel();
-        INNLabel = new javax.swing.JLabel();
+        JLabel bankAccLabel = new JLabel();
+        JLabel numSertifLabel = new JLabel();
+        JLabel INNLabel = new JLabel();
         BankAccTextField = new javax.swing.JTextField();
         NumSertifTextField = new javax.swing.JTextField();
         INNTextField = new javax.swing.JTextField();
@@ -199,46 +157,46 @@ public class GAccount extends javax.swing.JFrame {
         DateContractDatePicker.setDate(null);
         DateContractDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
         WatermeterButton = new javax.swing.JButton();
-        Separator = new javax.swing.JSeparator();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JSeparator separator = new JSeparator();
+        JScrollPane jScrollPane1 = new JScrollPane();
         ResultTable = new javax.swing.JTable();
         WaterconButton = new javax.swing.JButton();
         ClearButton = new javax.swing.JButton();
         CountAccButton = new javax.swing.JButton();
         SummBalanceButton = new javax.swing.JButton();
         ContactsButton = new javax.swing.JButton();
-        FlatLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
+        JLabel flatLabel = new JLabel();
+        JSeparator jSeparator2 = new JSeparator();
         NameCompanyTextField = new javax.swing.JTextField();
-        NameCompanyLabel = new javax.swing.JLabel();
+        JLabel nameCompanyLabel = new JLabel();
         DistrictComboBox = new javax.swing.JComboBox<>();
         ConsTypeComboBox = new javax.swing.JComboBox<>();
         StatusAccComboBox = new javax.swing.JComboBox<>();
-        MenuBar = new javax.swing.JMenuBar();
-        ChangesMenu = new javax.swing.JMenu();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu changesMenu = new JMenu();
         NewAccMenuItem = new javax.swing.JMenuItem();
         ChangeAccMenuItem = new javax.swing.JMenuItem();
         DeleteAccMenuItem = new javax.swing.JMenuItem();
-        MenuSeparator1 = new javax.swing.JPopupMenu.Separator();
+        JPopupMenu.Separator menuSeparator1 = new JPopupMenu.Separator();
         NewWatermeterMenuItem = new javax.swing.JMenuItem();
         NewWaterconMenuItem = new javax.swing.JMenuItem();
-        MenuSeparator = new javax.swing.JPopupMenu.Separator();
+        JPopupMenu.Separator menuSeparator = new JPopupMenu.Separator();
         CatalogMenu = new javax.swing.JMenu();
-        WatermeterMenuItem = new javax.swing.JMenuItem();
-        WaterconMenuItem = new javax.swing.JMenuItem();
-        OrdersMenuItem = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        HistoryMenuItem = new javax.swing.JMenuItem();
+        JMenuItem watermeterMenuItem = new JMenuItem();
+        JMenuItem waterconMenuItem = new JMenuItem();
+        JMenuItem ordersMenuItem = new JMenuItem();
+        JPopupMenu.Separator jSeparator1 = new JPopupMenu.Separator();
+        JMenuItem historyMenuItem = new JMenuItem();
         OrderMenu = new javax.swing.JMenu();
-        NewOrderMenuItem = new javax.swing.JMenuItem();
-        CloseOrderMenuItem = new javax.swing.JMenuItem();
+        JMenuItem newOrderMenuItem = new JMenuItem();
+        JMenuItem closeOrderMenuItem = new JMenuItem();
         DocumentsMenu = new javax.swing.JMenu();
-        NoticeDeptMenuItem = new javax.swing.JMenuItem();
-        PatternDeptMenuItem = new javax.swing.JMenuItem();
-        ListDeptorsMenuItem = new javax.swing.JMenuItem();
+        JMenuItem noticeDeptMenuItem = new JMenuItem();
+        JMenuItem patternDeptMenuItem = new JMenuItem();
+        JMenuItem listDeptorsMenuItem = new JMenuItem();
         DataProtectionMenu = new javax.swing.JMenu();
-        EncryptDataMenuItem = new javax.swing.JMenuItem();
-        DecryptDataMenuItem = new javax.swing.JMenuItem();
+        JMenuItem encryptDataMenuItem = new JMenuItem();
+        JMenuItem decryptDataMenuItem = new JMenuItem();
         ExitProgrammMenu = new javax.swing.JMenu();
 
         //AUTOCOMPLETERS
@@ -267,8 +225,8 @@ public class GAccount extends javax.swing.JFrame {
         setIconImage(icon.getImage());
         setResizable(false);
 
-        DistrictLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DistrictLabel.setText("Район");
+        districtLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        districtLabel.setText("Район");
 
         FIOLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         FIOLabel.setText("Фамилия, имя, отчество");
@@ -276,13 +234,13 @@ public class GAccount extends javax.swing.JFrame {
         SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumAccLabel.setText("№ лицевого счета");
+        numAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        BalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BalanceLabel.setText("Баланс");
+        balanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        balanceLabel.setText("Баланс");
 
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -296,27 +254,27 @@ public class GAccount extends javax.swing.JFrame {
         NumContractTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        DateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DateContractLabel.setText("Дата договора");
+        dateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateContractLabel.setText("Дата договора");
 
-        NumContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumContractLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        NumContractLabel.setText("№ договора");
+        numContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numContractLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        numContractLabel.setText("№ договора");
 
-        AdressLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AdressLabel.setText("Адрес");
+        adressLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        adressLabel.setText("Адрес");
 
         AdressTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        HouseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        HouseLabel.setText("Дом");
+        houseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        houseLabel.setText("Дом");
 
         HouseTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        CorpusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CorpusLabel.setText("Корпус");
+        corpusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        corpusLabel.setText("Корпус");
 
         CorpusTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -324,20 +282,20 @@ public class GAccount extends javax.swing.JFrame {
         FlatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerLabel.setText("Владелец");
+        ownerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ownerLabel.setText("Владелец");
 
         OwnerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        ConsTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ConsTypeLabel.setText("Категория потребителей");
+        consTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        consTypeLabel.setText("Категория потребителей");
 
-        IndexLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        IndexLabel.setText("Индекс");
+        indexLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        indexLabel.setText("Индекс");
 
-        TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TelephoneLabel.setText("Телефон");
+        telephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        telephoneLabel.setText("Телефон");
 
         IndexTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -345,13 +303,13 @@ public class GAccount extends javax.swing.JFrame {
         TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        StatusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        StatusAccLabel.setText("Статус cчета");
+        statusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        statusAccLabel.setText("Статус cчета");
 
         BankTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        BankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankLabel.setText("Банк плательщика");
+        bankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bankLabel.setText("Банк плательщика");
 
         BIKLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BIKLabel.setText("БИК");
@@ -365,11 +323,11 @@ public class GAccount extends javax.swing.JFrame {
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        BankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankAccLabel.setText("Расчетный счет");
+        bankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bankAccLabel.setText("Расчетный счет");
 
-        NumSertifLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumSertifLabel.setText("№ свидетельства");
+        numSertifLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numSertifLabel.setText("№ свидетельства");
 
         INNLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         INNLabel.setText("ИНН");
@@ -407,7 +365,7 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        Separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        separator.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         ResultTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
@@ -487,18 +445,18 @@ public class GAccount extends javax.swing.JFrame {
         });
         ContactsButton.setEnabled(false);
 
-        FlatLabel.setText("КВ");
+        flatLabel.setText("КВ");
 
         NameCompanyTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        NameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NameCompanyLabel.setText("Название предприятия");
+        nameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        nameCompanyLabel.setText("Название предприятия");
 
         DistrictComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ГАГАРИНСКИЙ", "ЛЕНИНСКИЙ", "НАХИМОВСКИЙ", "БАЛАКЛАВСКИЙ"}));
         ConsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ФИЗИЧЕСКОЕ ЛИЦО", "ЮРИДИЧЕСКОЕ ЛИЦО"}));
         StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ"}));
 
-        ChangesMenu.setText("Изменения");
+        changesMenu.setText("Изменения");
 
         NewAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         NewAccMenuItem.setText("Новый лицевой счет");
@@ -511,7 +469,7 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        ChangesMenu.add(NewAccMenuItem);
+        changesMenu.add(NewAccMenuItem);
 
         ChangeAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         ChangeAccMenuItem.setText("Изменение текущей записи");
@@ -525,7 +483,7 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        ChangesMenu.add(ChangeAccMenuItem);
+        changesMenu.add(ChangeAccMenuItem);
 
         DeleteAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
         DeleteAccMenuItem.setText("Удалить лицевой счет");
@@ -539,8 +497,8 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        ChangesMenu.add(DeleteAccMenuItem);
-        ChangesMenu.add(MenuSeparator1);
+        changesMenu.add(DeleteAccMenuItem);
+        changesMenu.add(menuSeparator1);
 
         NewWatermeterMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         NewWatermeterMenuItem.setText("Новый водомер");
@@ -554,7 +512,7 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        ChangesMenu.add(NewWatermeterMenuItem);
+        changesMenu.add(NewWatermeterMenuItem);
 
         NewWaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         NewWaterconMenuItem.setText("Новое водомерное подключение");
@@ -568,25 +526,25 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        ChangesMenu.add(NewWaterconMenuItem);
-        ChangesMenu.add(MenuSeparator);
+        changesMenu.add(NewWaterconMenuItem);
+        changesMenu.add(menuSeparator);
 
-        MenuBar.add(ChangesMenu);
+        menuBar.add(changesMenu);
 
         CatalogMenu.setText("Справочники");
 
-        WatermeterMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        WatermeterMenuItem.setText("Водомеры");
-        WatermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        watermeterMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        watermeterMenuItem.setText("Водомеры");
+        watermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WatermeterMenuItemActionPerformed();
             }
         });
-        CatalogMenu.add(WatermeterMenuItem);
+        CatalogMenu.add(watermeterMenuItem);
 
-        WaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
-        WaterconMenuItem.setText("Водомерные подключения");
-        WaterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        waterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, 0));
+        waterconMenuItem.setText("Водомерные подключения");
+        waterconMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
                     WaterconMenuItemActionPerformed();
@@ -595,107 +553,111 @@ public class GAccount extends javax.swing.JFrame {
                 }
             }
         });
-        CatalogMenu.add(WaterconMenuItem);
+        CatalogMenu.add(waterconMenuItem);
 
-        OrdersMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
-        OrdersMenuItem.setText("Журнал заказов");
-        OrdersMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
+        ordersMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
+        ordersMenuItem.setText("Журнал заказов");
+        ordersMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 OrdersMenuItemMouseClicked();
             }
         });
-        OrdersMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        ordersMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrdersMenuItemActionPerformed();
             }
         });
-        CatalogMenu.add(OrdersMenuItem);
+        CatalogMenu.add(ordersMenuItem);
         CatalogMenu.add(jSeparator1);
 
-        HistoryMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
-        HistoryMenuItem.setText("История изменений");
-        HistoryMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        historyMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, 0));
+        historyMenuItem.setText("История изменений");
+        historyMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 HistoryMenuItemActionPerformed();
             }
         });
-        CatalogMenu.add(HistoryMenuItem);
+        CatalogMenu.add(historyMenuItem);
 
-        MenuBar.add(CatalogMenu);
+        menuBar.add(CatalogMenu);
 
         OrderMenu.setText("Заказы");
         OrderMenu.setEnabled(false);
 
-        NewOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
-        NewOrderMenuItem.setText("Новый заказ");
-        NewOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        newOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+        newOrderMenuItem.setText("Новый заказ");
+        newOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewOrderMenuItemActionPerformed();
+                try {
+                    NewOrderMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        OrderMenu.add(NewOrderMenuItem);
+        OrderMenu.add(newOrderMenuItem);
 
-        CloseOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
-        CloseOrderMenuItem.setText("Закрыть заказ");
-        CloseOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        closeOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        closeOrderMenuItem.setText("Закрыть заказ");
+        closeOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CloseOrderMenuItemActionPerformed();
             }
         });
-        OrderMenu.add(CloseOrderMenuItem);
+        OrderMenu.add(closeOrderMenuItem);
 
-        MenuBar.add(OrderMenu);
+        menuBar.add(OrderMenu);
 
         DocumentsMenu.setText("Документы");
 
-        NoticeDeptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
-        NoticeDeptMenuItem.setText("Сформировать извещение о долге");
-        NoticeDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        noticeDeptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
+        noticeDeptMenuItem.setText("Сформировать извещение о долге");
+        noticeDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NoticeDeptMenuItemActionPerformed();
             }
         });
-        DocumentsMenu.add(NoticeDeptMenuItem);
+        DocumentsMenu.add(noticeDeptMenuItem);
 
-        PatternDeptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
-        PatternDeptMenuItem.setText("Шаблон извещения о долге");
-        PatternDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        patternDeptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_MASK));
+        patternDeptMenuItem.setText("Шаблон извещения о долге");
+        patternDeptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PatternDeptMenuItemActionPerformed();
             }
         });
-        DocumentsMenu.add(PatternDeptMenuItem);
+        DocumentsMenu.add(patternDeptMenuItem);
 
-        ListDeptorsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
-        ListDeptorsMenuItem.setText("Список должников");
-        ListDeptorsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        listDeptorsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
+        listDeptorsMenuItem.setText("Список должников");
+        listDeptorsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ListDeptorsMenuItemActionPerformed();
             }
         });
-        DocumentsMenu.add(ListDeptorsMenuItem);
+        DocumentsMenu.add(listDeptorsMenuItem);
 
-        MenuBar.add(DocumentsMenu);
+        menuBar.add(DocumentsMenu);
 
         DataProtectionMenu.setText("Защита данных");
 
-        EncryptDataMenuItem.setText("Шифрование дампа базы данных");
-        EncryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        encryptDataMenuItem.setText("Шифрование дампа базы данных");
+        encryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EncryptDataMenuItemActionPerformed();
             }
         });
-        DataProtectionMenu.add(EncryptDataMenuItem);
+        DataProtectionMenu.add(encryptDataMenuItem);
 
-        DecryptDataMenuItem.setText("Дешифрование дампа базы данных");
-        DecryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        decryptDataMenuItem.setText("Дешифрование дампа базы данных");
+        decryptDataMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DecryptDataMenuItemActionPerformed();
             }
         });
-        DataProtectionMenu.add(DecryptDataMenuItem);
+        DataProtectionMenu.add(decryptDataMenuItem);
 
-        MenuBar.add(DataProtectionMenu);
+        menuBar.add(DataProtectionMenu);
 
         ExitProgrammMenu.setText("Выход");
         ExitProgrammMenu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -708,9 +670,9 @@ public class GAccount extends javax.swing.JFrame {
             }
         });
 
-        MenuBar.add(ExitProgrammMenu);
+        menuBar.add(ExitProgrammMenu);
 
-        setJMenuBar(MenuBar);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -729,7 +691,7 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addComponent(CountAccButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(SummBalanceButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(Separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -743,10 +705,10 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                                                                                         .addGroup(layout.createSequentialGroup()
                                                                                                                 .addGap(36, 36, 36)
-                                                                                                                .addComponent(DistrictLabel)
+                                                                                                                .addComponent(districtLabel)
                                                                                                                 .addGap(43, 43, 43)))
                                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                                                        .addComponent(NumAccLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                                        .addComponent(numAccLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                         .addComponent(NumAccTextField)))
                                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                                                                 .addGap(43, 43, 43)
@@ -756,17 +718,17 @@ public class GAccount extends javax.swing.JFrame {
                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                                                                         .addGap(10, 10, 10)
-                                                                                                        .addComponent(NumContractLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                        .addComponent(numContractLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                         .addGap(43, 43, 43)
-                                                                                                        .addComponent(DateContractLabel))
+                                                                                                        .addComponent(dateContractLabel))
                                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                                         .addComponent(ConsTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                         .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                                .addComponent(ConsTypeLabel)
+                                                                                                .addComponent(consTypeLabel)
                                                                                                 .addGap(29, 29, 29)
-                                                                                                .addComponent(BalanceLabel)))
+                                                                                                .addComponent(balanceLabel)))
                                                                                 .addGap(3, 3, 3))
                                                                         .addComponent(OwnerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -785,7 +747,7 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                                                                 .addComponent(CorpusTextField)
-                                                                                                                .addComponent(CorpusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                                                                .addComponent(corpusLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                         .addComponent(FlatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -798,7 +760,7 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                                         .addComponent(NameTextField))
                                                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                                                         .addGap(85, 85, 85)
-                                                                                                                        .addComponent(AdressLabel)))
+                                                                                                                        .addComponent(adressLabel)))
                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                                                                 .addGroup(layout.createSequentialGroup()
@@ -807,20 +769,20 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                                         .addComponent(DateContractDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                                                         .addGap(10, 10, 10)
-                                                                                                                        .addComponent(StatusAccLabel)
+                                                                                                                        .addComponent(statusAccLabel)
                                                                                                                         .addGap(59, 59, 59)
-                                                                                                                        .addComponent(TelephoneLabel))
+                                                                                                                        .addComponent(telephoneLabel))
                                                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                                                                 .addComponent(StatusAccComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                                                .addComponent(HouseLabel))
+                                                                                                                                .addComponent(houseLabel))
                                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                                                                 .addComponent(TelephoneTextField)
                                                                                                                                 .addGroup(layout.createSequentialGroup()
-                                                                                                                                        .addComponent(FlatLabel)
+                                                                                                                                        .addComponent(flatLabel)
                                                                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                                                        .addComponent(IndexLabel)
+                                                                                                                                        .addComponent(indexLabel)
                                                                                                                                         .addGap(42, 42, 42)))))))
                                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -844,17 +806,17 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                 .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(58, 58, 58)
-                                                                .addComponent(NameCompanyLabel)
+                                                                .addComponent(nameCompanyLabel)
                                                                 .addGap(118, 118, 118)
-                                                                .addComponent(NumSertifLabel))
+                                                                .addComponent(numSertifLabel))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(63, 63, 63)
-                                                                .addComponent(BankLabel)
+                                                                .addComponent(bankLabel)
                                                                 .addGap(137, 137, 137)
-                                                                .addComponent(BankAccLabel))
+                                                                .addComponent(bankAccLabel))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(85, 85, 85)
-                                                                .addComponent(OwnerLabel))))
+                                                                .addComponent(ownerLabel))))
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -876,14 +838,14 @@ public class GAccount extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(ClearButton))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(Separator, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(separator, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGap(3, 3, 3)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(DistrictLabel)
-                                                                .addComponent(NumAccLabel)
-                                                                .addComponent(BalanceLabel)
-                                                                .addComponent(ConsTypeLabel))
+                                                                .addComponent(districtLabel)
+                                                                .addComponent(numAccLabel)
+                                                                .addComponent(balanceLabel)
+                                                                .addComponent(consTypeLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -893,8 +855,8 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(NumContractLabel)
-                                                                        .addComponent(DateContractLabel))
+                                                                        .addComponent(numContractLabel)
+                                                                        .addComponent(dateContractLabel))
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addComponent(FIOLabel)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -905,8 +867,8 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(StatusAccLabel)
-                                                                .addComponent(TelephoneLabel))
+                                                                .addComponent(statusAccLabel)
+                                                                .addComponent(telephoneLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(MiddleNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -914,11 +876,11 @@ public class GAccount extends javax.swing.JFrame {
                                                                 .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGap(10, 10, 10)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(CorpusLabel)
-                                                                .addComponent(FlatLabel)
-                                                                .addComponent(HouseLabel)
-                                                                .addComponent(AdressLabel)
-                                                                .addComponent(IndexLabel))
+                                                                .addComponent(corpusLabel)
+                                                                .addComponent(flatLabel)
+                                                                .addComponent(houseLabel)
+                                                                .addComponent(adressLabel)
+                                                                .addComponent(indexLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(AdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -927,23 +889,23 @@ public class GAccount extends javax.swing.JFrame {
                                                                 .addComponent(FlatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addComponent(IndexTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(OwnerLabel)
+                                                        .addComponent(ownerLabel)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addComponent(OwnerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(NameCompanyLabel)
-                                                                .addComponent(NumSertifLabel))
+                                                                .addComponent(nameCompanyLabel)
+                                                                .addComponent(numSertifLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addComponent(NumSertifTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(BankLabel)
-                                                                .addComponent(BankAccLabel))
+                                                                .addComponent(bankLabel)
+                                                                .addComponent(bankAccLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(BankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -978,7 +940,7 @@ public class GAccount extends javax.swing.JFrame {
     * Метод осуществляет изменение данных
     * */
     private void change() throws Exception {
-        new_data=readData();//считывание новых данных
+        String[] new_data = readData();
         String local_error="";//если один из комбобоксов не выбран
         boolean loc_error=false;//ошибка в комбобоксах
         if(new_data[20].equals("НЕ ВЫБРАНО")){//район
@@ -1007,7 +969,6 @@ public class GAccount extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(null, "Изменение данных прошло успешно! Выход из режима редактирования...", "Результат изменения", JOptionPane.INFORMATION_MESSAGE);
                             NumAccTextField.setEditable(true);
                             ConsTypeComboBox.setEnabled(true);
-                            new_data = null;//очистка
                             old_data = null;
                             changeMode(false, true);//выход из режима редактирования
                             setDefaultConditionButton();
@@ -1188,7 +1149,7 @@ public class GAccount extends javax.swing.JFrame {
         Account.showAccount(num_acc, cons_type);//вызов метода заполнения формы по клику
 
         DistrictComboBox.setSelectedItem(Account.names_indexes[0]);
-        NumAccTextField.setText(Integer.toString(Account.account.num_account));
+        NumAccTextField.setText(Integer.toString(Account.num_account));
         ConsTypeComboBox.setSelectedItem(Account.cons_type);
         BalanceTextField.setText(Methods.Zero(Double.toString(Account.balance)));
         String FIO[] = Account.FIO.split(" ");
@@ -1371,7 +1332,7 @@ public class GAccount extends javax.swing.JFrame {
         // TODO add your handling code here:
     }
 
-    private void NewOrderMenuItemActionPerformed() {
+    private void NewOrderMenuItemActionPerformed() throws SQLException {
         GNewOrder no = new GNewOrder(this);
         no.setVisible(true);
     }
