@@ -498,13 +498,11 @@ public class GWaterconnection extends javax.swing.JDialog {
         for(int i=textfields.length,j=0;i<comboboxes.length +textfields.length;i++,j++)
             datafields[i]=(String)comboboxes[j].getSelectedItem();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date_TY;
         try{
-            date_TY = dateFormat.format(DateTYDatePicker.getDate());//
+            datafields[9] = dateFormat.format(DateTYDatePicker.getDate());//
         }catch (NullPointerException ex){
-            date_TY= null;
+            datafields[9]= null;
         }
-        datafields[9]=date_TY;
         datafields[10]=NoteTextArea.getText();
         for(int i=0;i<datafields.length;i++)
             if(datafields[i]!=null) datafields[i]=datafields[i].toUpperCase();
@@ -674,6 +672,7 @@ public class GWaterconnection extends javax.swing.JDialog {
        GWatermeter wm = new GWatermeter(this,true);
         wm.deleteRows();
         int result=Watermeter.searchWatermeter(CODE);
+        GWatermeter.card=true;
         if(result==-1) {
             JOptionPane.showMessageDialog(null, "На водопроводном подключении с номером "+CODE+" еще не установлено водомеров!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
         }else  wm.setVisible(true);

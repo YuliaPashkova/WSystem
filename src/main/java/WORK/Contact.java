@@ -174,56 +174,23 @@ public class Contact {
                     switch (i) {
                         case 0://фио
                             String fio[] = s.trim().split("\\s\\s*");//длина должна быть равна 3 ( ФИО)
-                            if ((s.replaceAll(" ", "").equals("")) || fio.length != 3) {
-                                error = "Поле \"ФИО\" не может быть пустым!";
-                                return -1;
-                            }
-                            if (s.length() > 100) {//проверка фио
-                                error = "Поле \"ФИО\" содержит много символов!";
-                                return -1;
-                            }
-                            if (!Methods.isLetter(s)) {
-                                error = "Поле \"ФИО\" должно содержать только буквы!";
-                                return -1;
-                            }
+                            if ((s.replaceAll(" ", "").equals("")) || fio.length != 3) {error = "Поле \"ФИО\" не может быть пустым!";return -1;}
+                            if (s.length() > 100) {error = "Поле \"ФИО\" содержит много символов!";return -1;}
+                            if (!Methods.isLetter(s)) {error = "Поле \"ФИО\" должно содержать только буквы!";return -1;}
                             break;
                         case 1://должность
-                            if (s.equals("")){
-                                error = "Поле \"Должность\" не может быть пустым!";
-                                return -1;
-                            }
-                            if (s.length() > 45) {
-                                error = "Поле \"Должность\" содержит много символов!";
-                                return -1;
-                            }
-                            if (!Methods.isLetter(s)) {
-                                error = "Поле \"Должность\" должно содержать только буквы!";
-                                return -1;
-                            }
-                            break;
+                            if (s.equals("")){error = "Поле \"Должность\" не может быть пустым!";return -1;}
+                            if (s.length() > 45) {error = "Поле \"Должность\" содержит много символов!";return -1;}
+                            if (!Methods.isLetter(s)) {error = "Поле \"Должность\" должно содержать только буквы!";return -1;
+                            }break;
                         case 2://email
-                            if (s.length() > 45) {
-                                error = "Поле \"Email\" содержит много символов!";
-                                return -1;
-                            }
-                            if (!Methods.isEmail(s)&&!s.equals("")) {
-                                error = "Поле \"Email\" имеет неверный формат!";
-                                return -1;
-                            }
+                            if (s.length() > 45) {error = "Поле \"Email\" содержит много символов!";return -1;}
+                            if (!Methods.isEmail(s)&&!s.equals("")) {error = "Поле \"Email\" имеет неверный формат!";return -1;}
                             break;
                         case 3://телефон
-                            if (s.equals("")) {
-                                error = "Поле \"Телефон\" не может быть пустым!";
-                                return -1;
-                            }
-                            if (!Methods.isOnlyDigit(s)) {
-                                error = "Поле \"Телефон\" должно содержать только цифры!";
-                                return -1;
-                            }
-                            if (s.length() > 11) {
-                                error = "Поле \"Телефон\" содержит много символов!";
-                                return -1;
-                            }
+                            if (s.equals("")) {error = "Поле \"Телефон\" не может быть пустым!";return -1;}
+                            if (!Methods.isOnlyDigit(s)) {error = "Поле \"Телефон\" должно содержать только цифры!";return -1;}
+                            if (s.length() > 11) {error = "Поле \"Телефон\" содержит много символов!";return -1;}
                             break;
                     }
                 }

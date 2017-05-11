@@ -166,7 +166,6 @@ public class Waterconnection {
         int result = checkWaterconnectionFields(data);//проверка полей  на содержимое
         if (result == 0) receivingQueryForChanging(data);//изменение полей
         else return result;
-        receivingQueryForChanging(data);
         return 0;
     }
 
@@ -336,23 +335,24 @@ public class Waterconnection {
             }
         return 0;
     }
+
     /*
-     * Метод добавляет в бд новое контактное лицо
+     * Метод добавляет в бд новое ВП
      * Принимает данные
      * Возвращает 0  - нет ошибок, -1 -ошибка
      */
     public static int addWaterconnection(String[] new_data) throws ParseException, SQLException {
 
-        if(new_data[6].equals("НЕ ВЫБРАНО")){
-            error="Выберите сстояние!";
+        if (new_data[6].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите состояние!";
             return -1;
         }
-        if(new_data[7].equals("НЕ ВЫБРАНО")){
-            error="Выберите принадлежность ВП!";
+        if (new_data[7].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите принадлежность ВП!";
             return -1;
         }
-        if(new_data[8].equals("НЕ ВЫБРАНО")){
-            error="Выберите вид подключения!";
+        if (new_data[8].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите вид подключения!";
             return -1;
         }
 
@@ -368,36 +368,36 @@ public class Waterconnection {
         data[8] = new_data[4];//местонахождение
         data[9] = new_data[5];//глубина
         data[10] = new_data[10];//примечание
+
         //добавление всем полям звездочки (признак новых данных,для проверки их на корректность)
-        for (int i=0;i<data.length;i++)data[i]+="*";
-        if(checkWaterconnectionFields(data)!=0)return -1;//проверка на корректность
-        for (int i=0;i<data.length;i++)data[i]=data[i].replaceAll("\\*","");//удаление звездочек
+        for (int i = 0; i < data.length; i++) data[i] += "*";
+        if (checkWaterconnectionFields(data) != 0) return -1;//проверка на корректность
+        for (int i = 0; i < data.length; i++) data[i] = data[i].replaceAll("\\*", "");//удаление звездочек
 
 
-        int id_object=getIndexOfObject(new_data[2]);
-        if(id_object==-1) {
+        int id_object = getIndexOfObject(new_data[2]);
+        if (id_object == -1) {
             addNewData(new_data[2]);//добавляем новый объект
             id_object = getIndexOfObject(new_data[2]);//получаем индекс
         }
         data[5] = String.valueOf(id_object);//объект подключения
 
-        receiveQueryNewWaterconnction(data);
+        receiveQueryNewWaterconnection(data);
         return 0;
     }
+
     /*
      * Метод составляет запрос на добавление нового ВП и выполняет его
      * */
-    private static void receiveQueryNewWaterconnction(String[] data) throws SQLException {
+    private static void receiveQueryNewWaterconnection(String[] data) throws SQLException {
         String[] column = Methods.getColumnName("waterconnection").split(" ");
         String query = "insert into waterconnection (";
         for (String aColumn : column) query += aColumn + ",";
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
-        query+=") values (";
+        query += ") values (";
         for (String aData : data) query += "\"" + aData + "\",";
-        query+= GAccount.NUM_ACC;
-        //if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
-        query+=")";
-        System.out.println(query);
+        query += GAccount.NUM_ACC;
+        query += ")";
         statement = Connect.connection.createStatement();
         try {
             statement = Connect.connection.createStatement();
@@ -436,14 +436,38 @@ public class Waterconnection {
     * Метод ищет ВП по введенным данным из формы (data)
     * */
     public static int searchWaterconnectionFromJournal(String[] data) throws SQLException {
-        waterconnection=null;
-        String column[]=Methods.getColumnName("waterconnection").split(" ");
+        waterconnection = null;
+        String column[] = Methods.getColumnName("waterconnection").split(" ");
         String query = "select * from  waterconnection where ";
         for (int i = 0; i < data.length; i++)
-                if (data[i] != null)
-                    query += column[i] + "=\"" + data[i] + "\"" + " and ";
+            if (data[i] != null)
+                query += column[i] + "=\"" + data[i] + "\"" + " and ";
 
         if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
         return receivingQueryForSearch(query, true);
+    }
+
+    /*
+    * Метод ищет все ВП по лицевому счету
+    * Возвращает строку кодов ВП
+    * */
+    public static String showWaterconnectionForWatermer(String num_account) throws SQLException {
+        String nums = "НЕ ВЫБРАНО";
+        String query = "select code from waterconnection where num_account = " + num_account;
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            while (resSet.next()) {
+                nums =nums+"_"+String.valueOf(resSet.getInt("code"));
+            }
+            statement.close();
+            return nums.trim();
+        }
+        return nums;
     }
 }

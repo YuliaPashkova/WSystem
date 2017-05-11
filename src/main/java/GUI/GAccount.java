@@ -399,7 +399,11 @@ public class GAccount extends javax.swing.JFrame {
         WatermeterButton.setEnabled(false);
         WatermeterButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WatermeterButtonActionPerformed();
+                try {
+                    WatermeterButtonActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -543,7 +547,11 @@ public class GAccount extends javax.swing.JFrame {
         NewWatermeterMenuItem.setEnabled(false);
         NewWatermeterMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewWatermeterMenuItemActionPerformed();
+                try {
+                    NewWatermeterMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ChangesMenu.add(NewWatermeterMenuItem);
@@ -1119,8 +1127,17 @@ public class GAccount extends javax.swing.JFrame {
 
 
     //карточка водомера
-    private void WatermeterButtonActionPerformed() {
+    private void WatermeterButtonActionPerformed() throws SQLException {
         GWatermeter wm = new GWatermeter(this,true);
+        wm.deleteRows();
+        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        int result=Watermeter.searchWatermeterForCard(NUM_ACC);
+        GWatermeter.card=false;
+        if(result==-1) {
+            JOptionPane.showMessageDialog(null, "По лицевому счету с номером " + NUM_ACC + " не найдено водомеров!", "Результат поиска", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else  wm.setVisible(true);
+
     }
 
     //карточка водомерного подключения
@@ -1309,9 +1326,20 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     //новый водомер
-    private void NewWatermeterMenuItemActionPerformed() {
-        GNewWatermeter nw = new GNewWatermeter(this);
-        nw.setVisible(true);
+    private void NewWatermeterMenuItemActionPerformed() throws SQLException {
+        NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        String [] codes =(Waterconnection.showWaterconnectionForWatermer(NUM_ACC)).split("_");//массив кодов ВП лицевого счета
+
+        if(codes.length==1){//если нет ВП на лицевом счета (в массиве только значение "НЕ ВЫБРАНО")
+            JOptionPane.showMessageDialog(null, "К лицевому счету, с номером "+NUM_ACC+", нельзя прикрепить водомер, так как \n " +
+                    "лицевой счет не имеет водомерных подключений! Добавьте водомерное \n подключение, перед тем как добавить " +
+                    "водомер.", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            GNewWatermeter nw = new GNewWatermeter(this);
+            nw.CodeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(codes));
+            nw.setVisible(true);
+        }
     }
 
     //новое водомерное подключение
@@ -1323,6 +1351,8 @@ public class GAccount extends javax.swing.JFrame {
     //журнал водомеров
     private void WatermeterMenuItemActionPerformed() {
         GWatermeter wm = new GWatermeter( this,false);
+        wm.setVisible(true);
+
     }
 
     //журнал водомерных подключений

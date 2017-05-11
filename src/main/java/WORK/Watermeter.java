@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /*
  * Created by Юлия on 10.05.2017.
@@ -26,7 +29,7 @@ public class Watermeter {
     public static int last_indications;
     public static Date check_last_indic;
     public static String status;
-    private static Watermeter watermeter;
+    public static Watermeter watermeter;
     private static Statement statement;
 
     private  Watermeter(
@@ -63,11 +66,20 @@ public class Watermeter {
     }
 
     /*
-     Метод формирует запрос для поиска водомера по коду ВП
+     Метод формирует запрос для поиска водомера по коду ВП (если открыть из формы ВП)
      Принимает код ВП
      */
     public static int searchWatermeter(String code) throws SQLException {
         String query = "select * from watermeter where code_watcon = \"" + code + "\"";
+        return receivingQueryForSearch(query, true);
+    }
+    /*
+     Метод формирует запрос для поиска водомера по номеру лицевого счета (карточка водомера)
+     Принимает номер счета
+     */
+    public static int searchWatermeterForCard(String num_acc) throws SQLException {
+
+        String query = "select * from watermeter where code_watcon IN(SELECT code FROM waterconnection where num_account= "+num_acc+" )";
         return receivingQueryForSearch(query, true);
     }
     /*
@@ -146,5 +158,246 @@ public class Watermeter {
     public static void showWatermeter(String serial_num) throws SQLException {
         String query = "select * from watermeter where serial_num = " +serial_num;
         receivingQueryForSearch(query, false);
+    }
+    /*
+     * Метод удаляет водомер с serial_num
+     */
+    public static void deleteWatermeter(String serial_num) {
+        String query = "delete from watermeter where serial_num = " + serial_num;
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+    /*
+     * Метод анализирует новые данные и изменяет в БД
+     * Возвращает
+     * 0 - без ошибок
+     * -1 - ошибка
+     * Принимает new_data - новые данные,old_serial_num - серийный номер до изменения
+     * */
+    public static int changeWatermeter(String[] new_data,String old_serial_num) throws SQLException, ParseException {
+        String data[] = new String[15];
+        data[0]=new_data[0];//код ВП
+        data[1]=new_data[1];//тип
+        data[2]=new_data[2];//инвентарный номер
+        data[3]=new_data[3];//серийный номер
+        data[4]=new_data[4];//год выпуска
+        data[5]=new_data[13];//дата поверки
+        data[6]=new_data[5];//калибр
+        data[7]=new_data[9];//установлен
+        data[8]=new_data[10];//дата установки
+        data[9]=new_data[6];//начальные показания
+        data[10]=new_data[11];//ввод в экспл.
+        data[11]=new_data[12];//опломбирован
+        data[12]=new_data[7];//последние показания
+        data[13]=new_data[14];//дата снятия последних показаний
+        data[14]=new_data[8];//статус
+
+        int result = checkWatermeterFields(data);//проверка полей  на содержимое
+        if (result == 0) receivingQueryForChanging(data,old_serial_num);//изменение полей
+        else return result;
+        return 0;
+
+
+    }
+    /*
+     * Метод изменяет данные ВП
+     * Принимает новые данные
+     */
+    private static void receivingQueryForChanging(String[] data,String old_serial_num) throws SQLException {
+        String[] column = Methods.getColumnName("watermeter").split(" ");
+        String query = "update watermeter set ";
+        for (int i = 1; i < data.length; i++)//с 1 - так как код ВП не изменяется
+            if (data[i].contains("*"))  //поле содержит звездочку
+                query += column[i] + " = \"" + data[i].replaceAll("\\*", "") + "\",";
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
+        query += " where serial_num = " + old_serial_num;
+        //выполняем запрос
+        statement = Connect.connection.createStatement();
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    /*
+     * Метод проверяет содержимое полей на корректность
+     * Возващает 0 - если нет ошибок
+     * -1 - если ошибка
+     */
+    private static int checkWatermeterFields(String[] data) throws ParseException, SQLException {
+        String s;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date cur_date = new java.util.Date();
+        java.util.Date date;
+        String name_column[]=new String[15];
+        name_column[1]="Тип";
+        name_column[2]="Инвентарный номер";
+        name_column[3]="Заводской номер";
+        name_column[4]="Год выпуска";
+        name_column[5]="Поверка";
+        name_column[6]="Калибр";
+        name_column[7]="Установлен";
+        name_column[8]="Дата установки";
+        name_column[9]="Начальные показания";
+        name_column[10]="Ввод в экспл.";
+        name_column[11]="Опломбирован";
+        name_column[11]="Последние показания";
+        name_column[13]="Дата снятия последних показаний";
+        name_column[14]="Статус";
+        for (int i = 1; i < data.length; i++)// 0-код,он не изменяется и не проверяется
+            if (data[i].contains("*")) {//если поле было изменено
+                s = data[i].replaceAll("\\*", "");//убираем звездочку
+                switch (i) {
+                    case 1://тип
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isTypeWatermeter(s)) {error = "Поле \"" + name_column[i] + "\" имеет неверный формат!";return -1;}
+                        if (s.length() > 10) {error = "Поле \"" + name_column[i] + "\" содержит много символов!";return -1;}
+                        break;
+                    case 2://инвентарный номер
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"" + name_column[i] + "\" должно содержать только цифры!";return -1;}
+                        if (s.length() !=6) {error = "Поле \"" + name_column[i] + "\" должно содержать 6 символов!";return -1;}
+                        break;
+                    case 3://заводской номер
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"" + name_column[i] + "\" должно содержать только цифры!";return -1;}
+                        if (s.length() !=8) {error = "Поле \"" + name_column[i] + "\" должно содержать 8 символов!";return -1;}
+                        if(!isUnique(s)){error="В системе не может существовать несколько водомеров с одним и тем же заводским номером! Введите правильный номер!";return -1;}
+                        break;
+                    case 4://год выпуска
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"" + name_column[i] + "\" должно содержать только цифры!";return -1;}
+                        if (s.length() !=4) {error = "Поле \"" + name_column[i] + "\" должно содержать 4 символа!";return -1;}
+                        break;
+                    case 6://калибр
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"" + name_column[i] + "\" должно содержать только цифры!";return -1;}
+                        if (s.length() >4) {error = "Поле \"" + name_column[i] + "\" должно содержит много символов!";return -1;}
+                        break;
+                    case 9://начальные показания
+                    case 12://последние показания
+                        if (s.equals("")) {error = "Поле \"" + name_column[i] + "\" не может быть пустым!"; return -1;}
+                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"" + name_column[i] + "\" должно содержать только цифры!";return -1;}
+                        if (s.length() > 6) {error = "Поле \"" + name_column[i] + "\" должно содержит много символов!";return -1;}
+                        break;
+                    case 5://поверка
+                    case 8://дата установки
+                    case 10://ввод в экпл.
+                    case 11://опломбирован
+                    case 13://дата установки
+                        if (s.equals("null")) {error = "Поле \""+name_column[i]+"\" не может быть пустым!";return -1;
+                    } else {
+                        date = format.parse(s);
+                        if (date.after(cur_date)) {error = "Поле \"" + name_column[i] + "\" не может быть больше текущей даты!";return -1;}
+                    }
+                        break;
+                }
+            }
+        return  0;
+    }
+    /*
+    * Метод проверяет поле "заводской номер" на уникальность.
+    * Возвращает true - если в базе еще нет водомера с таким номером
+    * Иначе false
+    * */
+    private static boolean isUnique(String serial_num) throws SQLException {
+        String query = "select * from watermeter where serial_num = "+serial_num;
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            statement.close();
+            return false;
+        }else{
+            statement.close();
+            return true;
+        }
+    }
+    /*
+     * Метод ищет ВП по введенным данным из формы (data)
+     */
+    public static int searchWatermeterFromJournal(String[] data) throws SQLException {
+        watermeter=null;
+        String column[]=Methods.getColumnName("watermeter").split(" ");
+        String query = "select * from  watermeter where ";
+        for (int i = 0; i < data.length; i++)
+            if (data[i] != null)
+                query += column[i] + "=\"" + data[i] + "\"" + " and ";
+        if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
+        return receivingQueryForSearch(query, true);
+    }
+    /*
+     * Метод добавляет в бд новый водомер
+     * Принимает данные
+     * Возвращает 0  - нет ошибок, -1 -ошибка
+     */
+    public static int addWatermeter(String[] new_data) throws ParseException, SQLException {
+        if (new_data[7].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите код водомерного подключения!";
+            return -1;
+        }
+        if (new_data[8].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите состояние!";
+            return -1;
+        }
+        if (new_data[9].equals("НЕ ВЫБРАНО")) {
+            error = "Выберите кем установлен водомер!";
+            return -1;
+        }
+        String data[] = new String[15];
+        data[0]=new_data[7];//код ВП
+        data[1]=new_data[0];//тип
+        data[2]=new_data[1];//инвентарный номер
+        data[3]=new_data[2];//серийный номер
+        data[4]=new_data[3];//год выпуска
+        data[5]=new_data[13];//дата поверки
+        data[6]=new_data[4];//калибр
+        data[7]=new_data[9];//установлен
+        data[8]=new_data[10];//дата установки
+        data[9]=new_data[5];//начальные показания
+        data[10]=new_data[11];//ввод в экспл.
+        data[11]=new_data[12];//опломбирован
+        data[12]=new_data[6];//последние показания
+        data[13]=new_data[14];//дата снятия последних показаний
+        data[14]=new_data[8];//статус
+
+        //добавление всем полям звездочки (признак новых данных,для проверки их на корректность)
+        for (int i = 0; i < data.length; i++) data[i] += "*";
+        if (checkWatermeterFields(data) != 0) return -1;//проверка на корректность
+        for (int i = 0; i < data.length; i++) data[i] = data[i].replaceAll("\\*", "");//удаление звездочек
+        receiveQueryNewWatermeter(data);
+        return 0;
+
+    }
+    /*
+     * Метод составляет запрос на добавление нового водомера и выполняет его
+     */
+    private static void receiveQueryNewWatermeter(String[] data) throws SQLException {
+        String[] column = Methods.getColumnName("watermeter").split(" ");
+        String query = "insert into watermeter (";
+        for (String aColumn : column) query += aColumn + ",";
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
+        query += ") values (";
+        for (String aData : data) query += "\"" + aData + "\",";
+        if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length()); //обрезаем последнюю запятую
+        query += ")";
+        statement = Connect.connection.createStatement();
+        try {
+            statement = Connect.connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        statement.close();
     }
 }

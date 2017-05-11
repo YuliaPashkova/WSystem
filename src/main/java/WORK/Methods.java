@@ -125,4 +125,11 @@ public class Methods {
     public static boolean isOwnerTerrit(String str) {
         return str.matches("[[а-яА-Яa-zA-z]*\\-*[0-9]*]*");
     }
+    /*
+    * Проверяет входную строку
+    * Возвращает true: если строка подходит под формат типа водомера
+    * */
+    public static boolean isTypeWatermeter(String str) {
+        return str.matches("[[а-яА-Яa-zA-z]+\\-*[0-9]*\\/*[0-9]*]+");
+    }
 }
