@@ -365,4 +365,45 @@ public class Watermeter {
         }
         statement.close();
     }
+    /*
+     * Метод ищет все водомеры по лицевому счету
+     * Возвращает строку номеров водомеров
+      * */
+    public static String getAllWatermeters(String num_account) throws SQLException {
+        String nums = "НЕ ВЫБРАНО";
+        String query = "select serial_num from watermeter where code_watcon IN(SELECT code FROM waterconnection where num_account= "+num_account+" )";
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            while (resSet.next()) {
+                nums =nums+"_"+String.valueOf(resSet.getInt("serial_num"));
+            }
+            statement.close();
+            return nums.trim();
+        }
+        return nums;
+    }
+    //метод проверяет, существует ли водомеры на лицевом счете
+    //возвращает true - если есть, false - если нет
+    public static boolean existWatermeter(String num_account) throws SQLException {
+        String query = "select serial_num from watermeter where code_watcon IN(SELECT code FROM waterconnection where num_account= "+num_account+" )";
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            statement.close();
+            return true;
+        }
+        statement.close();
+        return false;
+    }
 }

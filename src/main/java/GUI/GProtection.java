@@ -80,7 +80,7 @@ public class GProtection extends javax.swing.JDialog {
         chooseLogButton.setText("Выбрать файл для лога");
         chooseLogButton.addActionListener(this::ChooseLogButtonActionPerformed);
 
-        chooseSynchroButton.setText("Выбрать файл с синхропосылкой");
+        chooseSynchroButton.setText("Выбрать файл с нач. заполнителем");
         chooseSynchroButton.addActionListener(this::ChooseSynchroButtonActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

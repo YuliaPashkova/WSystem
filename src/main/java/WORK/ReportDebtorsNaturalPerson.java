@@ -8,7 +8,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
 import java.io.FileOutputStream;
 
-/**
+/*
  * Класс для удобства хранения информации по каждому абоненту
  */
 class InfoAbonent{
@@ -20,7 +20,7 @@ class InfoAbonent{
     }
 }
 
-/**
+/*
  * Created by Rob on 11.05.2017.
  * Класс реализует создание отчета по должникам в формате ПДФ
  */
@@ -32,7 +32,7 @@ public class ReportDebtorsNaturalPerson {
     private static final String RESULT = "F:\\Report.pdf";
     private static Font font, fontNameTable, fontHead, fontDolg; //для данных в таблице, для иммени таблицы, для заголовков таблицы, для долга
 
-    /**
+    /*
      * Формирует отчет по должникам в формате PDF
      * 
      * @param acc - массив лицевых счетов

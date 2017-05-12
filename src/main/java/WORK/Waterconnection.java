@@ -407,4 +407,22 @@ public class Waterconnection {
         }
         return nums;
     }
+    //метод проверяет, существуют ли водомерные подключения на лицевом счете
+    //возвращает true - есть, false - нет
+    public static boolean existWatercon(String num_account) throws SQLException {
+        String query = "select code from waterconnection where num_account = "+num_account;
+        ResultSet resSet = null; //отправка запроса
+        try {
+            statement = Connect.connection.createStatement();
+            resSet = statement.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (resSet != null && resSet.isBeforeFirst()) {
+            statement.close();
+            return true;
+        }
+        statement.close();
+        return false;
+    }
 }

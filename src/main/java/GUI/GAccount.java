@@ -65,6 +65,7 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JTextField TelephoneTextField;
     private javax.swing.JButton WaterconButton;
     private javax.swing.JButton WatermeterButton;
+    private javax.swing.JMenuItem newOrderMenuItem;
 
     GAccount() throws Exception {
         conntoDB();
@@ -184,7 +185,7 @@ public class GAccount extends javax.swing.JFrame {
         JMenuItem waterconMenuItem = new JMenuItem();
         JMenuItem ordersMenuItem = new JMenuItem();
         OrderMenu = new javax.swing.JMenu();
-        JMenuItem newOrderMenuItem = new JMenuItem();
+        newOrderMenuItem = new JMenuItem();
         JMenuItem closeOrderMenuItem = new JMenuItem();
         DocumentsMenu = new javax.swing.JMenu();
         JMenuItem noticeDeptMenuItem = new JMenuItem();
@@ -529,10 +530,11 @@ public class GAccount extends javax.swing.JFrame {
         menuBar.add(CatalogMenu);
 
         OrderMenu.setText("Заказы");
-        OrderMenu.setEnabled(false);
+        //OrderMenu.setEnabled(false);
 
         newOrderMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
         newOrderMenuItem.setText("Новый заказ");
+        newOrderMenuItem.setEnabled(false);
         newOrderMenuItem.addActionListener(evt -> {
             try {
                 NewOrderMenuItemActionPerformed();
@@ -1057,7 +1059,7 @@ public class GAccount extends javax.swing.JFrame {
         WatermeterButton.setEnabled(true);
         NewWatermeterMenuItem.setEnabled(true);
         NewWaterconMenuItem.setEnabled(true);
-        OrderMenu.setEnabled(true);
+        newOrderMenuItem.setEnabled(true);
         ChangeAccMenuItem.setEnabled(true);
         NumAccTextField.requestFocus();
         //получение номера лицевого счета с выделенной строки
@@ -1211,6 +1213,7 @@ public class GAccount extends javax.swing.JFrame {
     //новый водомер
     private void NewWatermeterMenuItemActionPerformed() throws SQLException {
         NUM_ACC =String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+
         String [] codes =(Waterconnection.showWaterconnectionForWatermer(NUM_ACC)).split("_");//массив кодов ВП лицевого счета
 
         if(codes.length==1){//если нет ВП на лицевом счета (в массиве только значение "НЕ ВЫБРАНО")
@@ -1347,7 +1350,7 @@ public class GAccount extends javax.swing.JFrame {
         WaterconButton.setEnabled(false);
         NewWatermeterMenuItem.setEnabled(false);
         NewWaterconMenuItem.setEnabled(false);
-        OrderMenu.setEnabled(false);
+        newOrderMenuItem.setEnabled(false);
         ChangeAccMenuItem.setEnabled(false);
         DeleteAccMenuItem.setEnabled(false);
     }

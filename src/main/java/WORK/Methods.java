@@ -83,6 +83,13 @@ public class Methods {
         return str.matches("^[+-]?\\d+(\\.\\d+)?");
     }
     /*
+     * Проверяет входную строку на математическое положительное число
+     * Возвращает true | false
+     */
+    public static boolean isPosDigit(String str) {
+        return str.matches("^\\d+(\\.\\d+)?");
+    }
+    /*
     * Проверяет входную строку на состав цифр
     * Возвращает true | false
     */

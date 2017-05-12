@@ -1,5 +1,6 @@
 package GUI;
 import WORK.Access;
+import WORK.Order;
 import WORK.Watermeter;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -14,7 +15,8 @@ import java.text.SimpleDateFormat;
  */
 public class GNewWatermeter extends javax.swing.JDialog {
     public javax.swing.JComboBox<String> CodeComboBox;
-    private JTextField textfields [];//массив текстовых полей
+    public JTextField textfields [];//массив текстовых полей
+    public boolean order =false;//флаг заказа (true, если водомер создается из заказа)
     private JComboBox comboboxes[];//массив комбобоксов
     private JXDatePicker datepickers[];//массив дэйткиперов
     private javax.swing.JLabel CaliberLabel;
@@ -52,10 +54,17 @@ public class GNewWatermeter extends javax.swing.JDialog {
     public GNewWatermeter(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
-        textfields = new JTextField[]{TypeTextField,InventNumTextField,SerialNumTextField,ReleaseYearTextField,
-                CaliberTextField,PrimIndicatTextField,LastIndicatTextField};
-        comboboxes = new JComboBox[]{CodeComboBox,StatusComboBox,InstalledComboBox};
-        datepickers = new JXDatePicker[]{DateSetDatePicker,EnterExploitDatePicker,SealDatePicker,DateCheckDatePicker,CheckLastIndicatDatePicker};
+        initArray();
+    }
+    public GNewWatermeter() {
+        initComponents();
+        initArray();
+    }
+
+    public GNewWatermeter(java.awt.Dialog parent) {
+        super(parent, true);
+        initComponents();
+        initArray();
     }
 
     public static void main(String args[]) {
@@ -71,9 +80,17 @@ public class GNewWatermeter extends javax.swing.JDialog {
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GNewWatermeter(null).setVisible(true);
+                new GNewWatermeter().setVisible(true);
             }
         });
+    }
+
+    private void initArray() {
+        textfields = new JTextField[]{TypeTextField,InventNumTextField,SerialNumTextField,ReleaseYearTextField,
+                CaliberTextField,PrimIndicatTextField,LastIndicatTextField};
+        comboboxes = new JComboBox[]{CodeComboBox,StatusComboBox,InstalledComboBox};
+        datepickers = new JXDatePicker[]{DateSetDatePicker,EnterExploitDatePicker,SealDatePicker,DateCheckDatePicker,CheckLastIndicatDatePicker};
+
     }
 
     private void initComponents() {
@@ -401,6 +418,7 @@ public class GNewWatermeter extends javax.swing.JDialog {
         switch(Watermeter.addWatermeter(readData())){
             case 0:
                 JOptionPane.showMessageDialog(null,"Новый водомер был добавлен!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);
+                if(order) Order.setCloseStatus(GCloseOrder.num_order,textfields[2].getText());//изменяем статус с ОТКРЫТ на ЗАКРЫТ и заисываем номер добавленного водомера
                 dispose();
                 break;
             case -1:

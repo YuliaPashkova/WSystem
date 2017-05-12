@@ -1,6 +1,7 @@
 package GUI;
 import WORK.Access;
 import WORK.Order;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
@@ -183,7 +184,11 @@ public class GJournalOrders extends javax.swing.JDialog {
         });
         ResultTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ResultTableMouseClicked();
+                try {
+                    ResultTableMouseClicked(evt);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
         ResultTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -373,8 +378,23 @@ public class GJournalOrders extends javax.swing.JDialog {
 
     }
 
-    private void ResultTableMouseClicked() {
+    private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws SQLException {
+        if(evt.getClickCount()==1)clickOnTable();
+    }
 
+    private void clickOnTable() throws SQLException {
+        Order.showOrder(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 1)));
+        NumOrderTextField.setText(String.valueOf(Order.num_order));
+        NumAccTextField.setText(String.valueOf(Order.num_account));
+        StatusComboBox.setSelectedItem(Order.status);
+        OperatorTextField.setText(Order.getNameOperatorFromId(Order.operator));
+        DateRegDatePicker.setDate(Order.date_form);
+        SumTextField.setText(String.valueOf(Order.summ));
+        DateRealizDatePicker.setDate(Order.date_compl);
+        TypeWorkComboBox.setSelectedItem(Order.type_work);
+        if(Order.serial_num_wm==0)SerialNumTextField.setText(null);
+        else SerialNumTextField.setText(String.valueOf(Order.serial_num_wm));
+        NoteTextArea.setText(Order.note);
     }
 
     //удаляет все строки из таблицы

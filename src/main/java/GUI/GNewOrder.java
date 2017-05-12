@@ -2,6 +2,8 @@ package GUI;
 
 import WORK.Access;
 import WORK.Order;
+import WORK.Waterconnection;
+import WORK.Watermeter;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -255,7 +257,31 @@ public class GNewOrder extends javax.swing.JDialog {
     }// </editor-fold>
 
     private void OkButtonActionPerformed() throws ParseException, SQLException {
-        switch(Order.addOrder(readData())){
+        String data [] = readData();
+        boolean error=false;
+        String message="";
+        if(data[7].equals("НЕ ВЫБРАНО")) JOptionPane.showMessageDialog(null, "Выберите тип работы!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else if (data[7].equals("УСТАНОВКА ВОДОМЕРА")){
+            //проверить,есть ли на лицевом счете вообще ВП
+            if(!Waterconnection.existWatercon(NumAccTextField.getText())) {//если нет
+                error=true;
+                message="Данный лицевой счет не имеет водомерных подключений, поэтому невозможно создать заказ на установку водомера!";
+                dispose();
+            }
+        }
+        else {//если снятие водомера
+            //проверить,есть ли на лицевом счете водомеры
+            if(!Watermeter.existWatermeter(NumAccTextField.getText())){//если не существуют
+                error=true;
+                message="Данный лицевой счет не имеет водомеров, поэтому невозможно создать заказ на снятие водомера!";
+                dispose();
+            }
+        }
+
+        if(error)
+            JOptionPane.showMessageDialog(null,message, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else
+            switch(Order.addOrder(data)){
             case 0:
                 JOptionPane.showMessageDialog(null,"Заказ с номером "+NumOrderTextField.getText()+" принят!", "Формирование заказа", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
