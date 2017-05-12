@@ -2,6 +2,7 @@ package GUI;
 import WORK.*;
 import com.mxrck.autocompleter.TextAutoCompleter;
 
+import javax.jnlp.IntegrationService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
@@ -565,7 +566,13 @@ public class GAccount extends javax.swing.JFrame {
 
         listDeptorsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_3, java.awt.event.InputEvent.CTRL_MASK));
         listDeptorsMenuItem.setText("Список должников");
-        listDeptorsMenuItem.addActionListener(evt -> ListDeptorsMenuItemActionPerformed());
+        listDeptorsMenuItem.addActionListener(evt -> {
+            try {
+                ListDeptorsMenuItemActionPerformed();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         DocumentsMenu.add(listDeptorsMenuItem);
 
         menuBar.add(DocumentsMenu);
@@ -1184,7 +1191,18 @@ public class GAccount extends javax.swing.JFrame {
     private void PatternDeptMenuItemActionPerformed() {
     }
 
-    private void ListDeptorsMenuItemActionPerformed() {
+    private void ListDeptorsMenuItemActionPerformed() throws Exception {
+        int length=model.getRowCount();
+        String num_accs="";
+        if(length==0){
+            JOptionPane.showMessageDialog(null, "Осуществите поиск по какому-либо критерию! Список должников формируется по данным из таблицы результа поиска.", "Формирование списка должников", JOptionPane.INFORMATION_MESSAGE);
+        }else {
+            for (int i = 0; i < model.getRowCount(); i++)
+                if ((Double.parseDouble(String.valueOf(ResultTable.getModel().getValueAt(i, 1)))) > 0)//проверяем баланс
+                    num_accs =num_accs + Integer.parseInt(String.valueOf(ResultTable.getModel().getValueAt(i, 0)))+" ";
+            ReportDebtors.createReport(num_accs.trim().split(" "));
+            JOptionPane.showMessageDialog(null, "Список должников сформирован и находится на диске D.", "Формирование списка должников", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     //шифрование дампа бд
