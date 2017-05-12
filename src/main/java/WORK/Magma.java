@@ -108,8 +108,8 @@ public class Magma {
      * @param pathLog - путь к файлу для лога
      */
     public static void decryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
-        //1 - дешифрование
-        work(pathIn, pathOut, pathKey, pathSync, pathLog, 1);
+
+        work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 1);//1 - дешифрование
     }
     /**
      * Осуществляет шифрование файлов, находищхся в папке pathIn
@@ -123,7 +123,7 @@ public class Magma {
      */
     public static void encryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
         //0 - шифрование
-        work(pathIn, pathOut, pathKey, pathSync, pathLog, 0);
+        work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 0);
     }
 
     private static void work(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog, int typeWork) throws Exception {
