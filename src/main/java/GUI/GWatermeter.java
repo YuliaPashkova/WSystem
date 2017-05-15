@@ -18,9 +18,9 @@ import java.util.Objects;
  * Created by Юлия on 18.04.2017.
  */
 public class GWatermeter extends javax.swing.JDialog {
-    public static boolean card = false;//если открыта карта водомера через ВП
+    static boolean card = false;//если открыта карта водомера через ВП
     private static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
-    public javax.swing.JTextField CodeWatconTextField;
+    private javax.swing.JTextField CodeWatconTextField;
     private JTextField textfields [];//массив текстовых полей
     private JComboBox comboboxes[];//массив комбобоксов
     private String old_data[];//массив старых данных
@@ -28,61 +28,42 @@ public class GWatermeter extends javax.swing.JDialog {
     private boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить водомер",иначе false)
     private boolean journal_mode=false;//если открыт журнал,то  true
     private javax.swing.JMenuItem AcceptChangesMenuItem;
-    private javax.swing.JLabel CaliberLabel;
     private javax.swing.JTextField CaliberTextField;
     private javax.swing.JMenuItem ChangeModeMenuItem;
     private javax.swing.JMenu ChangesMenu;
     private org.jdesktop.swingx.JXDatePicker CheckLastIndicatDatePicker;
-    private javax.swing.JLabel CheckLastIndicatLabel;
-    private javax.swing.JMenuItem ClearMenuItem;
-    private javax.swing.JLabel CodeWatconLabel;
     private org.jdesktop.swingx.JXDatePicker DateCheckDatePicker;
-    private javax.swing.JLabel DateCheckLabel;
     private org.jdesktop.swingx.JXDatePicker DateSetDatePicker;
-    private javax.swing.JLabel DateSetLabel;
     private javax.swing.JMenuItem DeleteMenuItem;
     private javax.swing.JMenu EditMenu;
     private org.jdesktop.swingx.JXDatePicker EnterExploitDatePicker;
-    private javax.swing.JLabel EnterExploitLabel;
     private javax.swing.JComboBox<String> InstalledComboBox;
-    private javax.swing.JLabel InstalledlLabel;
-    private javax.swing.JLabel InventNumLabel;
     private javax.swing.JTextField InventNumTextField;
     private javax.swing.JMenu JournalWMMenu;
-    private javax.swing.JLabel LastIndicatLabel;
     private javax.swing.JTextField LastIndicatTextField;
-    private javax.swing.JMenuBar MenuBar;
-    private javax.swing.JLabel PrimIndicatLabel;
     private javax.swing.JTextField PrimIndicatTextField;
-    private javax.swing.JLabel ReleaseYearLabel;
     private javax.swing.JTextField ReleaseYearTextField;
     private javax.swing.JTable ResultTable;
     private org.jdesktop.swingx.JXDatePicker SealDatePicker;
-    private javax.swing.JLabel SealLabel;
-    private javax.swing.JMenuItem SearchMenuItem;
-    private javax.swing.JLabel SerialNumLabel;
     private javax.swing.JTextField SerialNumTextField;
     private javax.swing.JComboBox<String> StatusComboBox;
-    private javax.swing.JLabel StatusLabel;
-    private javax.swing.JLabel TypeLabel;
     private javax.swing.JTextField TypeTextField;
-    private javax.swing.JScrollPane jScrollPane1;
 
-    public GWatermeter(javax.swing.JDialog parent, boolean mode) {
+    GWatermeter(javax.swing.JDialog parent, boolean mode) {
         super(parent, true);
         initComponents();
         initializationArrays();
         setWMode(mode);
     }
 
-    public GWatermeter(GAccount parent, boolean mode) {
+    GWatermeter(GAccount parent, boolean mode) {
         super(parent, true);
         initComponents();
         initializationArrays();
         setWMode(mode);
     }
 
-    public GWatermeter() {
+    private GWatermeter() {
         initComponents();
         initializationArrays();
     }
@@ -99,11 +80,7 @@ public class GWatermeter extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(GWatermeter.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GWatermeter().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new GWatermeter().setVisible(true));
     }
 
     //добавление в таблицу новой строки
@@ -114,7 +91,7 @@ public class GWatermeter extends javax.swing.JDialog {
     }
 
     /*Метод иницииализиурет массивы*/
-    public void initializationArrays(){
+    private void initializationArrays(){
         textfields = new JTextField[]{CodeWatconTextField,TypeTextField,InventNumTextField,SerialNumTextField,ReleaseYearTextField,
                 CaliberTextField,PrimIndicatTextField,LastIndicatTextField};
         comboboxes = new JComboBox[]{StatusComboBox,InstalledComboBox};
@@ -124,32 +101,32 @@ public class GWatermeter extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        CodeWatconLabel = new javax.swing.JLabel();
+        JLabel codeWatconLabel = new JLabel();
         CodeWatconTextField = new javax.swing.JTextField();
-        TypeLabel = new javax.swing.JLabel();
+        JLabel typeLabel = new JLabel();
         TypeTextField = new javax.swing.JTextField();
-        InventNumLabel = new javax.swing.JLabel();
+        JLabel inventNumLabel = new JLabel();
         InventNumTextField = new javax.swing.JTextField();
-        SerialNumLabel = new javax.swing.JLabel();
+        JLabel serialNumLabel = new JLabel();
         SerialNumTextField = new javax.swing.JTextField();
-        ReleaseYearLabel = new javax.swing.JLabel();
+        JLabel releaseYearLabel = new JLabel();
         ReleaseYearTextField = new javax.swing.JTextField();
-        DateCheckLabel = new javax.swing.JLabel();
-        CaliberLabel = new javax.swing.JLabel();
+        JLabel dateCheckLabel = new JLabel();
+        JLabel caliberLabel = new JLabel();
         CaliberTextField = new javax.swing.JTextField();
-        InstalledlLabel = new javax.swing.JLabel();
+        JLabel installedlLabel = new JLabel();
         DateSetDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateSetDatePicker.setFormats("yyyy-MM-dd");
         DateSetDatePicker.setDate(null);
         DateSetDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        DateSetLabel = new javax.swing.JLabel();
-        PrimIndicatLabel = new javax.swing.JLabel();
+        JLabel dateSetLabel = new JLabel();
+        JLabel primIndicatLabel = new JLabel();
         PrimIndicatTextField = new javax.swing.JTextField();
         DateCheckDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateCheckDatePicker.setFormats("yyyy-MM-dd");
         DateCheckDatePicker.setDate(null);
         DateCheckDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        EnterExploitLabel = new javax.swing.JLabel();
+        JLabel enterExploitLabel = new JLabel();
         EnterExploitDatePicker = new org.jdesktop.swingx.JXDatePicker();
         EnterExploitDatePicker.setFormats("yyyy-MM-dd");
         EnterExploitDatePicker.setDate(null);
@@ -158,28 +135,28 @@ public class GWatermeter extends javax.swing.JDialog {
         SealDatePicker.setFormats("yyyy-MM-dd");
         SealDatePicker.setDate(null);
         SealDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        SealLabel = new javax.swing.JLabel();
-        LastIndicatLabel = new javax.swing.JLabel();
+        JLabel sealLabel = new JLabel();
+        JLabel lastIndicatLabel = new JLabel();
         LastIndicatTextField = new javax.swing.JTextField();
-        CheckLastIndicatLabel = new javax.swing.JLabel();
+        JLabel checkLastIndicatLabel = new JLabel();
         CheckLastIndicatDatePicker = new org.jdesktop.swingx.JXDatePicker();
         CheckLastIndicatDatePicker.setFormats("yyyy-MM-dd");
         CheckLastIndicatDatePicker.setDate(null);
         CheckLastIndicatDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        StatusLabel = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JLabel statusLabel = new JLabel();
+        JScrollPane jScrollPane1 = new JScrollPane();
         ResultTable = new javax.swing.JTable();
         InstalledComboBox = new javax.swing.JComboBox<>();
         StatusComboBox = new javax.swing.JComboBox<>();
-        MenuBar = new javax.swing.JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         EditMenu = new javax.swing.JMenu();
         ChangesMenu = new javax.swing.JMenu();
         ChangeModeMenuItem = new javax.swing.JMenuItem();
         AcceptChangesMenuItem = new javax.swing.JMenuItem();
         DeleteMenuItem = new javax.swing.JMenuItem();
         JournalWMMenu = new javax.swing.JMenu();
-        SearchMenuItem = new javax.swing.JMenuItem();
-        ClearMenuItem = new javax.swing.JMenuItem();
+        JMenuItem searchMenuItem = new JMenuItem();
+        JMenuItem clearMenuItem = new JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Карточка водомера ("+ Access.name_operator+")");
@@ -187,70 +164,70 @@ public class GWatermeter extends javax.swing.JDialog {
         setIconImage(icon.getImage());
         setResizable(false);
 
-        CodeWatconLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CodeWatconLabel.setText("Код ВП");
+        codeWatconLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        codeWatconLabel.setText("Код ВП");
 
         CodeWatconTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        TypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TypeLabel.setText("Тип водомера");
+        typeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        typeLabel.setText("Тип водомера");
 
         TypeTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        InventNumLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        InventNumLabel.setText("Инвентарный №");
+        inventNumLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        inventNumLabel.setText("Инвентарный №");
 
         InventNumTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        SerialNumLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SerialNumLabel.setText("Заводской №");
+        serialNumLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        serialNumLabel.setText("Заводской №");
 
         SerialNumTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        ReleaseYearLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ReleaseYearLabel.setText("Год выпуска");
+        releaseYearLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        releaseYearLabel.setText("Год выпуска");
 
         ReleaseYearTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        DateCheckLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DateCheckLabel.setText("Поверка");
+        dateCheckLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateCheckLabel.setText("Поверка");
 
-        CaliberLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CaliberLabel.setText("Калибр");
+        caliberLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        caliberLabel.setText("Калибр");
 
         CaliberTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        InstalledlLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        InstalledlLabel.setText("Установлен (кем)");
+        installedlLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        installedlLabel.setText("Установлен (кем)");
 
 
-        DateSetLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DateSetLabel.setText("Дата установки");
+        dateSetLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateSetLabel.setText("Дата установки");
 
-        PrimIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        PrimIndicatLabel.setText("Начальные показания");
+        primIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        primIndicatLabel.setText("Начальные показания");
 
         PrimIndicatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        EnterExploitLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        EnterExploitLabel.setText("Ввод в экспл.");
+        enterExploitLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        enterExploitLabel.setText("Ввод в экспл.");
 
 
-        SealLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        SealLabel.setText("Опломбирован");
+        sealLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        sealLabel.setText("Опломбирован");
 
-        LastIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        LastIndicatLabel.setText("Последние показания");
+        lastIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lastIndicatLabel.setText("Последние показания");
 
         LastIndicatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        CheckLastIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CheckLastIndicatLabel.setText("Дата снятия последних показаний");
+        checkLastIndicatLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        checkLastIndicatLabel.setText("Дата снятия последних показаний");
 
 
-        StatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        StatusLabel.setText("Состояние");
+        statusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        statusLabel.setText("Состояние");
 
         ResultTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
@@ -290,25 +267,21 @@ public class GWatermeter extends javax.swing.JDialog {
         ChangesMenu.setText("Изменения");
 
         ChangeModeMenuItem.setText("Включить режим изменения");
-        ChangeModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    ChangeModeMenuItemActionPerformed();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        ChangeModeMenuItem.addActionListener(evt -> {
+            try {
+                ChangeModeMenuItemActionPerformed();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
         ChangesMenu.add(ChangeModeMenuItem);
 
         AcceptChangesMenuItem.setText("Принять изменения");
-        AcceptChangesMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    AcceptChangesMenuItemActionPerformed();
-                } catch (SQLException | ParseException e) {
-                    e.printStackTrace();
-                }
+        AcceptChangesMenuItem.addActionListener(evt -> {
+            try {
+                AcceptChangesMenuItemActionPerformed();
+            } catch (SQLException | ParseException e) {
+                e.printStackTrace();
             }
         });
         ChangesMenu.add(AcceptChangesMenuItem);
@@ -317,40 +290,30 @@ public class GWatermeter extends javax.swing.JDialog {
         EditMenu.setEnabled(false);
 
         DeleteMenuItem.setText("Удалить текущий водомер");
-        DeleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteMenuItemActionPerformed();
-            }
-        });
+        DeleteMenuItem.addActionListener(evt -> DeleteMenuItemActionPerformed());
         EditMenu.add(DeleteMenuItem);
 
-        MenuBar.add(EditMenu);
+        menuBar.add(EditMenu);
 
         JournalWMMenu.setText("Справочник водомеров");
 
-        SearchMenuItem.setText("Поиск");
-        SearchMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    SearchMenuItemActionPerformed();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        searchMenuItem.setText("Поиск");
+        searchMenuItem.addActionListener(evt -> {
+            try {
+                SearchMenuItemActionPerformed();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
-        JournalWMMenu.add(SearchMenuItem);
+        JournalWMMenu.add(searchMenuItem);
 
-        ClearMenuItem.setText("Очистить форму");
-        ClearMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearMenuItemActionPerformed();
-            }
-        });
-        JournalWMMenu.add(ClearMenuItem);
+        clearMenuItem.setText("Очистить форму");
+        clearMenuItem.addActionListener(evt -> ClearMenuItemActionPerformed());
+        JournalWMMenu.add(clearMenuItem);
 
-        MenuBar.add(JournalWMMenu);
+        menuBar.add(JournalWMMenu);
 
-        setJMenuBar(MenuBar);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -362,20 +325,20 @@ public class GWatermeter extends javax.swing.JDialog {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(LastIndicatLabel)
+                                                                .addComponent(lastIndicatLabel)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                 .addComponent(LastIndicatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(10, 10, 10)
-                                                                .addComponent(EnterExploitLabel)
+                                                                .addComponent(enterExploitLabel)
                                                                 .addGap(39, 39, 39)
-                                                                .addComponent(SealLabel)
+                                                                .addComponent(sealLabel)
                                                                 .addGap(43, 43, 43)
-                                                                .addComponent(DateCheckLabel))
+                                                                .addComponent(dateCheckLabel))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(PrimIndicatLabel)
+                                                                                .addComponent(primIndicatLabel)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                 .addComponent(PrimIndicatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(layout.createSequentialGroup()
@@ -386,7 +349,7 @@ public class GWatermeter extends javax.swing.JDialog {
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(DateCheckDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(CheckLastIndicatLabel)
+                                                                                .addComponent(checkLastIndicatLabel)
                                                                                 .addGap(6, 6, 6)
                                                                                 .addComponent(CheckLastIndicatDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                                 .addGap(0, 0, Short.MAX_VALUE))
@@ -394,33 +357,33 @@ public class GWatermeter extends javax.swing.JDialog {
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(14, 14, 14)
-                                                                .addComponent(CodeWatconLabel)
+                                                                .addComponent(codeWatconLabel)
                                                                 .addGap(228, 228, 228)
-                                                                .addComponent(SerialNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(serialNumLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(18, 18, 18)
-                                                                .addComponent(ReleaseYearLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(releaseYearLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(22, 22, 22)
-                                                                .addComponent(CaliberLabel))
+                                                                .addComponent(caliberLabel))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addComponent(CodeWatconTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                                        .addComponent(TypeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                        .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                         .addComponent(TypeTextField)))
                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                                                 .addGap(34, 34, 34)
-                                                                                .addComponent(StatusLabel)))
+                                                                                .addComponent(statusLabel)))
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addGap(18, 18, 18)
-                                                                                .addComponent(InventNumLabel)
+                                                                                .addComponent(inventNumLabel)
                                                                                 .addGap(0, 0, Short.MAX_VALUE))
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(DateSetLabel)
+                                                                                        .addComponent(dateSetLabel)
                                                                                         .addComponent(InventNumTextField))))
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(layout.createSequentialGroup()
@@ -432,7 +395,7 @@ public class GWatermeter extends javax.swing.JDialog {
                                                                                 .addComponent(CaliberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addGap(71, 71, 71)
-                                                                                .addComponent(InstalledlLabel))))
+                                                                                .addComponent(installedlLabel))))
                                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
@@ -448,12 +411,12 @@ public class GWatermeter extends javax.swing.JDialog {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(CodeWatconLabel)
-                                        .addComponent(TypeLabel)
-                                        .addComponent(InventNumLabel)
-                                        .addComponent(ReleaseYearLabel)
-                                        .addComponent(CaliberLabel)
-                                        .addComponent(SerialNumLabel))
+                                        .addComponent(codeWatconLabel)
+                                        .addComponent(typeLabel)
+                                        .addComponent(inventNumLabel)
+                                        .addComponent(releaseYearLabel)
+                                        .addComponent(caliberLabel)
+                                        .addComponent(serialNumLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(CodeWatconTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -464,9 +427,9 @@ public class GWatermeter extends javax.swing.JDialog {
                                         .addComponent(CaliberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(StatusLabel)
-                                        .addComponent(DateSetLabel)
-                                        .addComponent(InstalledlLabel))
+                                        .addComponent(statusLabel)
+                                        .addComponent(dateSetLabel)
+                                        .addComponent(installedlLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(DateSetDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -474,9 +437,9 @@ public class GWatermeter extends javax.swing.JDialog {
                                         .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(EnterExploitLabel)
-                                        .addComponent(SealLabel)
-                                        .addComponent(DateCheckLabel))
+                                        .addComponent(enterExploitLabel)
+                                        .addComponent(sealLabel)
+                                        .addComponent(dateCheckLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(EnterExploitDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -484,13 +447,13 @@ public class GWatermeter extends javax.swing.JDialog {
                                         .addComponent(DateCheckDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(16, 16, 16)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(PrimIndicatLabel)
+                                        .addComponent(primIndicatLabel)
                                         .addComponent(PrimIndicatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(CheckLastIndicatLabel)
+                                        .addComponent(checkLastIndicatLabel)
                                         .addComponent(CheckLastIndicatDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(LastIndicatLabel)
+                                        .addComponent(lastIndicatLabel)
                                         .addComponent(LastIndicatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -738,7 +701,7 @@ public class GWatermeter extends javax.swing.JDialog {
     }
 
     //удаление строк в таблице
-    public void deleteRows() {
+    void deleteRows() {
         model.setRowCount(0);
     }
 

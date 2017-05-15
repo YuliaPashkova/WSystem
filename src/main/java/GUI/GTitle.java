@@ -1,28 +1,19 @@
 package GUI;
-
 import WORK.Access;
 import WORK.Connect;
-
 import javax.swing.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.sql.SQLException;
-
 import static WORK.Connect.conntoDB;
 
-/**
+/*
  * Created by Юлия on 13.04.2017.
  */
 public class GTitle extends javax.swing.JFrame {
-    private javax.swing.JButton ExitButton;
-    private javax.swing.JButton GoButton;
-    private javax.swing.JLabel PasswordLabel;
     private javax.swing.JPasswordField PasswordTextField;
-    private javax.swing.JLabel UserNameLabel;
     private javax.swing.JTextField UserNameTextField;
 
 
-    public GTitle() throws Exception {
+    private GTitle() throws Exception {
         conntoDB();
         initComponents();
     }
@@ -39,13 +30,11 @@ public class GTitle extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(GTitle.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GTitle().setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new GTitle().setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -53,12 +42,12 @@ public class GTitle extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        UserNameLabel = new javax.swing.JLabel();
-        PasswordLabel = new javax.swing.JLabel();
+        JLabel userNameLabel = new JLabel();
+        JLabel passwordLabel = new JLabel();
         UserNameTextField = new javax.swing.JTextField();
         PasswordTextField = new javax.swing.JPasswordField();
-        ExitButton = new javax.swing.JButton();
-        GoButton = new javax.swing.JButton();
+        JButton exitButton = new JButton();
+        JButton goButton = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Вход в систему");
@@ -68,8 +57,8 @@ public class GTitle extends javax.swing.JFrame {
         setBounds(new java.awt.Rectangle(500, 200, 0, 0));
         setResizable(false);
 
-        UserNameLabel.setText("Имя пользователя");
-        PasswordLabel.setText("Пароль");
+        userNameLabel.setText("Имя пользователя");
+        passwordLabel.setText("Пароль");
 
         PasswordTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -81,25 +70,21 @@ public class GTitle extends javax.swing.JFrame {
             }
         });
 
-        ExitButton.setText("Выход");
-        ExitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    ExitButtonActionPerformed();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        exitButton.setText("Выход");
+        exitButton.addActionListener(evt -> {
+            try {
+                ExitButtonActionPerformed();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-        GoButton.setText("Войти");
-        GoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    GoButtonActionPerformed();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        goButton.setText("Войти");
+        goButton.addActionListener(evt -> {
+            try {
+                GoButtonActionPerformed();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
@@ -112,17 +97,17 @@ public class GTitle extends javax.swing.JFrame {
                                         .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(UserNameLabel)
-                                                        .addComponent(PasswordLabel))
+                                                        .addComponent(userNameLabel)
+                                                        .addComponent(passwordLabel))
                                                 .addGap(18, 18, 18)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(UserNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(99, 99, 99)
-                                                .addComponent(GoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(goButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(ExitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -131,15 +116,15 @@ public class GTitle extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(UserNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(UserNameLabel))
+                                        .addComponent(userNameLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(PasswordLabel)
+                                        .addComponent(passwordLabel)
                                         .addComponent(PasswordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(ExitButton)
-                                        .addComponent(GoButton))
+                                        .addComponent(exitButton)
+                                        .addComponent(goButton))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -158,6 +143,7 @@ public class GTitle extends javax.swing.JFrame {
         switch (result) {
             case 1://логин  и пароль введены верно
                     GAccount gaccount = new GAccount();
+                    gaccount.setAccess(Access.access);
                     gaccount.setVisible(true);
                 break;
             case 2:

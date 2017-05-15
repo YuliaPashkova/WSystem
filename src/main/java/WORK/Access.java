@@ -12,7 +12,7 @@ public class Access {
     //login - NikOpl pass-mynameis12
     //login - oksana_sevas pass - 123oksana
 
-    public static String name_operator="Пашкова Ю.И.";//ФИО оператора
+    public static String name_operator;//ФИО оператора
     public static int access;//тип доступа
     public static int id=1;//id
     private static Statement statement;

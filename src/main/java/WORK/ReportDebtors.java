@@ -58,7 +58,7 @@ public class ReportDebtors {
         for(int i = 0; i < info.length; i++){
             table.addCell(new Phrase(acc[i], font));
             table.addCell(new Phrase(changeFormatData(info[i][0]), font));
-            table.addCell(new Phrase(info[i][1], fontDolg));
+            table.addCell(new Phrase(Methods.Zero(info[i][1]), fontDolg));
             table.addCell(new Phrase(info[i][2], font));
             table.addCell(new Phrase(changeFormatData(info[i][3]), font));
             table.addCell(new Phrase(changeFormatData(info[i][4]), font));
@@ -75,7 +75,7 @@ public class ReportDebtors {
      * what - строка формата 'AAA [AAA+]'
      * return - строка формата 'Aaa [Aaa]+'
      */
-    private static String changeFormatData(String what){
+    static String changeFormatData(String what){
         String array[] = what.split(" ");
         String s = "";
         for (String anArray : array)
@@ -104,7 +104,7 @@ public class ReportDebtors {
             while (resSet.next()) {
                 //очередной абонент
                 res[i][0] = resSet.getString("FIO");
-                res[i][1] = String.valueOf(resSet.getInt("balance"));
+                res[i][1] = String.valueOf(resSet.getDouble("balance"));
                 res[i][2] = resSet.getString("telephone");
                 res[i][3] = resSet.getString("district");
                 res[i][4] = resSet.getString("street");

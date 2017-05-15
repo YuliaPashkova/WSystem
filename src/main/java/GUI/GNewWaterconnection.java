@@ -1,6 +1,5 @@
 package GUI;
 import WORK.Access;
-import WORK.Account;
 import WORK.Connect;
 import WORK.Waterconnection;
 import com.mxrck.autocompleter.TextAutoCompleter;
@@ -17,33 +16,19 @@ import java.text.SimpleDateFormat;
 public class GNewWaterconnection extends javax.swing.JDialog {
     private JTextField textfields [];//массив текстовых полей
     private JComboBox comboboxes[];//массив комбобоксов
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JButton ClearButton;
-    private javax.swing.JLabel CodeWatconLabel;
     private javax.swing.JTextField CodeWatconTextField;
     private org.jdesktop.swingx.JXDatePicker DateTYDatePicker;
-    private javax.swing.JLabel DateTYLabel;
-    private javax.swing.JLabel DepthLabel;
     private javax.swing.JTextField DepthTextField;
-    private javax.swing.JLabel LocationLabel;
     private javax.swing.JTextField LocationTextField;
-    private javax.swing.JLabel NoteLabel;
     private javax.swing.JTextArea NoteTextArea;
-    private javax.swing.JLabel NumTYLabel;
     private javax.swing.JTextField NumTYTextField;
-    private javax.swing.JLabel ObjectConLabel;
     private javax.swing.JTextField ObjectConTextField;
-    private javax.swing.JButton OkButton;
     private javax.swing.JComboBox<String> OwnerComboBox;
-    private javax.swing.JLabel OwnerLabel;
-    private javax.swing.JLabel OwnerTerLabel;
     private javax.swing.JTextField OwnerTerTextField;
     private javax.swing.JComboBox<String> StatusComboBox;
-    private javax.swing.JLabel StatusLabel;
     private javax.swing.JComboBox<String> TypeConComboBox;
-    private javax.swing.JLabel TypeConLabel;
-    private javax.swing.JScrollPane jScrollPane2;
-    public GNewWaterconnection(java.awt.Frame parent) throws SQLException {
+
+    GNewWaterconnection(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
         textfields=new JTextField[]{CodeWatconTextField,NumTYTextField,ObjectConTextField,OwnerTerTextField,
@@ -64,13 +49,11 @@ public class GNewWaterconnection extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(GNewWaterconnection.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GNewWaterconnection(null).setVisible(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new GNewWaterconnection(null).setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -78,32 +61,32 @@ public class GNewWaterconnection extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     private void initComponents() throws SQLException {
 
-        CodeWatconLabel = new javax.swing.JLabel();
+        JLabel codeWatconLabel = new JLabel();
         CodeWatconTextField = new javax.swing.JTextField();
-        NumTYLabel = new javax.swing.JLabel();
+        JLabel numTYLabel = new JLabel();
         NumTYTextField = new javax.swing.JTextField();
-        DateTYLabel = new javax.swing.JLabel();
+        JLabel dateTYLabel = new JLabel();
         DateTYDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateTYDatePicker.setFormats("yyyy-MM-dd");
         DateTYDatePicker.setDate(null);
         DateTYDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        StatusLabel = new javax.swing.JLabel();
-        OwnerLabel = new javax.swing.JLabel();
-        ObjectConLabel = new javax.swing.JLabel();
-        TypeConLabel = new javax.swing.JLabel();
+        JLabel statusLabel = new JLabel();
+        JLabel ownerLabel = new JLabel();
+        JLabel objectConLabel = new JLabel();
+        JLabel typeConLabel = new JLabel();
         ObjectConTextField = new javax.swing.JTextField();
-        OwnerTerLabel = new javax.swing.JLabel();
+        JLabel ownerTerLabel = new JLabel();
         OwnerTerTextField = new javax.swing.JTextField();
-        LocationLabel = new javax.swing.JLabel();
-        DepthLabel = new javax.swing.JLabel();
+        JLabel locationLabel = new JLabel();
+        JLabel depthLabel = new JLabel();
         LocationTextField = new javax.swing.JTextField();
         DepthTextField = new javax.swing.JTextField();
-        NoteLabel = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        JLabel noteLabel = new JLabel();
+        JScrollPane jScrollPane2 = new JScrollPane();
         NoteTextArea = new javax.swing.JTextArea();
-        ClearButton = new javax.swing.JButton();
-        OkButton = new javax.swing.JButton();
-        CancelButton = new javax.swing.JButton();
+        JButton clearButton = new JButton();
+        JButton okButton = new JButton();
+        JButton cancelButton = new JButton();
         OwnerComboBox = new javax.swing.JComboBox<>();
         TypeConComboBox = new javax.swing.JComboBox<>();
         StatusComboBox = new javax.swing.JComboBox<>();
@@ -121,83 +104,73 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         setIconImage(icon.getImage());
         setResizable(false);
 
-        CodeWatconLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        CodeWatconLabel.setText("Код ВП");
+        codeWatconLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        codeWatconLabel.setText("Код ВП");
 
         CodeWatconTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         CodeWatconTextField.setEditable(false);
 
-        NumTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumTYLabel.setText("№ ТУ");
+        numTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numTYLabel.setText("№ ТУ");
 
         NumTYTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        DateTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DateTYLabel.setText("Дата ТУ");
+        dateTYLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateTYLabel.setText("Дата ТУ");
 
 
-        StatusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        StatusLabel.setText("Состояние");
+        statusLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        statusLabel.setText("Состояние");
 
-        OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerLabel.setText("Принадлежность ВП");
+        ownerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ownerLabel.setText("Принадлежность ВП");
 
-        ObjectConLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ObjectConLabel.setText("Объект подключения");
+        objectConLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        objectConLabel.setText("Объект подключения");
 
-        TypeConLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TypeConLabel.setText("Вид подключения");
+        typeConLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        typeConLabel.setText("Вид подключения");
 
         ObjectConTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        OwnerTerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerTerLabel.setText("Принадлежность территории");
+        ownerTerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ownerTerLabel.setText("Принадлежность территории");
 
         OwnerTerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        LocationLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        LocationLabel.setText("Местонахождение ВП");
+        locationLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        locationLabel.setText("Местонахождение ВП");
 
-        DepthLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DepthLabel.setText("Глубина (м)");
+        depthLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        depthLabel.setText("Глубина (м)");
 
         LocationTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         DepthTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        NoteLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NoteLabel.setText("Примечание");
+        noteLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        noteLabel.setText("Примечание");
 
         NoteTextArea.setColumns(20);
         NoteTextArea.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         NoteTextArea.setRows(5);
         jScrollPane2.setViewportView(NoteTextArea);
 
-        ClearButton.setText("Очистить форму");
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed();
+        clearButton.setText("Очистить форму");
+        clearButton.addActionListener(evt -> ClearButtonActionPerformed());
+
+        okButton.setText("ОК");
+        okButton.addActionListener(evt -> {
+            try {
+                OkButtonActionPerformed();
+            } catch (ParseException | SQLException e) {
+                e.printStackTrace();
             }
         });
 
-        OkButton.setText("ОК");
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    OkButtonActionPerformed();
-                } catch (ParseException | SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        CancelButton.setText("Отмена");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed();
-            }
-        });
+        cancelButton.setText("Отмена");
+        cancelButton.addActionListener(evt -> CancelButtonActionPerformed());
 
         OwnerComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         OwnerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "ГУПС ВОДОКАНАЛ", "АБОНЕНТ" }));
@@ -216,33 +189,33 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(ClearButton)
+                                                .addComponent(clearButton)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(OkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(24, 24, 24)
-                                                .addComponent(TypeConLabel)
+                                                .addComponent(typeConLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(OwnerTerLabel)
+                                                .addComponent(ownerTerLabel)
                                                 .addGap(31, 31, 31))
                                         .addComponent(CodeWatconTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(17, 17, 17)
-                                                .addComponent(CodeWatconLabel)
+                                                .addComponent(codeWatconLabel)
                                                 .addGap(38, 38, 38)
-                                                .addComponent(NumTYLabel)
+                                                .addComponent(numTYLabel)
                                                 .addGap(55, 55, 55)
-                                                .addComponent(DateTYLabel)
+                                                .addComponent(dateTYLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(StatusLabel)
+                                                .addComponent(statusLabel)
                                                 .addGap(24, 24, 24))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGap(79, 79, 79)
-                                                .addComponent(LocationLabel)
+                                                .addComponent(locationLabel)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(DepthLabel)
+                                                .addComponent(depthLabel)
                                                 .addGap(17, 17, 17))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addComponent(LocationTextField)
@@ -250,7 +223,7 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                                                 .addComponent(DepthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(153, 153, 153)
-                                                .addComponent(NoteLabel))
+                                                .addComponent(noteLabel))
                                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -262,13 +235,13 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                                                                         .addComponent(NumTYTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addGap(10, 10, 10)
-                                                                        .addComponent(OwnerLabel))))
+                                                                        .addComponent(ownerLabel))))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addGap(60, 60, 60)
-                                                                                .addComponent(ObjectConLabel))
+                                                                                .addComponent(objectConLabel))
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addComponent(DateTYDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,11 +261,11 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                                 .addGap(11, 11, 11)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(NumTYLabel)
-                                                .addComponent(CodeWatconLabel))
+                                                .addComponent(numTYLabel)
+                                                .addComponent(codeWatconLabel))
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(DateTYLabel)
-                                                .addComponent(StatusLabel)))
+                                                .addComponent(dateTYLabel)
+                                                .addComponent(statusLabel)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(CodeWatconTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,37 +274,37 @@ public class GNewWaterconnection extends javax.swing.JDialog {
                                         .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ObjectConLabel)
-                                        .addComponent(OwnerLabel))
+                                        .addComponent(objectConLabel)
+                                        .addComponent(ownerLabel))
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(ObjectConTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(OwnerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(OwnerTerLabel)
-                                        .addComponent(TypeConLabel))
+                                        .addComponent(ownerTerLabel)
+                                        .addComponent(typeConLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(OwnerTerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(TypeConComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DepthLabel)
-                                        .addComponent(LocationLabel))
+                                        .addComponent(depthLabel)
+                                        .addComponent(locationLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(DepthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(LocationTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(NoteLabel)
+                                .addComponent(noteLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(ClearButton)
-                                        .addComponent(OkButton)
-                                        .addComponent(CancelButton))
+                                        .addComponent(clearButton)
+                                        .addComponent(okButton)
+                                        .addComponent(cancelButton))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

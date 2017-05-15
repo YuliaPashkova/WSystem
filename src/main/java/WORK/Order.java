@@ -1,7 +1,6 @@
 package WORK;
 import GUI.GJournalOrders;
 
-import javax.swing.*;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;

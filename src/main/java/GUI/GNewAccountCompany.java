@@ -9,62 +9,37 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-/**
+/*
  * Created by Юлия on 14.04.2017.
  */
 public class GNewAccountCompany extends javax.swing.JDialog {
-    JTextField textfields [];//массив текстовых полей
-    private javax.swing.JLabel AdressLabel;
+    private JTextField textfields [];//массив текстовых полей
     private javax.swing.JTextField AdressTextField;
-    private javax.swing.JLabel BIKLabel;
     private javax.swing.JTextField BIKTextField;
-    private javax.swing.JLabel BalanceLabel;
     private javax.swing.JTextField BalanceTextField;
-    private javax.swing.JLabel BankAccLabel;
     private javax.swing.JTextField BankAccTextField;
-    private javax.swing.JLabel BankLabel;
     private javax.swing.JTextField BankTextField;
-    private javax.swing.JButton CancelButton;
-    private javax.swing.JButton ClearButton;
-    private javax.swing.JLabel ConsTypeLabel;
     private javax.swing.JTextField ConsTypeTextField;
-    private javax.swing.JLabel CorpusLabel;
     private javax.swing.JTextField CorpusTextField;
     private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
-    private javax.swing.JLabel DateContractLabel;
     private javax.swing.JComboBox<String> DistrictComboBox;
-    private javax.swing.JLabel DistrictLabel;
-    private javax.swing.JLabel FIOLabel;
-    private javax.swing.JLabel FlatLabel;
     private javax.swing.JTextField FlatTextField;
-    private javax.swing.JLabel HouseLabel;
     private javax.swing.JTextField HouseTextField;
-    private javax.swing.JLabel INNLabel;
     private javax.swing.JTextField INNTextField;
-    private javax.swing.JLabel IndexLabel;
     private javax.swing.JTextField IndexTextField;
-    private javax.swing.JLabel KPPLabel;
     private javax.swing.JTextField KPPTextField;
     private javax.swing.JTextField MiddleNameTextField;
-    private javax.swing.JLabel NameCompanyLabel;
     private javax.swing.JTextField NameCompanyTextField;
     private javax.swing.JTextField NameTextField;
-    private javax.swing.JLabel NumAccLabel;
     private javax.swing.JTextField NumAccTextField;
-    private javax.swing.JLabel NumContractLabel;
     private javax.swing.JTextField NumContractTextField;
-    private javax.swing.JLabel NumSertifLabel;
     private javax.swing.JTextField NumSertifTextField;
-    private javax.swing.JButton OkButton;
-    private javax.swing.JLabel OwnerLabel;
     private javax.swing.JTextField OwnerTextField;
-    private javax.swing.JLabel StatusAccLabel;
     private javax.swing.JTextField StatusAccTextField;
     private javax.swing.JTextField SurnameTextField;
-    private javax.swing.JLabel TelephoneLabel;
     private javax.swing.JTextField TelephoneTextField;
-    private javax.swing.JSeparator jSeparator2;
-    public GNewAccountCompany(java.awt.Frame parent) throws SQLException {
+
+    GNewAccountCompany(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
         textfields = new JTextField[]{//массив текстовых полей
@@ -92,69 +67,67 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(GNewAccountPerson.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new GNewAccountPerson(null).setVisible(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new GNewAccountPerson(null).setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() throws SQLException {
-        DistrictLabel = new javax.swing.JLabel();
+        JLabel districtLabel = new JLabel();
         MiddleNameTextField = new javax.swing.JTextField();
         NameTextField = new javax.swing.JTextField();
-        FIOLabel = new javax.swing.JLabel();
+        JLabel FIOLabel = new JLabel();
         SurnameTextField = new javax.swing.JTextField();
-        NumAccLabel = new javax.swing.JLabel();
+        JLabel numAccLabel = new JLabel();
         NumAccTextField = new javax.swing.JTextField();
-        DateContractLabel = new javax.swing.JLabel();
-        AdressLabel = new javax.swing.JLabel();
+        JLabel dateContractLabel = new JLabel();
+        JLabel adressLabel = new JLabel();
         AdressTextField = new javax.swing.JTextField();
-        HouseLabel = new javax.swing.JLabel();
+        JLabel houseLabel = new JLabel();
         HouseTextField = new javax.swing.JTextField();
-        CorpusLabel = new javax.swing.JLabel();
+        JLabel corpusLabel = new JLabel();
         CorpusTextField = new javax.swing.JTextField();
-        FlatLabel = new javax.swing.JLabel();
+        JLabel flatLabel = new JLabel();
         FlatTextField = new javax.swing.JTextField();
-        OwnerLabel = new javax.swing.JLabel();
+        JLabel ownerLabel = new JLabel();
         OwnerTextField = new javax.swing.JTextField();
-        ConsTypeLabel = new javax.swing.JLabel();
-        IndexLabel = new javax.swing.JLabel();
-        TelephoneLabel = new javax.swing.JLabel();
+        JLabel consTypeLabel = new JLabel();
+        JLabel indexLabel = new JLabel();
+        JLabel telephoneLabel = new JLabel();
         ConsTypeTextField = new javax.swing.JTextField();
         TelephoneTextField = new javax.swing.JTextField();
         IndexTextField = new javax.swing.JTextField();
-        OkButton = new javax.swing.JButton();
-        CancelButton = new javax.swing.JButton();
+        JButton okButton = new JButton();
+        JButton cancelButton = new JButton();
         DateContractDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateContractDatePicker.setFormats("yyyy-MM-dd");
         DateContractDatePicker.setDate(null);
         DateContractDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        ClearButton = new javax.swing.JButton();
+        JButton clearButton = new JButton();
         BalanceTextField = new javax.swing.JTextField();
-        BalanceLabel = new javax.swing.JLabel();
+        JLabel balanceLabel = new JLabel();
         NumContractTextField = new javax.swing.JTextField();
-        NumContractLabel = new javax.swing.JLabel();
+        JLabel numContractLabel = new JLabel();
         StatusAccTextField = new javax.swing.JTextField();
-        StatusAccLabel = new javax.swing.JLabel();
+        JLabel statusAccLabel = new JLabel();
         INNTextField = new javax.swing.JTextField();
-        jSeparator2 = new javax.swing.JSeparator();
+        JSeparator jSeparator2 = new JSeparator();
         NameCompanyTextField = new javax.swing.JTextField();
-        NameCompanyLabel = new javax.swing.JLabel();
+        JLabel nameCompanyLabel = new JLabel();
         BankTextField = new javax.swing.JTextField();
-        BankLabel = new javax.swing.JLabel();
-        BIKLabel = new javax.swing.JLabel();
-        KPPLabel = new javax.swing.JLabel();
+        JLabel bankLabel = new JLabel();
+        JLabel BIKLabel = new JLabel();
+        JLabel KPPLabel = new JLabel();
         BIKTextField = new javax.swing.JTextField();
         KPPTextField = new javax.swing.JTextField();
-        BankAccLabel = new javax.swing.JLabel();
-        NumSertifLabel = new javax.swing.JLabel();
-        INNLabel = new javax.swing.JLabel();
+        JLabel bankAccLabel = new JLabel();
+        JLabel numSertifLabel = new JLabel();
+        JLabel INNLabel = new JLabel();
         BankAccTextField = new javax.swing.JTextField();
         NumSertifTextField = new javax.swing.JTextField();
         DistrictComboBox = new javax.swing.JComboBox<>();
@@ -185,8 +158,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        DistrictLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DistrictLabel.setText("Район");
+        districtLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        districtLabel.setText("Район");
 
         MiddleNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -200,54 +173,54 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        NumAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumAccLabel.setText("№ лицевого счета");
+        numAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setEditable(false);
         NumAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        DateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        DateContractLabel.setText("Дата договора");
+        dateContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        dateContractLabel.setText("Дата договора");
 
-        AdressLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        AdressLabel.setText("Адрес");
+        adressLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        adressLabel.setText("Адрес");
 
         AdressTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        HouseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        HouseLabel.setText("Дом");
+        houseLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        houseLabel.setText("Дом");
 
         HouseTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        CorpusLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
-        CorpusLabel.setText("Корпус");
+        corpusLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
+        corpusLabel.setText("Корпус");
 
         CorpusTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        FlatLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
-        FlatLabel.setText("Квартира");
+        flatLabel.setFont(new java.awt.Font("Tahoma", 2, 12)); // NOI18N
+        flatLabel.setText("Квартира");
 
         FlatTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        OwnerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        OwnerLabel.setText("Владелец");
+        ownerLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        ownerLabel.setText("Владелец");
 
         OwnerTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        ConsTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        ConsTypeLabel.setText("Категория потребителей");
+        consTypeLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        consTypeLabel.setText("Категория потребителей");
 
-        IndexLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        IndexLabel.setText(" Индекс");
+        indexLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        indexLabel.setText(" Индекс");
 
-        TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        TelephoneLabel.setText("Телефон");
+        telephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        telephoneLabel.setText("Телефон");
 
         ConsTypeTextField.setEditable(false);
         ConsTypeTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -260,62 +233,52 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         IndexTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        OkButton.setText("ОК");
-        OkButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    OkButtonActionPerformed(evt);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        okButton.setText("ОК");
+        okButton.addActionListener(evt -> {
+            try {
+                OkButtonActionPerformed();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
 
-        CancelButton.setText("Отмена");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
+        cancelButton.setText("Отмена");
+        cancelButton.addActionListener((e) -> CancelButtonActionPerformed());
 
 
 
-        ClearButton.setText("Очистить форму");
-        ClearButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearButtonActionPerformed(evt);
-            }
-        });
+        clearButton.setText("Очистить форму");
+        clearButton.addActionListener(this::ClearButtonActionPerformed);
 
         BalanceTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        BalanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BalanceLabel.setText("Баланс");
+        balanceLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        balanceLabel.setText("Баланс");
 
         NumContractTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        NumContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumContractLabel.setText("Номер договора");
+        numContractLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numContractLabel.setText("Номер договора");
 
         StatusAccTextField.setEditable(false);
         StatusAccTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         StatusAccTextField.setText("ОТКРЫТ");
 
 
-        StatusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        StatusAccLabel.setText("Статус лицевого счета");
+        statusAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        statusAccLabel.setText("Статус лицевого счета");
 
 
-        NameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NameCompanyLabel.setText("Название предприятия");
+        nameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        nameCompanyLabel.setText("Название предприятия");
 
         BankTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        BankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankLabel.setText("Банк плательщика");
+        bankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bankLabel.setText("Банк плательщика");
 
         BIKLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         BIKLabel.setText("БИК");
@@ -329,11 +292,11 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
-        BankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BankAccLabel.setText("Расчетный счет");
+        bankAccLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bankAccLabel.setText("Расчетный счет");
 
-        NumSertifLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        NumSertifLabel.setText("№ свидетельства");
+        numSertifLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        numSertifLabel.setText("№ свидетельства");
 
         INNLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         INNLabel.setText("ИНН");
@@ -360,23 +323,23 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                 .addGap(59, 59, 59))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(103, 103, 103)
-                                                .addComponent(DistrictLabel))
+                                                .addComponent(districtLabel))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(138, 138, 138)
-                                                .addComponent(OwnerLabel))
+                                                .addComponent(ownerLabel))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(172, 172, 172)
-                                                .addComponent(ConsTypeLabel))
+                                                .addComponent(consTypeLabel))
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGap(97, 97, 97)
-                                                        .addComponent(AdressLabel)
+                                                        .addComponent(adressLabel)
                                                         .addGap(154, 154, 154)
-                                                        .addComponent(HouseLabel)
+                                                        .addComponent(houseLabel)
                                                         .addGap(44, 44, 44)
-                                                        .addComponent(CorpusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(corpusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(FlatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(flatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -400,27 +363,27 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                         .addGap(10, 10, 10)
-                                                                                        .addComponent(NumContractLabel)
+                                                                                        .addComponent(numContractLabel)
                                                                                         .addGap(18, 18, 18)
-                                                                                        .addComponent(DateContractLabel))
+                                                                                        .addComponent(dateContractLabel))
                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                                 .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                                 .addComponent(NumContractTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addComponent(NumAccLabel))
+                                                                                                .addComponent(numAccLabel))
                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                                                         .addComponent(DateContractDatePicker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                                                         .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                                                        .addComponent(BalanceLabel)
+                                                                                                        .addComponent(balanceLabel)
                                                                                                         .addGap(33, 33, 33))))))
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addGap(35, 35, 35)
-                                                                        .addComponent(TelephoneLabel)
+                                                                        .addComponent(telephoneLabel)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(IndexLabel)
+                                                                        .addComponent(indexLabel)
                                                                         .addGap(33, 33, 33))))
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -438,7 +401,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                         .addGap(10, 10, 10)
-                                                                                        .addComponent(StatusAccLabel)
+                                                                                        .addComponent(statusAccLabel)
                                                                                         .addGap(0, 0, Short.MAX_VALUE))
                                                                                 .addGroup(layout.createSequentialGroup()
                                                                                         .addComponent(CorpusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -451,28 +414,28 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                                         .addComponent(StatusAccTextField))
                                                 .addGroup(layout.createSequentialGroup()
                                                         .addGap(61, 61, 61)
-                                                        .addComponent(NameCompanyLabel)
+                                                        .addComponent(nameCompanyLabel)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(NumSertifLabel)
+                                                        .addComponent(numSertifLabel)
                                                         .addGap(64, 64, 64))
                                                 .addComponent(jSeparator2)
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGap(69, 69, 69)
-                                                        .addComponent(BankLabel)
+                                                        .addComponent(bankLabel)
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(BankAccLabel)
+                                                        .addComponent(bankAccLabel)
                                                         .addGap(67, 67, 67))
                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addComponent(INNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(ClearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addGap(0, 0, Short.MAX_VALUE)
-                                                                        .addComponent(OkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addGroup(layout.createSequentialGroup()
                                                                         .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -484,9 +447,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(DistrictLabel)
-                                        .addComponent(NumAccLabel)
-                                        .addComponent(BalanceLabel))
+                                        .addComponent(districtLabel)
+                                        .addComponent(numAccLabel)
+                                        .addComponent(balanceLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -495,8 +458,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(FIOLabel)
-                                        .addComponent(NumContractLabel)
-                                        .addComponent(DateContractLabel))
+                                        .addComponent(numContractLabel)
+                                        .addComponent(dateContractLabel))
                                 .addGap(3, 3, 3)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(SurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -505,8 +468,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(TelephoneLabel)
-                                        .addComponent(IndexLabel))
+                                        .addComponent(telephoneLabel)
+                                        .addComponent(indexLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(MiddleNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -514,11 +477,11 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(IndexTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(AdressLabel)
+                                        .addComponent(adressLabel)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(HouseLabel)
-                                                .addComponent(CorpusLabel)
-                                                .addComponent(FlatLabel)))
+                                                .addComponent(houseLabel)
+                                                .addComponent(corpusLabel)
+                                                .addComponent(flatLabel)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(AdressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -527,30 +490,30 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(FlatTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(OwnerLabel)
-                                        .addComponent(StatusAccLabel))
+                                        .addComponent(ownerLabel)
+                                        .addComponent(statusAccLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(OwnerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(StatusAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(7, 7, 7)
-                                .addComponent(ConsTypeLabel)
+                                .addComponent(consTypeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ConsTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(NumSertifLabel)
-                                        .addComponent(NameCompanyLabel))
+                                        .addComponent(numSertifLabel)
+                                        .addComponent(nameCompanyLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(NumSertifTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(BankLabel)
-                                        .addComponent(BankAccLabel))
+                                        .addComponent(bankLabel)
+                                        .addComponent(bankAccLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
@@ -570,9 +533,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(CancelButton)
-                                        .addComponent(OkButton)
-                                        .addComponent(ClearButton))
+                                        .addComponent(cancelButton)
+                                        .addComponent(okButton)
+                                        .addComponent(clearButton))
                                 .addContainerGap())
         );
 
@@ -580,11 +543,11 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void CancelButtonActionPerformed() {
         dispose();
     }
 
-    private void OkButtonActionPerformed(java.awt.event.ActionEvent evt) throws Exception {
+    private void OkButtonActionPerformed() throws Exception {
         String data[] = readData();
         switch(Account.addAccount(data,false)){
             case 0:

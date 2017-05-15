@@ -13,35 +13,28 @@ import static WORK.Contact.company;
  */
 public class GContacts extends javax.swing.JDialog {
 
-        private static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
-        private static javax.swing.JTable ResultTable;
-        public javax.swing.JTextField NameCompanyTextField;
-        private boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить контактное лицо",иначе false)
-        private boolean add_mode=false;//флаг добавления(true - если была нажата вкладка "добавить контактное лицо",иначе false)
-        private String old_data[];//массив старых данных
-        private JTextField textfields [];//массив текстовых полей
-        private javax.swing.JMenuItem AcceptChangesMenuItem;
-        private javax.swing.JMenu AddMenu;
-        private javax.swing.JMenuItem AddModeContactMenuItem;
-        private javax.swing.JMenuItem AddNewContactMenuItem;
-        private javax.swing.JMenuItem ChangeModeMenuItem;
-        private javax.swing.JMenu ChangesMenu;
-        private javax.swing.JMenuItem DeleteMenuItem;
-        private javax.swing.JMenu EditMenu;
-        private javax.swing.JLabel EmailLabel;
-        private javax.swing.JTextField EmailTextField;
-        private javax.swing.JTextField MiddleNameTextField;
-        private javax.swing.JLabel NameCompanyLabel;
-        private javax.swing.JTextField NameTextField;
-        private javax.swing.JLabel SurnameLabel;
-        private javax.swing.JTextField SurnameTextField;
-        private javax.swing.JLabel TelephoneLabel;
-        private javax.swing.JTextField TelephoneTextField;
-        private javax.swing.JLabel WorkLabel;
-        private javax.swing.JTextField WorkTextField;
-        private javax.swing.JMenuBar jMenuBar1;
-        private javax.swing.JScrollPane jScrollPane2;
-        public GContacts(java.awt.Frame parent) {
+    private static DefaultTableModel model = new DefaultTableModel();//модель таблицы с результатом поиска
+    private static javax.swing.JTable ResultTable;
+    javax.swing.JTextField NameCompanyTextField;
+    private boolean change_mode=false;//флаг изменений(true - если была нажата вкладка "изменить контактное лицо",иначе false)
+    private boolean add_mode=false;//флаг добавления(true - если была нажата вкладка "добавить контактное лицо",иначе false)
+    private String old_data[];//массив старых данных
+    private JTextField textfields [];//массив текстовых полей
+    private javax.swing.JMenuItem AcceptChangesMenuItem;
+    private javax.swing.JMenu AddMenu;
+    private javax.swing.JMenuItem AddModeContactMenuItem;
+    private javax.swing.JMenuItem AddNewContactMenuItem;
+    private javax.swing.JMenuItem ChangeModeMenuItem;
+    private javax.swing.JMenu ChangesMenu;
+    private javax.swing.JMenuItem DeleteMenuItem;
+    private javax.swing.JTextField EmailTextField;
+    private javax.swing.JTextField MiddleNameTextField;
+    private javax.swing.JTextField NameTextField;
+    private javax.swing.JTextField SurnameTextField;
+    private javax.swing.JTextField TelephoneTextField;
+    private javax.swing.JTextField WorkTextField;
+
+    GContacts(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
         textfields =new JTextField[]{SurnameTextField,NameTextField,MiddleNameTextField,
@@ -59,11 +52,7 @@ public class GContacts extends javax.swing.JDialog {
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 java.util.logging.Logger.getLogger(GContacts.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
-            java.awt.EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    new GContacts(null).setVisible(true);
-                }
-            });
+            java.awt.EventQueue.invokeLater(() -> new GContacts(null).setVisible(true));
         }
 
         //добавление в таблицу новой строки
@@ -73,22 +62,22 @@ public class GContacts extends javax.swing.JDialog {
         }
 
         private void initComponents() {
-            SurnameLabel = new javax.swing.JLabel();
+            JLabel surnameLabel = new JLabel();
             SurnameTextField = new javax.swing.JTextField();
             NameTextField = new javax.swing.JTextField();
             MiddleNameTextField = new javax.swing.JTextField();
-            NameCompanyLabel = new javax.swing.JLabel();
+            JLabel nameCompanyLabel = new JLabel();
             NameCompanyTextField = new javax.swing.JTextField();
-            WorkLabel = new javax.swing.JLabel();
+            JLabel workLabel = new JLabel();
             WorkTextField = new javax.swing.JTextField();
             EmailTextField = new javax.swing.JTextField();
-            EmailLabel = new javax.swing.JLabel();
-            TelephoneLabel = new javax.swing.JLabel();
+            JLabel emailLabel = new JLabel();
+            JLabel telephoneLabel = new JLabel();
             TelephoneTextField = new javax.swing.JTextField();
-            jScrollPane2 = new javax.swing.JScrollPane();
+            JScrollPane jScrollPane2 = new JScrollPane();
             ResultTable = new javax.swing.JTable();
-            jMenuBar1 = new javax.swing.JMenuBar();
-            EditMenu = new javax.swing.JMenu();
+            JMenuBar jMenuBar1 = new JMenuBar();
+            JMenu editMenu = new JMenu();
             ChangesMenu = new javax.swing.JMenu();
             ChangeModeMenuItem = new javax.swing.JMenuItem();
             AcceptChangesMenuItem = new javax.swing.JMenuItem();
@@ -103,8 +92,8 @@ public class GContacts extends javax.swing.JDialog {
             setIconImage(icon.getImage());
             setResizable(false);
 
-            SurnameLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            SurnameLabel.setText("Фамилия, имя, отчество");
+            surnameLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            surnameLabel.setText("Фамилия, имя, отчество");
 
             SurnameTextField.setEditable(false);
             SurnameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -115,14 +104,14 @@ public class GContacts extends javax.swing.JDialog {
             MiddleNameTextField.setEditable(false);
             MiddleNameTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-            NameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            NameCompanyLabel.setText("Наименование предприятия (организации)");
+            nameCompanyLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            nameCompanyLabel.setText("Наименование предприятия (организации)");
 
             NameCompanyTextField.setEditable(false);
             NameCompanyTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-            WorkLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            WorkLabel.setText("Должность");
+            workLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            workLabel.setText("Должность");
 
             WorkTextField.setEditable(false);
             WorkTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -130,11 +119,11 @@ public class GContacts extends javax.swing.JDialog {
             EmailTextField.setEditable(false);
             EmailTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-            EmailLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            EmailLabel.setText("E-mail (электронная почта)");
+            emailLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            emailLabel.setText("E-mail (электронная почта)");
 
-            TelephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-            TelephoneLabel.setText("Контактный телефон");
+            telephoneLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+            telephoneLabel.setText("Контактный телефон");
 
             TelephoneTextField.setEditable(false);
             TelephoneTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -170,18 +159,16 @@ public class GContacts extends javax.swing.JDialog {
             model = (DefaultTableModel) ResultTable.getModel();//подключение таблицы к модели
             jScrollPane2.setViewportView(ResultTable);
 
-            EditMenu.setText("Редактирование");
+            editMenu.setText("Редактирование");
 
             ChangesMenu.setText("Изменение");
 
             ChangeModeMenuItem.setText("Включить режим изменения");
-            ChangeModeMenuItem.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        ChangeModeMenuItemActionPerformed();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            ChangeModeMenuItem.addActionListener(evt -> {
+                try {
+                    ChangeModeMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             });
             ChangesMenu.add(ChangeModeMenuItem);
@@ -190,56 +177,46 @@ public class GContacts extends javax.swing.JDialog {
 
             AcceptChangesMenuItem.setText("Принять изменения");
             AcceptChangesMenuItem.setEnabled(false);
-            AcceptChangesMenuItem.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        AcceptChangesMenuItemActionPerformed();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            AcceptChangesMenuItem.addActionListener(evt -> {
+                try {
+                    AcceptChangesMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             });
             ChangesMenu.add(AcceptChangesMenuItem);
 
-            EditMenu.add(ChangesMenu);
+            editMenu.add(ChangesMenu);
 
             AddMenu.setText("Добавление");
 
             AddModeContactMenuItem.setText("Включить режим добавления");
-            AddModeContactMenuItem.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        AddModeContactMenuItemActionPerformed();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            AddModeContactMenuItem.addActionListener(evt -> {
+                try {
+                    AddModeContactMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             });
             AddMenu.add(AddModeContactMenuItem);
 
             AddNewContactMenuItem.setText("Добавить новое контактное лицо");
-            AddNewContactMenuItem.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    try {
-                        AddNewContactMenuItemActionPerformed();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+            AddNewContactMenuItem.addActionListener(evt -> {
+                try {
+                    AddNewContactMenuItemActionPerformed();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             });
             AddMenu.add(AddNewContactMenuItem);
 
-            EditMenu.add(AddMenu);
+            editMenu.add(AddMenu);
 
             DeleteMenuItem.setText("Удаление выбранного контактного лица");
-            DeleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    DeleteMenuItemActionPerformed();
-                }
-            });
-            EditMenu.add(DeleteMenuItem);
+            DeleteMenuItem.addActionListener(evt -> DeleteMenuItemActionPerformed());
+            editMenu.add(DeleteMenuItem);
 
-            jMenuBar1.add(EditMenu);
+            jMenuBar1.add(editMenu);
 
             setJMenuBar(jMenuBar1);
 
@@ -254,7 +231,7 @@ public class GContacts extends javax.swing.JDialog {
                                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                             .addGroup(layout.createSequentialGroup()
                                                                     .addGap(118, 118, 118)
-                                                                    .addComponent(NameCompanyLabel))
+                                                                    .addComponent(nameCompanyLabel))
                                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                                     .addGroup(layout.createSequentialGroup()
                                                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -272,15 +249,15 @@ public class GContacts extends javax.swing.JDialog {
                                                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                             .addGroup(layout.createSequentialGroup()
                                                     .addGap(33, 33, 33)
-                                                    .addComponent(EmailLabel)
+                                                    .addComponent(emailLabel)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(TelephoneLabel)
+                                                    .addComponent(telephoneLabel)
                                                     .addGap(36, 36, 36))
                                             .addGroup(layout.createSequentialGroup()
                                                     .addGap(43, 43, 43)
-                                                    .addComponent(SurnameLabel)
+                                                    .addComponent(surnameLabel)
                                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(WorkLabel)
+                                                    .addComponent(workLabel)
                                                     .addGap(66, 66, 66))))
             );
             layout.setVerticalGroup(
@@ -288,8 +265,8 @@ public class GContacts extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                     .addContainerGap()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(SurnameLabel)
-                                            .addComponent(WorkLabel))
+                                            .addComponent(surnameLabel)
+                                            .addComponent(workLabel))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(SurnameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,13 +276,13 @@ public class GContacts extends javax.swing.JDialog {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(MiddleNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(NameCompanyLabel)
+                                    .addComponent(nameCompanyLabel)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(EmailLabel)
-                                            .addComponent(TelephoneLabel))
+                                            .addComponent(emailLabel)
+                                            .addComponent(telephoneLabel))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(EmailTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -476,7 +453,7 @@ public class GContacts extends javax.swing.JDialog {
             for(int i=0;i<textfields.length-1;i++)textfields[i].setText(null);
         }
         //удаляет все строки из таблицы
-        public void deleteRows() {
+        void deleteRows() {
             model.setRowCount(0);
         }
         //по клику на строке таблицы

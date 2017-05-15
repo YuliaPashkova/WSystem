@@ -9,7 +9,7 @@ import java.math.BigInteger;
  * Created by Rob on 02.05.2017.
  * Реализует хеширование по алгоритму "Стрибог"
  */
-public class Stribog {
+class Stribog {
     private static BigInteger A[] = new BigInteger[64];
     private static BigInteger Sbox[] = new BigInteger[256];
     private static BigInteger Tau [] = {
@@ -28,7 +28,7 @@ public class Stribog {
     private BigInteger[] Sigma = new BigInteger[64];
     private int outLen = 0;
 
-    public Stribog(int outputLenght) {
+    Stribog(int outputLenght) {
         if (outputLenght == 512) {
             for (int i = 0; i < 64; i++) {
                 N[i] = BigInteger.ZERO;
@@ -313,7 +313,7 @@ public class Stribog {
      * @param m - строка, для которой нужен хэш
      * @return хэш строки m
      */
-    public  String getHash(String m) throws IOException {
+    String getHash(String m) throws IOException {
         byte initial[] = m.getBytes(); //строку в байты
         BigInteger[] message = new BigInteger[initial.length];
         //initil = сообщение, записываем по байтно его в message

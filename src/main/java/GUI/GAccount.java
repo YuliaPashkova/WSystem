@@ -1,8 +1,6 @@
 package GUI;
 import WORK.*;
 import com.mxrck.autocompleter.TextAutoCompleter;
-
-import javax.jnlp.IntegrationService;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
@@ -37,6 +35,7 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JTextField CorpusTextField;
     private javax.swing.JButton CountAccButton;
     private javax.swing.JMenu DataProtectionMenu;
+    private javax.swing.JMenu ChangesMenu;
     private org.jdesktop.swingx.JXDatePicker DateContractDatePicker;
     private javax.swing.JMenuItem DeleteAccMenuItem;
     private javax.swing.JComboBox<String> DistrictComboBox;
@@ -67,6 +66,7 @@ public class GAccount extends javax.swing.JFrame {
     private javax.swing.JButton WaterconButton;
     private javax.swing.JButton WatermeterButton;
     private javax.swing.JMenuItem newOrderMenuItem;
+    private javax.swing.JMenuItem  noticeDeptMenuItem;
 
     GAccount() throws Exception {
         conntoDB();
@@ -173,7 +173,7 @@ public class GAccount extends javax.swing.JFrame {
         ConsTypeComboBox = new javax.swing.JComboBox<>();
         StatusAccComboBox = new javax.swing.JComboBox<>();
         JMenuBar menuBar = new JMenuBar();
-        JMenu changesMenu = new JMenu();
+        ChangesMenu = new JMenu();
         NewAccMenuItem = new javax.swing.JMenuItem();
         ChangeAccMenuItem = new javax.swing.JMenuItem();
         DeleteAccMenuItem = new javax.swing.JMenuItem();
@@ -189,13 +189,13 @@ public class GAccount extends javax.swing.JFrame {
         newOrderMenuItem = new JMenuItem();
         JMenuItem closeOrderMenuItem = new JMenuItem();
         DocumentsMenu = new javax.swing.JMenu();
-        JMenuItem noticeDeptMenuItem = new JMenuItem();
         JMenuItem patternDeptMenuItem = new JMenuItem();
         JMenuItem listDeptorsMenuItem = new JMenuItem();
         DataProtectionMenu = new javax.swing.JMenu();
         JMenuItem encryptDataMenuItem = new JMenuItem();
         JMenuItem decryptDataMenuItem = new JMenuItem();
         ExitProgrammMenu = new javax.swing.JMenu();
+        noticeDeptMenuItem = new javax.swing.JMenuItem();
 
         //AUTOCOMPLETERS
 
@@ -409,7 +409,7 @@ public class GAccount extends javax.swing.JFrame {
         SummBalanceButton.setIcon(new javax.swing.ImageIcon("src\\main\\resources\\buttons\\summa_icon.jpg")); // NOI18N
         SummBalanceButton.addActionListener(evt -> {
             try {
-                SummBalanceButtonActionPerformed();
+                GAccount.this.SummBalanceButtonActionPerformed();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -436,7 +436,7 @@ public class GAccount extends javax.swing.JFrame {
         ConsTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ФИЗИЧЕСКОЕ ЛИЦО", "ЮРИДИЧЕСКОЕ ЛИЦО"}));
         StatusAccComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"НЕ ВЫБРАНО", "ОТКРЫТ", "ЗАКРЫТ"}));
 
-        changesMenu.setText("Изменения");
+        ChangesMenu.setText("Изменения");
 
         NewAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         NewAccMenuItem.setText("Новый лицевой счет");
@@ -447,7 +447,7 @@ public class GAccount extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         });
-        changesMenu.add(NewAccMenuItem);
+        ChangesMenu.add(NewAccMenuItem);
 
         ChangeAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         ChangeAccMenuItem.setText("Изменение текущей записи");
@@ -459,7 +459,7 @@ public class GAccount extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         });
-        changesMenu.add(ChangeAccMenuItem);
+        ChangesMenu.add(ChangeAccMenuItem);
 
         DeleteAccMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_MASK));
         DeleteAccMenuItem.setText("Удалить лицевой счет");
@@ -471,8 +471,8 @@ public class GAccount extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         });
-        changesMenu.add(DeleteAccMenuItem);
-        changesMenu.add(menuSeparator1);
+        ChangesMenu.add(DeleteAccMenuItem);
+        ChangesMenu.add(menuSeparator1);
 
         NewWatermeterMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
         NewWatermeterMenuItem.setText("Новый водомер");
@@ -484,7 +484,7 @@ public class GAccount extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         });
-        changesMenu.add(NewWatermeterMenuItem);
+        ChangesMenu.add(NewWatermeterMenuItem);
 
         NewWaterconMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         NewWaterconMenuItem.setText("Новое водомерное подключение");
@@ -496,10 +496,10 @@ public class GAccount extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         });
-        changesMenu.add(NewWaterconMenuItem);
-        changesMenu.add(menuSeparator);
+        ChangesMenu.add(NewWaterconMenuItem);
+        ChangesMenu.add(menuSeparator);
 
-        menuBar.add(changesMenu);
+        menuBar.add(ChangesMenu);
 
         CatalogMenu.setText("Справочники");
 
@@ -556,6 +556,7 @@ public class GAccount extends javax.swing.JFrame {
 
         noticeDeptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_MASK));
         noticeDeptMenuItem.setText("Сформировать извещение о долге");
+        noticeDeptMenuItem.setEnabled(false);
         noticeDeptMenuItem.addActionListener(evt -> NoticeDeptMenuItemActionPerformed());
         DocumentsMenu.add(noticeDeptMenuItem);
 
@@ -862,7 +863,10 @@ public class GAccount extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void SearchButtonActionPerformed() throws Exception {
-        if(change_mode)change();//если включен режим изменения
+        if(change_mode){
+            change();//если включен режим изменения
+            setAccess(Access.access);
+        }
         else search();
     }
 
@@ -1048,6 +1052,7 @@ public class GAccount extends javax.swing.JFrame {
         deleteRows();//очистка таблицы
         SearchButton.setEnabled(true);
         setConditionFields(true,true);  //активные поля
+        setAccess(Access.access);
     }
 
     private void OrdersMenuItemMouseClicked() {
@@ -1068,6 +1073,7 @@ public class GAccount extends javax.swing.JFrame {
         NewWaterconMenuItem.setEnabled(true);
         newOrderMenuItem.setEnabled(true);
         ChangeAccMenuItem.setEnabled(true);
+        noticeDeptMenuItem.setEnabled(true);
         NumAccTextField.requestFocus();
         //получение номера лицевого счета с выделенной строки
         String num_acc = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
@@ -1117,6 +1123,8 @@ public class GAccount extends javax.swing.JFrame {
         SearchButton.setEnabled(false);
         DeleteAccMenuItem.setEnabled(true);
         ResultTable.requestFocus();
+
+        setAccess(Access.access);
     }
 
 
@@ -1185,10 +1193,16 @@ public class GAccount extends javax.swing.JFrame {
     }
 
     private void NoticeDeptMenuItemActionPerformed() {
-        // TODO add your handling code here:
-    }
+        NUM_ACC = String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0));
+        if ((Double.parseDouble(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 1)))) > 0)//проверяем баланс
+            NoticeDept.makeNoticeDept(false);
+        else
+            JOptionPane.showMessageDialog(null, "Данный абонент не имеет долга! Невозможно сформировать извещение.", "Формирование извещения о долге", JOptionPane.INFORMATION_MESSAGE);
 
+    }
+    //шаблон извщения о долге
     private void PatternDeptMenuItemActionPerformed() {
+        NoticeDept.makeNoticeDept(true);
     }
 
     private void ListDeptorsMenuItemActionPerformed() throws Exception {
@@ -1243,6 +1257,34 @@ public class GAccount extends javax.swing.JFrame {
             GNewWatermeter nw = new GNewWatermeter(this);
             nw.CodeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(codes));
             nw.setVisible(true);
+        }
+    }
+
+    //разграничение доступа
+    //access-тип доступа (1-админ,2-старший оператор, 3- младший оператор)
+    public  void setAccess(int access){
+        if(access==1){//админ
+            ChangesMenu.setEnabled(true);
+            CatalogMenu.setEnabled(true);
+            OrderMenu.setEnabled(true);
+            DocumentsMenu.setEnabled(true);
+            DataProtectionMenu.setEnabled(true);
+
+        }
+        else if(access==2){//старший оператор (нельзя шифровать данные)
+            ChangesMenu.setEnabled(true);
+            CatalogMenu.setEnabled(true);
+            OrderMenu.setEnabled(true);
+            DocumentsMenu.setEnabled(true);
+            DataProtectionMenu.setEnabled(false);
+
+        }
+        else { //младший оператор (нельзя оформлять и закрывать заказы)
+            ChangesMenu.setEnabled(true);
+            CatalogMenu.setEnabled(true);
+            OrderMenu.setEnabled(false);
+            DocumentsMenu.setEnabled(true);
+            DataProtectionMenu.setEnabled(false);
         }
     }
 

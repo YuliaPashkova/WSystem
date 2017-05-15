@@ -14,7 +14,7 @@ public class Methods {
     /* Метод возвращает имена колонок таблицы
      * nameTable - имя таблицы, для которой надо получить массив имен колонок
      **/
-    public static String getColumnName(String table) throws SQLException {
+    static String getColumnName(String table) throws SQLException {
         String sql = "SELECT * from " + table;
         statement = Connect.connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
@@ -79,14 +79,14 @@ public class Methods {
      * Проверяет входную строку на математическое число
      * Возвращает true | false
      */
-    public static boolean isDigit(String str) {
+    static boolean isDigit(String str) {
         return str.matches("^[+-]?\\d+(\\.\\d+)?");
     }
     /*
      * Проверяет входную строку на математическое положительное число
      * Возвращает true | false
      */
-    public static boolean isPosDigit(String str) {
+    static boolean isPosDigit(String str) {
         return str.matches("^\\d+(\\.\\d+)?");
     }
     /*
@@ -100,21 +100,21 @@ public class Methods {
      * Проверяет входную строку на буквы
      * Возвращает true | false
      */
-    public static boolean isLetter(String str) {
+    static boolean isLetter(String str) {
         return str.matches("^[[а-яА-Яa-zA-z]\\s]+$") & !str.matches("^\\d+(\\.\\d+)?");
     }
     /*
     * Проверяет входную строку на формат улицы
     * Возвращает true | false
     */
-    public static boolean isStreet(String str){
+    static boolean isStreet(String str){
         return  str.matches("[а-яА-Яa-zA-z]+[\\.\\s*[а-яА-Яa-zA-z0-9]+]+");
     }
     /*
     * Проверяет входную строку
     * Возвращает true: если строка содержит буквы,если строка содержит цифры,если строка содержит буквы и цифры
     * */
-    public static boolean isLetterOrDigit(String str){
+    static boolean isLetterOrDigit(String str){
         return str.matches("[[а-яА-Яa-zA-z]*[0-9]*]*");
     }
 
@@ -122,21 +122,21 @@ public class Methods {
    * Проверяет входную строку
    * Возвращает true: если строка подходит под формат email
    * */
-    public static boolean isEmail(String str){
+    static boolean isEmail(String str){
         return str.matches("[[0-9]*\\.*\\_*\\-*[a-zA-z]+\\.*\\_*\\-*[0-9]*]+\\@[a-zA-z]+\\.[a-zA-z]+");
     }
     /*
     * Проверяет входную строку
     * Возвращает true: если строка подходит под формат WWW-dd
     * */
-    public static boolean isOwnerTerrit(String str) {
+    static boolean isOwnerTerrit(String str) {
         return str.matches("[[а-яА-Яa-zA-z]*\\-*[0-9]*]*");
     }
     /*
     * Проверяет входную строку
     * Возвращает true: если строка подходит под формат типа водомера
     * */
-    public static boolean isTypeWatermeter(String str) {
+    static boolean isTypeWatermeter(String str) {
         return str.matches("[[а-яА-Яa-zA-z]+\\-*[0-9]*\\/*[0-9]*]+");
     }
 }

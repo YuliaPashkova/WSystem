@@ -14,7 +14,6 @@ public class Contact {
     public static String post;
     public static String email;
     public static String telephone;
-    public static Contact contact;
     public static String error;//текст ошибки
     private static Statement statement;
 
@@ -23,7 +22,6 @@ public class Contact {
     Принимает номер аккаунта
     */
     public static int searchContact(String num_account) throws SQLException {
-        contact = null;
         String query = "select * from contacts_company where num_account = \"" + num_account + "\"";
         return receivingQueryForSearch(query, true);
     }

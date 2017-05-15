@@ -15,29 +15,16 @@ import java.text.SimpleDateFormat;
  * Created by Юлия on 15.04.2017.
  */
 public class GNewOrder extends javax.swing.JDialog {
-    private javax.swing.JButton CancelButton;
     private org.jdesktop.swingx.JXDatePicker DateRealizDatePicker;
-    private javax.swing.JLabel DateRealizLabel;
     private org.jdesktop.swingx.JXDatePicker DateRegDatePicker;
-    private javax.swing.JLabel DateRegLabel;
-    private javax.swing.JLabel NoteLabel;
-    private javax.swing.JScrollPane NoteScrollPane;
     private javax.swing.JTextArea NoteTextArea;
-    private javax.swing.JLabel NumAccLabel;
     private javax.swing.JTextField NumAccTextField;
-    private javax.swing.JLabel NumOrderLabel;
     private javax.swing.JTextField NumOrderTextField;
-    private javax.swing.JButton OkButton;
-    private javax.swing.JLabel OperatorLabel;
-    private javax.swing.JTextField OperatorTextField;
-    private javax.swing.JLabel StatusLabel;
     private javax.swing.JTextField StatusTextField;
-    private javax.swing.JLabel SumLabel;
     private javax.swing.JTextField SumTextField;
     private javax.swing.JComboBox<String> TypeWorkComboBox;
-    private javax.swing.JLabel TypeWorkLabel;
-    private javax.swing.JSeparator jSeparator1;
-    public GNewOrder(java.awt.Frame parent) throws SQLException {
+
+    GNewOrder(java.awt.Frame parent) throws SQLException {
         super(parent, true);
         initComponents();
     }
@@ -63,14 +50,14 @@ public class GNewOrder extends javax.swing.JDialog {
     }
 
     private void initComponents() throws SQLException {
-        NumOrderLabel = new javax.swing.JLabel();
+        JLabel numOrderLabel = new JLabel();
         NumOrderTextField = new javax.swing.JTextField();
-        NumAccLabel = new javax.swing.JLabel();
+        JLabel numAccLabel = new JLabel();
         NumAccTextField = new javax.swing.JTextField();
         TypeWorkComboBox = new javax.swing.JComboBox<>();
-        TypeWorkLabel = new javax.swing.JLabel();
+        JLabel typeWorkLabel = new JLabel();
         StatusTextField = new javax.swing.JTextField();
-        StatusLabel = new javax.swing.JLabel();
+        JLabel statusLabel = new JLabel();
         DateRegDatePicker = new org.jdesktop.swingx.JXDatePicker();
         DateRegDatePicker.setFormats("yyyy-MM-dd");
         DateRegDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
@@ -78,18 +65,18 @@ public class GNewOrder extends javax.swing.JDialog {
         DateRealizDatePicker.setDate(null);
         DateRealizDatePicker.setFormats("yyyy-MM-dd");
         DateRealizDatePicker.setLinkDate(System.currentTimeMillis(), "Сегодня {0}");
-        DateRegLabel = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
-        DateRealizLabel = new javax.swing.JLabel();
-        OperatorTextField = new javax.swing.JTextField();
-        OperatorLabel = new javax.swing.JLabel();
-        SumLabel = new javax.swing.JLabel();
+        JLabel dateRegLabel = new JLabel();
+        JSeparator jSeparator1 = new JSeparator();
+        JLabel dateRealizLabel = new JLabel();
+        JTextField operatorTextField = new JTextField();
+        JLabel operatorLabel = new JLabel();
+        JLabel sumLabel = new JLabel();
         SumTextField = new javax.swing.JTextField();
-        NoteLabel = new javax.swing.JLabel();
-        NoteScrollPane = new javax.swing.JScrollPane();
+        JLabel noteLabel = new JLabel();
+        JScrollPane noteScrollPane = new JScrollPane();
         NoteTextArea = new javax.swing.JTextArea();
-        CancelButton = new javax.swing.JButton();
-        OkButton = new javax.swing.JButton();
+        JButton cancelButton = new JButton();
+        JButton okButton = new JButton();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Новый заказ ("+ Access.name_operator+")");
@@ -98,48 +85,48 @@ public class GNewOrder extends javax.swing.JDialog {
         setIconImage(icon.getImage());
         setResizable(false);
 
-        NumOrderLabel.setText("Номер заказа");
+        numOrderLabel.setText("Номер заказа");
 
         NumOrderTextField.setEnabled(false);
         NumOrderTextField.setText(String.valueOf(Order.getLastNumber()+1));
 
-        NumAccLabel.setText("№ лицевого счета");
+        numAccLabel.setText("№ лицевого счета");
 
         NumAccTextField.setEnabled(false);
         NumAccTextField.setText(GAccount.NUM_ACC);
 
         TypeWorkComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "НЕ ВЫБРАНО", "УСТАНОВКА ВОДОМЕРА", "СНЯТИЕ ВОДОМЕРА" }));
 
-        TypeWorkLabel.setText("Тип работы");
+        typeWorkLabel.setText("Тип работы");
 
         StatusTextField.setText("ОТКРЫТ");
         StatusTextField.setEnabled(false);
 
-        StatusLabel.setText("Статус");
+        statusLabel.setText("Статус");
 
-        DateRegLabel.setText("Дата оформления");
+        dateRegLabel.setText("Дата оформления");
         DateRegDatePicker.setEnabled(false);
 
-        DateRealizLabel.setText("Дата выполнения");
+        dateRealizLabel.setText("Дата выполнения");
 
-        OperatorTextField.setEnabled(false);
-        OperatorTextField.setText(Access.name_operator);
+        operatorTextField.setEnabled(false);
+        operatorTextField.setText(Access.name_operator);
 
-        OperatorLabel.setText("Оператор");
+        operatorLabel.setText("Оператор");
 
-        SumLabel.setText("Сумма");
+        sumLabel.setText("Сумма");
 
-        NoteLabel.setText("Примечание");
+        noteLabel.setText("Примечание");
 
         NoteTextArea.setColumns(20);
         NoteTextArea.setRows(5);
-        NoteScrollPane.setViewportView(NoteTextArea);
+        noteScrollPane.setViewportView(NoteTextArea);
 
-        CancelButton.setText("Отмена");
-        CancelButton.addActionListener(evt -> CancelButtonActionPerformed());
+        cancelButton.setText("Отмена");
+        cancelButton.addActionListener(evt -> CancelButtonActionPerformed());
 
-        OkButton.setText("Принять");
-        OkButton.addActionListener(evt -> {
+        okButton.setText("Принять");
+        okButton.addActionListener(evt -> {
             try {
                 OkButtonActionPerformed();
             } catch (ParseException | SQLException e) {
@@ -155,9 +142,9 @@ public class GNewOrder extends javax.swing.JDialog {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(OkButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(CancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGap(19, 19, 19)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,45 +154,45 @@ public class GNewOrder extends javax.swing.JDialog {
                                                                         .addComponent(NumOrderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addGap(15, 15, 15)
-                                                                                .addComponent(NumOrderLabel)))
+                                                                                .addComponent(numOrderLabel)))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(NumAccLabel)
+                                                                                .addComponent(numAccLabel)
                                                                                 .addGap(32, 32, 32)
-                                                                                .addComponent(StatusLabel)
+                                                                                .addComponent(statusLabel)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                .addComponent(OperatorLabel)
+                                                                                .addComponent(operatorLabel)
                                                                                 .addGap(41, 41, 41))
                                                                         .addGroup(layout.createSequentialGroup()
                                                                                 .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addComponent(StatusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(OperatorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                                                .addComponent(operatorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(DateRegLabel)
+                                                                                .addComponent(dateRegLabel)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addComponent(DateRegDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(TypeWorkLabel)
+                                                                                .addComponent(typeWorkLabel)
                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                 .addComponent(TypeWorkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                                                 .addGroup(layout.createSequentialGroup()
-                                                                                        .addComponent(SumLabel)
+                                                                                        .addComponent(sumLabel)
                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                         .addComponent(SumTextField))
                                                                                 .addGroup(layout.createSequentialGroup()
-                                                                                        .addComponent(DateRealizLabel)
+                                                                                        .addComponent(dateRealizLabel)
                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                         .addComponent(DateRealizDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(NoteScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(NoteLabel))))))
+                                                                        .addComponent(noteScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(noteLabel))))))
                                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -213,42 +200,42 @@ public class GNewOrder extends javax.swing.JDialog {
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(NumOrderLabel)
-                                        .addComponent(NumAccLabel)
-                                        .addComponent(StatusLabel)
-                                        .addComponent(OperatorLabel))
+                                        .addComponent(numOrderLabel)
+                                        .addComponent(numAccLabel)
+                                        .addComponent(statusLabel)
+                                        .addComponent(operatorLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(NumOrderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(StatusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(OperatorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(operatorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(DateRegDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(DateRegLabel)
-                                        .addComponent(NoteLabel))
+                                        .addComponent(dateRegLabel)
+                                        .addComponent(noteLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(TypeWorkComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(TypeWorkLabel))
+                                                        .addComponent(typeWorkLabel))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(DateRealizDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(DateRealizLabel))
+                                                        .addComponent(dateRealizLabel))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(SumLabel)
+                                                        .addComponent(sumLabel)
                                                         .addComponent(SumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(NoteScrollPane))
+                                        .addComponent(noteScrollPane))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(CancelButton)
-                                        .addComponent(OkButton))
+                                        .addComponent(cancelButton)
+                                        .addComponent(okButton))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -260,22 +247,26 @@ public class GNewOrder extends javax.swing.JDialog {
         String data [] = readData();
         boolean error=false;
         String message="";
-        if(data[7].equals("НЕ ВЫБРАНО")) JOptionPane.showMessageDialog(null, "Выберите тип работы!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        else if (data[7].equals("УСТАНОВКА ВОДОМЕРА")){
-            //проверить,есть ли на лицевом счете вообще ВП
-            if(!Waterconnection.existWatercon(NumAccTextField.getText())) {//если нет
-                error=true;
-                message="Данный лицевой счет не имеет водомерных подключений, поэтому невозможно создать заказ на установку водомера!";
-                dispose();
-            }
-        }
-        else {//если снятие водомера
-            //проверить,есть ли на лицевом счете водомеры
-            if(!Watermeter.existWatermeter(NumAccTextField.getText())){//если не существуют
-                error=true;
-                message="Данный лицевой счет не имеет водомеров, поэтому невозможно создать заказ на снятие водомера!";
-                dispose();
-            }
+        switch (data[7]) {
+            case "НЕ ВЫБРАНО":
+                JOptionPane.showMessageDialog(null, "Выберите тип работы!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                break;
+            case "УСТАНОВКА ВОДОМЕРА":
+                //проверить,есть ли на лицевом счете вообще ВП
+                if (!Waterconnection.existWatercon(NumAccTextField.getText())) {//если нет
+                    error = true;
+                    message = "Данный лицевой счет не имеет водомерных подключений, поэтому невозможно создать заказ на установку водомера!";
+                    dispose();
+                }
+                break;
+            default: //если снятие водомера
+                //проверить,есть ли на лицевом счете водомеры
+                if (!Watermeter.existWatermeter(NumAccTextField.getText())) {//если не существуют
+                    error = true;
+                    message = "Данный лицевой счет не имеет водомеров, поэтому невозможно создать заказ на снятие водомера!";
+                    dispose();
+                }
+                break;
         }
 
         if(error)
