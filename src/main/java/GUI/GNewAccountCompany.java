@@ -15,7 +15,6 @@ import java.text.SimpleDateFormat;
 public class GNewAccountCompany extends javax.swing.JDialog {
     private JTextField textfields [];//массив текстовых полей
     private javax.swing.JTextField AdressTextField;
-    private javax.swing.JTextField BIKTextField;
     private javax.swing.JTextField BalanceTextField;
     private javax.swing.JTextField BankAccTextField;
     private javax.swing.JTextField BankTextField;
@@ -47,7 +46,8 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                 BalanceTextField, NumContractTextField, AdressTextField, HouseTextField,
                 CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
                 OwnerTextField,StatusAccTextField,ConsTypeTextField,BankTextField,KPPTextField,
-                BIKTextField,BankAccTextField,NumSertifTextField,INNTextField,NameCompanyTextField
+                //BIKTextField,
+                BankAccTextField,NumSertifTextField,INNTextField,NameCompanyTextField
 
 
 
@@ -121,9 +121,9 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         JLabel nameCompanyLabel = new JLabel();
         BankTextField = new javax.swing.JTextField();
         JLabel bankLabel = new JLabel();
-        JLabel BIKLabel = new JLabel();
+        //JLabel BIKLabel = new JLabel();
         JLabel KPPLabel = new JLabel();
-        BIKTextField = new javax.swing.JTextField();
+       // BIKTextField = new javax.swing.JTextField();
         KPPTextField = new javax.swing.JTextField();
         JLabel bankAccLabel = new JLabel();
         JLabel numSertifLabel = new JLabel();
@@ -280,13 +280,13 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         bankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         bankLabel.setText("Банк плательщика");
 
-        BIKLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BIKLabel.setText("БИК");
+        //BIKLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        //BIKLabel.setText("БИК");
 
         KPPLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         KPPLabel.setText("КПП");
 
-        BIKTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        //BIKTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
 
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -314,133 +314,128 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(72, 72, 72)
-                                                .addComponent(INNLabel)
-                                                .addGap(152, 152, 152)
-                                                .addComponent(KPPLabel)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
-                                                .addComponent(BIKLabel)
-                                                .addGap(59, 59, 59))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(103, 103, 103)
-                                                .addComponent(districtLabel))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(138, 138, 138)
-                                                .addComponent(ownerLabel))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(172, 172, 172)
-                                                .addComponent(consTypeLabel))
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGap(97, 97, 97)
-                                                        .addComponent(adressLabel)
-                                                        .addGap(154, 154, 154)
-                                                        .addComponent(houseLabel)
-                                                        .addGap(44, 44, 44)
-                                                        .addComponent(corpusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(flatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(NumSertifTextField))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addComponent(BankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(BankAccTextField))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                        .addComponent(SurnameTextField)
-                                                                        .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addGap(46, 46, 46)
-                                                                        .addComponent(FIOLabel))
-                                                                .addComponent(DistrictComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(103, 103, 103)
+                                                                .addComponent(districtLabel))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(138, 138, 138)
+                                                                .addComponent(ownerLabel))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(172, 172, 172)
+                                                                .addComponent(consTypeLabel))
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(layout.createSequentialGroup()
-                                                                                        .addGap(10, 10, 10)
-                                                                                        .addComponent(numContractLabel)
-                                                                                        .addGap(18, 18, 18)
-                                                                                        .addComponent(dateContractLabel))
-                                                                                .addGroup(layout.createSequentialGroup()
-                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addComponent(NumContractTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addComponent(numAccLabel))
-                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                                                        .addComponent(DateContractDatePicker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                        .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                                                        .addComponent(balanceLabel)
-                                                                                                        .addGap(33, 33, 33))))))
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addGap(35, 35, 35)
-                                                                        .addComponent(telephoneLabel)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addGap(97, 97, 97)
+                                                                        .addComponent(adressLabel)
+                                                                        .addGap(154, 154, 154)
+                                                                        .addComponent(houseLabel)
+                                                                        .addGap(44, 44, 44)
+                                                                        .addComponent(corpusLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                        .addComponent(indexLabel)
-                                                                        .addGap(33, 33, 33))))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                .addComponent(AdressTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(MiddleNameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(flatLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addComponent(NameCompanyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addComponent(IndexTextField))
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addComponent(HouseTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(NumSertifTextField))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                        .addComponent(SurnameTextField)
+                                                                                        .addComponent(NameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                        .addGap(46, 46, 46)
+                                                                                        .addComponent(FIOLabel))
+                                                                                .addComponent(DistrictComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                                        .addGap(10, 10, 10)
+                                                                                                        .addComponent(numContractLabel)
+                                                                                                        .addGap(18, 18, 18)
+                                                                                                        .addComponent(dateContractLabel))
+                                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addComponent(NumAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(NumContractTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                                .addComponent(numAccLabel))
+                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                                                        .addComponent(DateContractDatePicker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                                                        .addComponent(BalanceTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                                                                        .addComponent(balanceLabel)
+                                                                                                                        .addGap(33, 33, 33))))))
+                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                        .addGap(35, 35, 35)
+                                                                                        .addComponent(telephoneLabel)
+                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                        .addComponent(indexLabel)
+                                                                                        .addGap(33, 33, 33))))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                                .addComponent(AdressTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(MiddleNameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addGroup(layout.createSequentialGroup()
-                                                                                        .addGap(10, 10, 10)
-                                                                                        .addComponent(statusAccLabel)
-                                                                                        .addGap(0, 0, Short.MAX_VALUE))
-                                                                                .addGroup(layout.createSequentialGroup()
-                                                                                        .addComponent(CorpusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(TelephoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                        .addComponent(FlatTextField))))))
-                                                .addComponent(ConsTypeTextField)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addComponent(OwnerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(StatusAccTextField))
-                                                .addGroup(layout.createSequentialGroup()
-                                                        .addGap(61, 61, 61)
-                                                        .addComponent(nameCompanyLabel)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(numSertifLabel)
-                                                        .addGap(64, 64, 64))
-                                                .addComponent(jSeparator2)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGap(69, 69, 69)
-                                                        .addComponent(bankLabel)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(bankAccLabel)
-                                                        .addGap(67, 67, 67))
-                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addComponent(INNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(IndexTextField))
+                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                        .addComponent(HouseTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                                        .addGap(10, 10, 10)
+                                                                                                        .addComponent(statusAccLabel)
+                                                                                                        .addGap(0, 0, Short.MAX_VALUE))
+                                                                                                .addGroup(layout.createSequentialGroup()
+                                                                                                        .addComponent(CorpusTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                                        .addComponent(FlatTextField))))))
+                                                                .addComponent(ConsTypeTextField)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addComponent(OwnerTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(StatusAccTextField))
                                                                 .addGroup(layout.createSequentialGroup()
-                                                                        .addGap(0, 0, Short.MAX_VALUE)
+                                                                        .addGap(61, 61, 61)
+                                                                        .addComponent(nameCompanyLabel)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(numSertifLabel)
+                                                                        .addGap(64, 64, 64))
+                                                                .addComponent(jSeparator2)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addGap(69, 69, 69)
+                                                                        .addComponent(bankLabel)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(bankAccLabel)
+                                                                        .addGap(67, 67, 67))
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                                         .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                        .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                                .addComponent(INNTextField)
+                                                                                .addComponent(BankTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                        .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                                .addContainerGap())
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                .addComponent(BankAccTextField)
+                                                                                .addComponent(KPPTextField)))))
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(109, 109, 109)
+                                                .addComponent(INNLabel)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(KPPLabel)
+                                                .addGap(115, 115, 115))))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -524,13 +519,11 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(KPPLabel)
-                                                        .addComponent(BIKLabel)
                                                         .addComponent(INNLabel))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(INNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(cancelButton)
@@ -538,7 +531,6 @@ public class GNewAccountCompany extends javax.swing.JDialog {
                                         .addComponent(clearButton))
                                 .addContainerGap())
         );
-
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>
@@ -563,7 +555,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
      Метод считывает данные из всех полей и возвращает их в виде массива
      */
     private String[] readData() {
-        String data[] = new String[24];
+        String data[] = new String[23];
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date_contract;
         try{

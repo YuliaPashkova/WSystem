@@ -23,7 +23,6 @@ public class GAccount extends javax.swing.JFrame {
     private String old_data[];//массив старых данных
 
     private javax.swing.JTextField AdressTextField;
-    private javax.swing.JTextField BIKTextField;
     private javax.swing.JTextField BalanceTextField;
     private javax.swing.JTextField BankAccTextField;//расчетный счет
     private javax.swing.JTextField BankTextField;
@@ -76,7 +75,7 @@ public class GAccount extends javax.swing.JFrame {
                 BalanceTextField, NumContractTextField, AdressTextField, HouseTextField,
                 CorpusTextField, FlatTextField, IndexTextField, TelephoneTextField,
                 OwnerTextField, NameCompanyTextField, NumSertifTextField, BankTextField,
-                BankAccTextField, INNTextField, KPPTextField, BIKTextField
+                BankAccTextField, INNTextField, KPPTextField
         };
         comboboxes=new JComboBox[]{//массив комбобоксов
             DistrictComboBox, ConsTypeComboBox, StatusAccComboBox
@@ -141,9 +140,7 @@ public class GAccount extends javax.swing.JFrame {
         JLabel statusAccLabel = new JLabel();
         BankTextField = new javax.swing.JTextField();
         JLabel bankLabel = new JLabel();
-        JLabel BIKLabel = new JLabel();
         JLabel KPPLabel = new JLabel();
-        BIKTextField = new javax.swing.JTextField();
         KPPTextField = new javax.swing.JTextField();
         JLabel bankAccLabel = new JLabel();
         JLabel numSertifLabel = new JLabel();
@@ -309,14 +306,9 @@ public class GAccount extends javax.swing.JFrame {
         bankLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         bankLabel.setText("Банк плательщика");
 
-        BIKLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        BIKLabel.setText("БИК");
 
         KPPLabel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         KPPLabel.setText("КПП");
-
-        BIKTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
 
         KPPTextField.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
@@ -717,24 +709,20 @@ public class GAccount extends javax.swing.JFrame {
                                                                                                                                         .addGap(42, 42, 42)))))))
                                                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                                        .addComponent(BankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                                                .addComponent(BankTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                                                                                                                .addComponent(INNTextField))
                                                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                                                .addGap(66, 66, 66)
+                                                                                                                .addGap(92, 92, 92)
                                                                                                                 .addComponent(INNLabel)))
                                                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                        .addComponent(KPPTextField)
                                                                                                         .addComponent(BankAccTextField)
                                                                                                         .addGroup(layout.createSequentialGroup()
+                                                                                                                .addGap(110, 110, 110)
                                                                                                                 .addComponent(KPPLabel)
-                                                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                                                .addComponent(BIKLabel)
-                                                                                                                .addGap(65, 65, 65))))
-                                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                                .addComponent(INNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                                .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                                                                                .addGap(0, 0, Short.MAX_VALUE))))))))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(58, 58, 58)
                                                                 .addComponent(nameCompanyLabel)
@@ -841,22 +829,22 @@ public class GAccount extends javax.swing.JFrame {
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(BankTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addComponent(BankAccTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(INNLabel)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                 .addComponent(KPPLabel)
-                                                                .addComponent(BIKLabel))
+                                                                .addComponent(INNLabel))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                 .addComponent(INNTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(BIKTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(KPPTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addComponent(SearchButton))))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+
 
         pack();
         setLocationRelativeTo(null);
@@ -926,8 +914,8 @@ public class GAccount extends javax.swing.JFrame {
     Метод считывает данные из всех полей и возвращает их в виде массива
      */
     private String [] readData() {
-        String data[] = new String[24];
-        String datafields[] = new  String [20];//массив,где будут хранится данные из текстовых полей
+        String data[] = new String[23];
+        String datafields[] = new  String [19];//массив,где будут хранится данные из текстовых полей
         String datacomboboxes[] = new String[3];//массив,где будут хранится данные из комбобоксов
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date_contract;
@@ -939,9 +927,9 @@ public class GAccount extends javax.swing.JFrame {
         for(int i=0;i<textfields.length;i++)//считывание данных из текстовых полей
             datafields[i]=textfields[i].getText();
         for(int i=0;i<comboboxes.length;i++)datacomboboxes[i]=(String)comboboxes[i].getSelectedItem();
-        System.arraycopy(datafields, 0, data, 0, 20);//копирование данных из текстовых полей
-        System.arraycopy(datacomboboxes, 0, data, 20, 3);//копирование данных из комбобоксов
-        data[23]=date_contract;
+        System.arraycopy(datafields, 0, data, 0, 19);//копирование данных из текстовых полей
+        System.arraycopy(datacomboboxes, 0, data, 19, 3);//копирование данных из комбобоксов
+        data[22]=date_contract;
 
         for(int i=0;i<data.length;i++)
             if(data[i]!=null) data[i]=data[i].toUpperCase();
@@ -951,7 +939,7 @@ public class GAccount extends javax.swing.JFrame {
     * Метод собирает данные для поиска,затем вызвает метод поиска
     * */
     private void search() throws Exception {
-        String data[] = new String[23];//данные из текстовых полей
+        String data[] = new String[22];//данные из текстовых полей
         data[0] = NumAccTextField.getText().trim();
 
         data[1] = SurnameTextField.getText().toUpperCase() + " " + NameTextField.getText().toUpperCase() + " " + MiddleNameTextField.getText().toUpperCase();
@@ -988,11 +976,10 @@ public class GAccount extends javax.swing.JFrame {
         //юр.лицо
         data[16] = BankTextField.getText().toUpperCase().trim();//банк
         data[17] = KPPTextField.getText().trim();
-        data[18] = BIKTextField.getText().trim();
-        data[19] = BankAccTextField.getText().trim();//расчетный счет
-        data[20] = NumSertifTextField.getText().trim();
-        data[21] = INNTextField.getText().trim();
-        data[22] = NameCompanyTextField.getText().toUpperCase().trim();
+        data[18] = BankAccTextField.getText().trim();//расчетный счет
+        data[19] = NumSertifTextField.getText().trim();
+        data[20] = INNTextField.getText().trim();
+        data[21] = NameCompanyTextField.getText().toUpperCase().trim();
 
         deleteRows();//удаление строк из таблицы
 
@@ -1117,7 +1104,6 @@ public class GAccount extends javax.swing.JFrame {
             BankAccTextField.setText(Long.toString(Account.pay_account));
             INNTextField.setText(Long.toString(Account.INN));
             KPPTextField.setText(Long.toString(Account.kpp));
-            BIKTextField.setText(Long.toString(Account.bik));
         }
         setConditionFields(false,true);
         SearchButton.setEnabled(false);

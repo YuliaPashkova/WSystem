@@ -14,7 +14,7 @@ public class Access {
 
     public static String name_operator;//ФИО оператора
     public static int access;//тип доступа
-    public static int id=1;//id
+    public static int id;//id
     private static Statement statement;
     /**
      * Метод принимает логин и пароль

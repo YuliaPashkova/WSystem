@@ -27,7 +27,6 @@ public class Account {
     public static String telephone;
     public static String acc_status;
     public static int kpp;
-    public static int bik;
     public static long pay_account;
     public static long num_cert;
     public static long INN;
@@ -71,7 +70,7 @@ public class Account {
         data[5] = checkAddress(address);//проверка,заполнено ли хотя бы одно поле адреса и формирование индексов подходящих адресов
         if (data[5].equals("not found")) return -1;//ничего не найдено,дальше нет смысла проверять
         //если поля для юр.лиц не заполнены
-        if (data[16] == null && data[17] == null && data[18] == null && data[19] == null && data[20] == null && data[21] == null && data[22] == null) {
+        if (data[16] == null && data[17] == null && data[18] == null && data[19] == null && data[20] == null && data[21] == null) {
             //начало запроса
             String query = "select * from  watermeter.account where ";
             for (int i = 0; i < column_account.length; i++)
@@ -103,13 +102,13 @@ public class Account {
             String column_account_comp[] = getColumnName("watermeter.account_company").split(" ");
             int i, j;//переменные цикла
             //i - пробег по column_account_company, c 1 - так как первая колонка это num_account и она уже есть в запросе
-            //j-пробег по данным с 16 по 22 ячейку (поля для юр.лиц)
+            //j-пробег по данным с 16 по 21 ячейку (поля для юр.лиц)
             //формирование запроса для юр.лиц
             for (i = 1, j = 16; i < column_account_comp.length && j < data.length; i++, j++)
-                if (j != 22)//22- название компании,добавиться в конце
+                if (j != 21)//21- название компании,добавиться в конце
                     if (data[j] != null)
                         query += "account_company." + column_account_comp[i] + "='" + data[j] + "'" + " and ";
-            if (data[22] != null) query += "account_company.name_company like '%" + data[22] + "%'";
+            if (data[21] != null) query += "account_company.name_company like '%" + data[21] + "%'";
             if (query.endsWith(" and ")) query = query.substring(0, query.length() - " and ".length());
 
             account = new Account();
@@ -241,7 +240,7 @@ public class Account {
         String new_adres[] = new String[6];
         String new_data_acc[] = new String[10];//данные из полей для физ.лица
 
-        new_adres[0] = new_data[20];//район
+        new_adres[0] = new_data[19];//район
         new_adres[1] = new_data[6];//улица
         new_adres[2] = new_data[7];//дом
         new_adres[3] = new_data[9];//квартира
@@ -270,13 +269,13 @@ public class Account {
         new_data_acc[0] = new_data[0];//номер лицевого счета
         new_data_acc[1] = new_data[1] + " " + new_data[2] + " " + new_data[3];//ФИО
         new_data_acc[2] = new_data[4];//баланс
-        new_data_acc[3] = new_data[23];//дата договора
+        new_data_acc[3] = new_data[22];//дата договора
         new_data_acc[4] = new_data[5];//номер договора
         new_data_acc[5] = Integer.toString(id_adres);//адрес (к этому моменту он уже поменялся)
         new_data_acc[6] = new_data[12];//владелец
-        new_data_acc[7] = new_data[21];//тип потребителя
+        new_data_acc[7] = new_data[20];//тип потребителя
         new_data_acc[8] = new_data[11];//телефон
-        new_data_acc[9] = new_data[22];//статус аккаунта
+        new_data_acc[9] = new_data[21];//статус аккаунта
 
         for (String aNew_data_acc : new_data_acc)
             if (aNew_data_acc.contains("*")) {
@@ -289,15 +288,14 @@ public class Account {
             else return result;
         }
         if (new_data_acc[7].equals("ЮРИДИЧЕСКОЕ ЛИЦО")) {
-            String new_data_comp[] = new String[8];//данные из полей для юр.лица
+            String new_data_comp[] = new String[7];//данные из полей для юр.лица
             new_data_comp[0] = new_data[0];//номер лицевого счета
             new_data_comp[1] = new_data[15];//банк
             new_data_comp[2] = new_data[18];//кпп
-            new_data_comp[3] = new_data[19];//бик
-            new_data_comp[4] = new_data[16];//расчетный счет
-            new_data_comp[5] = new_data[14];//номер сертификата
-            new_data_comp[6] = new_data[17];//инн
-            new_data_comp[7] = new_data[13];//название компании
+            new_data_comp[3] = new_data[16];//расчетный счет
+            new_data_comp[4] = new_data[14];//номер сертификата
+            new_data_comp[5] = new_data[17];//инн
+            new_data_comp[6] = new_data[13];//название компании
 
             for (String aNew_data_comp : new_data_comp)
                 if (aNew_data_comp.contains("*")) {
@@ -334,27 +332,22 @@ public class Account {
                         if (!Methods.isOnlyDigit(s)) {error = "Поле \"КПП\" должно содержать только цифры!";return -1;}
                         if (s.length() != 9) {error = "Поле \"КПП\" должно содержать 9 символов!";return -1;}
                         break;
-                    case 3://бик
-                        if (s.equals("")) {error = "Поле \"БИК\" не может быть пустым!";return -1;}
-                        if (!Methods.isOnlyDigit(s)) {error = "Поле \"БИК\" должно содержать только цифры!";return -1;}
-                        if (s.length() != 9) {error = "Поле \"БИК\" должно содержать 9 символов!";return -1;}
-                        break;
-                    case 4://расчетный счет
+                    case 3://расчетный счет
                         if (s.equals("")) {error = "Поле \"Расчетный счет\" не может быть пустым!";return -1;}
                         if (!Methods.isOnlyDigit(s)) {error = "Поле \"Расчетный счет\" должно содержать только цифры!";return -1;}
                         if (s.length() != 18) {error = "Поле \"Расчетный счет\" должно содержать 18 символов!";return -1;}
                         break;
-                    case 5://номер сертификата
+                    case 4://номер сертификата
                         if (s.equals("")) {error = "Поле \"№ свидетельства\" не может быть пустым!";return -1;}
                         if (!Methods.isOnlyDigit(s)) {error = "Поле \"№ свидетельства\" должно содержать только цифры!";return -1;}
                         if (s.length() != 15) {error = "Поле \"№ свидетельства\" должно содержать 15 символов!";return -1;}
                         break;
-                    case 6://инн
+                    case 5://инн
                         if (s.equals("")) {error = "Поле \"ИНН\" не может быть пустым!";return -1;}
                         if (!Methods.isOnlyDigit(s)) {error = "Поле \"ИНН\" должно содержать только цифры!";return -1;}
                         if (s.length() != 10) {error = "Поле \"ИНН\" должно содержать 10 символов!";return -1;}
                         break;
-                    case 7://название компании
+                    case 6://название компании
                         if (s.equals("")) {error = "Поле \"Название компании\" не может быть пустым!";return -1;}
                         if (s.length() > 45) {error = "Поле \"Название компании\" содержит много символов!";return -1;}
                         break;
@@ -514,7 +507,6 @@ public class Account {
         //обрезаем последнюю запятую
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
         query += " where num_account = " + new_data_acc[0];
-        System.out.println(query);
         //выполняем запрос
         statement = Connect.connection.createStatement();
         try {
@@ -623,7 +615,7 @@ public class Account {
         for (int i=0;i<account_data.length;i++)account_data[i]+="*";
         if(checkAccountFields(account_data)!=0)return -1;//проверка на корректность полей
 
-        String account_data_company[] =new String[8];
+        String account_data_company[] =new String[7];
         if(!account) {//если добавляется юр.лицо
             account_data_company[0] = data[0];//номер лицевого счета
             //получаем индекс банка
@@ -634,11 +626,10 @@ public class Account {
             }
             account_data_company[1] = String.valueOf(id_bank);
             account_data_company[2] = data[18];//кпп
-            account_data_company[3] = data[19];//бик
-            account_data_company[4] = data[20];//счет
-            account_data_company[5] = data[21];//номер свид
-            account_data_company[6] = data[22];//инн
-            account_data_company[7] = data[23];//название компании
+            account_data_company[3] = data[19];//счет
+            account_data_company[4] = data[20];//номер свид
+            account_data_company[5] = data[21];//инн
+            account_data_company[6] = data[22];//название компании
             //добавление всем полям звездочки (признак новых данных,для проверки их на корректность)
             for (int i=0;i< account_data_company.length;i++) account_data_company[i]+="*";
             if(checkAccountCompFields(account_data_company)!=0)return -1;//проверка на корректность полей
@@ -728,7 +719,6 @@ public class Account {
         if (query.endsWith(",")) query = query.substring(0, query.length() - ",".length());
         //закрываем скобку
         query+=")";
-        System.out.println(query);
         //выполняем запрос
         statement = Connect.connection.createStatement();
         try {
@@ -796,7 +786,6 @@ public class Account {
                     Account.acc_status = resSet.getString("acc_status");
                     Account.bank =  resSet.getInt("bank");
                     Account.kpp = resSet.getInt("kpp");
-                    Account.bik =  resSet.getInt("bik");
                     Account.pay_account = resSet.getLong("pay_account");
                     Account.num_cert = resSet.getLong("num_cert");
                     Account.INN = resSet.getLong("INN");
