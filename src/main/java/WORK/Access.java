@@ -28,12 +28,25 @@ public class Access {
      * 5- не введен пароль
      */
     public static int login(String username, String password) throws SQLException, IOException {
-        String pass_bd="";//полученное значение хэш функции из БД
+
         if(username.equals("")&&password.equals("")) return 3;//ни логин ни пароль не введены
         if(username.equals(""))return 4;//не введен логин
         if(password.equals("")) return 5;//не введен пароль
         String hash_pass = new Stribog(256).getHash(password);//получение значения функции хэширования введенного пароля
+        String pass_bd = getHashDB(username);//полученное значение хэш функции из БД
+        
+        if(pass_bd.equals(hash_pass)) {
+            access = getAccess(username);//получаем тип доступа
+            name_operator = getFIO(username);//получаем ФИО
+            id = getId(username);//получаем ИД
+            return 1;//все ок
+        }
+        return 2;//логин или пароль неверен
+
+    }
+    private static String getHashDB(String username) throws SQLException {
         String query = "select password from operator where login =\""+username+"\"";
+        String res = "";
         ResultSet resSet = null; //отправка запроса
         try {
             statement = Connect.connection.createStatement();
@@ -43,17 +56,10 @@ public class Access {
         }
         if (resSet != null && resSet.isBeforeFirst()) {
             if (resSet.next())
-                pass_bd = resSet.getString("password");
+                res = resSet.getString("password");
         }
         statement.close();
-        if(pass_bd.equals(hash_pass)) {
-            access = getAccess(username);//получаем тип доступа
-            name_operator = getFIO(username);//получаем ФИО
-            id = getId(username);//получаем ИД
-            return 1;//все ок
-        }
-        return 2;//логин или пароль неверен
-
+        return  res;
     }
     /*
      * Вызывается только в том случае, когда логин и пароль введены верно
