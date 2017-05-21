@@ -7,6 +7,7 @@ import WORK.Magma;
 
 import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 public class GProtection extends javax.swing.JDialog {
     private static boolean mode=true;//true - шифрование,false - дешифрование
@@ -19,6 +20,7 @@ public class GProtection extends javax.swing.JDialog {
     private javax.swing.JTextField PathLogTextField;
     private javax.swing.JTextField PathSynchroTextField;
     private javax.swing.JFileChooser SynchroFileChooser;
+    private JButton chooseDataButton = new JButton();
     GProtection(boolean mode, java.awt.Frame parent) {
         super(parent, true);
         initComponents();
@@ -45,7 +47,7 @@ public class GProtection extends javax.swing.JDialog {
         KeyFileChooser = new javax.swing.JFileChooser();
         LogFileChooser = new javax.swing.JFileChooser();
         SynchroFileChooser = new javax.swing.JFileChooser();
-        JButton chooseDataButton = new JButton();
+
         CryptButton = new javax.swing.JButton();
         JButton chooseKeyButton = new JButton();
         JButton chooseLogButton = new JButton();
@@ -60,9 +62,7 @@ public class GProtection extends javax.swing.JDialog {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ImageIcon icon = new ImageIcon("src\\main\\resources\\main_icon\\main_icon.png");
         setIconImage(icon.getImage());
-        setTitle("Шифрование данных ("+ Access.name_operator+")");
 
-        chooseDataButton.setText("Выбрать файлы SQL");
         chooseDataButton.addActionListener(this::ChooseDataButtonActionPerformed);
 
         CryptButton.setText("Зашифровать данные");
@@ -137,7 +137,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseDataButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        DataFileChooser.setFileFilter(new FileFilter(".sql"));
         DataFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnVal = DataFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -147,20 +146,29 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void CryptButtonActionPerformed() throws Exception {
-        if(mode) {
-            Magma.encryption(PathDataTextField.getText(),PathDataTextField.getText(),PathKeyTextField.getText(),PathSynchroTextField.getText(),PathLogTextField.getText());//шифрование
-            JOptionPane.showMessageDialog(null, "Шифрование файлов SQL прошло успешно! Зашифрованные файлы находятся в папке с файлами SQL.", "Результат шифрования", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+        if(PathDataTextField.getText().length() == 0 ||
+                PathDataTextField.getText().length() == 0 ||
+                PathKeyTextField.getText().length() == 0 ||
+                PathSynchroTextField.getText().length() == 0 ||
+                PathLogTextField.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Заполните все поля!", "Ошибка", JOptionPane.ERROR_MESSAGE);
         }
-        else{
-            Magma.decryption(PathDataTextField.getText(),PathDataTextField.getText(),PathKeyTextField.getText(),PathSynchroTextField.getText(),PathLogTextField.getText());//дешифрование
-            JOptionPane.showMessageDialog(null, "Дешифрование файлов прошло успешно! Дешифрованные файлы находятся в папке с шифрованными файлами SQL.", "Результат дешифрования", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
+        else {
+            if (mode) {
+                Magma.encryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//шифрование
+                JOptionPane.showMessageDialog(null, "Шифрование файлов SQL прошло успешно! Зашифрованные файлы находятся в " + PathDataTextField.getText() +
+                        " \\out", "Результат шифрования", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            } else {
+                Magma.decryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//дешифрование
+                JOptionPane.showMessageDialog(null, "Дешифрование файлов mgm прошло успешно! Дешифрованные файлы находятся в " + PathDataTextField.getText() +
+                        " \\out", "Результат дешифрования", JOptionPane.INFORMATION_MESSAGE);
+                dispose();
+            }
         }
     }
 
     private void ChooseKeyButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        KeyFileChooser.setFileFilter(new FileFilter(".txt"));
         KeyFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = KeyFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -170,7 +178,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseLogButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        LogFileChooser.setFileFilter(new FileFilter(".txt"));
         LogFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal =  LogFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -180,7 +187,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseSynchroButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        SynchroFileChooser.setFileFilter(new FileFilter(".txt"));
         SynchroFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal =  SynchroFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -198,11 +204,13 @@ public class GProtection extends javax.swing.JDialog {
             mode=true;
             setTitle("Шифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Зашифровать данные");
+            chooseDataButton.setText("Выбрать файлы SQL");
         }
         else{
             mode=false;
             setTitle("Дешифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Дешифровать данные");
+            chooseDataButton.setText("Выбрать файлы mgm");
         }
     }
 }
