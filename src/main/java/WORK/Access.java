@@ -34,7 +34,6 @@ public class Access {
         if(password.equals("")) return 5;//не введен пароль
         String hash_pass = new Stribog(256).getHash(password);//получение значения функции хэширования введенного пароля
         String pass_bd = getHashDB(username);//полученное значение хэш функции из БД
-        
         if(pass_bd.equals(hash_pass)) {
             access = getAccess(username);//получаем тип доступа
             name_operator = getFIO(username);//получаем ФИО
