@@ -7,6 +7,7 @@ import WORK.Magma;
 
 import java.io.File;
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 public class GProtection extends javax.swing.JDialog {
     private static boolean mode=true;//true - шифрование,false - дешифрование
@@ -136,10 +137,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseDataButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        String type;
-        if(mode) type = ".sql";
-        else type = "mgm";
-        DataFileChooser.setFileFilter(new FileFilter(type));
         DataFileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnVal = DataFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -172,7 +169,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseKeyButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        KeyFileChooser.setFileFilter(new FileFilter(".txt"));
         KeyFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal = KeyFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -182,7 +178,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseLogButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        LogFileChooser.setFileFilter(new FileFilter(".txt"));
         LogFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal =  LogFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -192,7 +187,6 @@ public class GProtection extends javax.swing.JDialog {
     }
 
     private void ChooseSynchroButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        SynchroFileChooser.setFileFilter(new FileFilter(".txt"));
         SynchroFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int returnVal =  SynchroFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
