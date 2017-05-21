@@ -163,7 +163,7 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         okButton.setText("ОК");
         okButton.addActionListener(evt -> {
             try {
-                OkButtonActionPerformed();
+                AddWaterconnectButtonActionPerformed();
             } catch (ParseException | SQLException e) {
                 e.printStackTrace();
             }
@@ -321,7 +321,7 @@ public class GNewWaterconnection extends javax.swing.JDialog {
         NoteTextArea.setText(null);
     }
 
-    private void OkButtonActionPerformed() throws ParseException, SQLException {
+    private void AddWaterconnectButtonActionPerformed() throws ParseException, SQLException {
         switch(Waterconnection.addWaterconnection(readData())){
             case 0:
                 JOptionPane.showMessageDialog(null,"Новое водомерное подключение было создано!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);

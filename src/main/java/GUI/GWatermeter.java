@@ -34,7 +34,7 @@ public class GWatermeter extends javax.swing.JDialog {
     private org.jdesktop.swingx.JXDatePicker CheckLastIndicatDatePicker;
     private org.jdesktop.swingx.JXDatePicker DateCheckDatePicker;
     private org.jdesktop.swingx.JXDatePicker DateSetDatePicker;
-    private javax.swing.JMenuItem DeleteMenuItem;
+    private javax.swing.JMenuItem DeleteWMMenuItem;
     private javax.swing.JMenu EditMenu;
     private org.jdesktop.swingx.JXDatePicker EnterExploitDatePicker;
     private javax.swing.JComboBox<String> InstalledComboBox;
@@ -153,7 +153,7 @@ public class GWatermeter extends javax.swing.JDialog {
         ChangesMenu = new javax.swing.JMenu();
         ChangeModeMenuItem = new javax.swing.JMenuItem();
         AcceptChangesMenuItem = new javax.swing.JMenuItem();
-        DeleteMenuItem = new javax.swing.JMenuItem();
+        DeleteWMMenuItem = new javax.swing.JMenuItem();
         JournalWMMenu = new javax.swing.JMenu();
         JMenuItem searchMenuItem = new JMenuItem();
         JMenuItem clearMenuItem = new JMenuItem();
@@ -289,9 +289,9 @@ public class GWatermeter extends javax.swing.JDialog {
         EditMenu.add(ChangesMenu);
         EditMenu.setEnabled(false);
 
-        DeleteMenuItem.setText("Удалить текущий водомер");
-        DeleteMenuItem.addActionListener(evt -> DeleteMenuItemActionPerformed());
-        EditMenu.add(DeleteMenuItem);
+        DeleteWMMenuItem.setText("Удалить текущий водомер");
+        DeleteWMMenuItem.addActionListener(evt -> DeleteWMMenuItemActionPerformed());
+        EditMenu.add(DeleteWMMenuItem);
 
         menuBar.add(EditMenu);
 
@@ -472,7 +472,7 @@ public class GWatermeter extends javax.swing.JDialog {
         EditMenu.setEnabled(true);
         ChangeModeMenuItem.setEnabled(true);
         ChangesMenu.setEnabled(true);
-        DeleteMenuItem.setEnabled(true);
+        DeleteWMMenuItem.setEnabled(true);
         AcceptChangesMenuItem.setEnabled(false);
         Watermeter.showWatermeter(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 2)));
         CodeWatconTextField.setText(String.valueOf(Watermeter.code_watcon));
@@ -497,7 +497,7 @@ public class GWatermeter extends javax.swing.JDialog {
 
     private void setConditionMenuForJournal() {
         EditMenu.setEnabled(false);
-        DeleteMenuItem.setEnabled(false);
+        DeleteWMMenuItem.setEnabled(false);
     }
 
     private void AcceptChangesMenuItemActionPerformed() throws SQLException, ParseException {
@@ -649,7 +649,7 @@ public class GWatermeter extends javax.swing.JDialog {
             change_mode=true;
             JOptionPane.showMessageDialog(null,"Измените данные, затем нажмите \"Принять изменения\"", "Режим изменения", JOptionPane.INFORMATION_MESSAGE);
             ResultTable.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteWMMenuItem.setEnabled(false);
             ChangeModeMenuItem.setEnabled(false);
             AcceptChangesMenuItem.setEnabled(true);
             setConditionFields(true);
@@ -679,7 +679,7 @@ public class GWatermeter extends javax.swing.JDialog {
         for (JXDatePicker datepicker : datepickers) datepicker.setEditable(cond);
     }
 
-    private void DeleteMenuItemActionPerformed() {
+    private void DeleteWMMenuItemActionPerformed() {
         Object[] options = {"Да", "Нет"};
         int n = JOptionPane.showOptionDialog(null, "Удалить выбранный водомер?",
                 "Подтверждение удаления", JOptionPane.YES_NO_OPTION,

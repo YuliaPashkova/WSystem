@@ -513,11 +513,7 @@ public class GAccount extends javax.swing.JFrame {
 
         ordersMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         ordersMenuItem.setText("Журнал заказов");
-        ordersMenuItem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                OrdersMenuItemMouseClicked();
-            }
-        });
+
         ordersMenuItem.addActionListener(evt -> OrdersMenuItemActionPerformed());
         CatalogMenu.add(ordersMenuItem);
         menuBar.add(CatalogMenu);
@@ -1042,9 +1038,6 @@ public class GAccount extends javax.swing.JFrame {
         setAccess(Access.access);
     }
 
-    private void OrdersMenuItemMouseClicked() {
-
-    }
 
     //по клику на строке таблицы
     private void ResultTableMouseClicked(java.awt.event.MouseEvent evt) throws Exception {

@@ -194,7 +194,7 @@ public class GNewWatermeter extends javax.swing.JDialog {
         okButton.setText("ОК");
         okButton.addActionListener(evt -> {
             try {
-                OkButtonActionPerformed();
+                AddNewWatermButtonActionPerformed();
             } catch (ParseException | SQLException e) {
                 e.printStackTrace();
             }
@@ -382,7 +382,7 @@ public class GNewWatermeter extends javax.swing.JDialog {
         for (JXDatePicker datepicker : datepickers) datepicker.setDate(null);
     }
 
-    private void OkButtonActionPerformed() throws ParseException, SQLException {
+    private void AddNewWatermButtonActionPerformed() throws ParseException, SQLException {
         switch(Watermeter.addWatermeter(readData())){
             case 0:
                 JOptionPane.showMessageDialog(null,"Новый водомер был добавлен!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);

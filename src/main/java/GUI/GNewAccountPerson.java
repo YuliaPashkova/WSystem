@@ -169,7 +169,7 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         okButton.setText("ОК");
         okButton.addActionListener(evt -> {
             try {
-                OkButtonActionPerformed();
+                AddAccountButtonActionPerformed();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -370,7 +370,7 @@ public class GNewAccountPerson extends javax.swing.JDialog {
         dispose();
     }
 
-    private void OkButtonActionPerformed() throws Exception {
+    private void AddAccountButtonActionPerformed() throws Exception {
        switch(Account.addAccount(readData(),true)){
            case 0:
                JOptionPane.showMessageDialog(null,"Новый лицевой счет был успешно создан!", "Результат добавления", JOptionPane.INFORMATION_MESSAGE);

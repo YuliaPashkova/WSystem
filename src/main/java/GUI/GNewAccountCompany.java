@@ -236,7 +236,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         okButton.setText("ОК");
         okButton.addActionListener(evt -> {
             try {
-                OkButtonActionPerformed();
+                AddAccCompanyButtonActionPerformed();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -539,7 +539,7 @@ public class GNewAccountCompany extends javax.swing.JDialog {
         dispose();
     }
 
-    private void OkButtonActionPerformed() throws Exception {
+    private void AddAccCompanyButtonActionPerformed() throws Exception {
         String data[] = readData();
         switch(Account.addAccount(data,false)){
             case 0:
