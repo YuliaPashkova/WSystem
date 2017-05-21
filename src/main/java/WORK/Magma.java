@@ -43,7 +43,7 @@ public class Magma {
         // };
         try (BufferedReader in = new BufferedReader(new FileReader(pathKey))) {//В цикле построчно считываем файл
             File f = new File(pathKey);
-            if (f.length() != 102) throw new EOFException();
+            if (f.length() != 102 || !pathKey.endsWith(".txt")) throw new EOFException();
             String s;
             String temp[];
             int j = 0; //счетчик для строк (12)
@@ -60,7 +60,7 @@ public class Magma {
             return 1;
         } catch (EOFException ex) {
             log.println(getTime() + " Файл с ключом " + pathKey + " неверный или поврежден.");
-            log.println("Формат файла с ключом должен иметь следующий вид:");
+            log.println("Формат файла с ключом должен иметь тип txt и содержать следующее:");
             log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX");
             log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX,");
             log.println("где ХХ - число в шестандцатеричной системе счисления.");
@@ -77,7 +77,7 @@ public class Magma {
         ///
         try (BufferedReader in = new BufferedReader(new FileReader(pathSync))) {
             File f = new File(pathSync);
-            if (f.length() != 23) throw new EOFException();
+            if (f.length() != 23 || !pathSync.endsWith(".txt")) throw new EOFException();
             String s = in.readLine();
             String temp[] = s.split(" ");
             for (int i = 0; i < temp.length; i++)
@@ -89,7 +89,7 @@ public class Magma {
             return 1;
         } catch (EOFException ex) {
             log.println(getTime() + " Файл с начальным заполнителем " + pathSync + " неверный или поврежден.");
-            log.print("Формат файла с начальным заполнителем должен иметь следующий вид:");
+            log.print("Формат файла с начальным заполнителем должен иметь тип txt и содержать следующее:");
             log.println("XX XX XX XX XX XX XX XX,");
             log.println("где ХХ - число в шестандцатеричной системе счисления.");
             log.println("Пример начального заполнителя: FF FF FF FF FF FF FF FF");
