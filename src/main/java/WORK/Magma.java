@@ -58,12 +58,12 @@ public class Magma {
             log.println(getTime() + " Процесс остановлен.");
             log.close();
             return 1;
-        } catch (EOFException ex) {
+        } catch (EOFException | NumberFormatException ex) {
             log.println(getTime() + " Файл с ключом " + pathKey + " неверный или поврежден.");
             log.println("Формат файла с ключом должен иметь тип txt и содержать следующее:");
             log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX");
             log.println("   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX\n   XX XX XX XX,");
-            log.println("где ХХ - число в шестандцатеричной системе счисления.");
+            log.println("где ХХ - число в шестнадцатеричной системе счисления.");
             log.println("Пример ключа:\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n" +
                     "   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n   FF FF FF FF\n");
             return 1;
@@ -87,11 +87,11 @@ public class Magma {
             log.println(getTime() + " Процесс остановлен.");
             log.close();
             return 1;
-        } catch (EOFException ex) {
+        } catch (EOFException | NumberFormatException ex) {
             log.println(getTime() + " Файл с начальным заполнителем " + pathSync + " неверный или поврежден.");
             log.print("Формат файла с начальным заполнителем должен иметь тип txt и содержать следующее:");
             log.println("XX XX XX XX XX XX XX XX,");
-            log.println("где ХХ - число в шестандцатеричной системе счисления.");
+            log.println("где ХХ - число в шестнадцатеричной системе счисления.");
             log.println("Пример начального заполнителя: FF FF FF FF FF FF FF FF");
             return 1;
         }
@@ -160,9 +160,7 @@ public class Magma {
 
         log.println(g.getTime() + " В директории " + pathIn + " создаю директорию \"out\" для результата.");
         if(! new File(pathIn + "out").mkdirs()){
-            log.println(g.getTime() + " Ошибка создания директории \"out\".");
-            log.close();
-            return;
+            log.println(g.getTime() + " Директория уже сущесвует.");
         }
 
         log.println("\n" + g.getTime() + " Процесс " + (typeWork == 0? "шифрования" : "дешифрования") + " начат...");
@@ -177,41 +175,44 @@ public class Magma {
         //на основе шифрованной синхропосылки получаем первое число из РГПЧ
         N = g.GeneratorOfNumber(N);
 
-        for (String file1 : files) {
-            log.println(g.getTime() + " Работаю с файлом \"" + file1 + "\"");
-            byte data[] = new byte[8]; //данные для шифрования
-            DataInputStream dis = new DataInputStream(new FileInputStream(pathIn + file1));
-            DataOutputStream dos = new DataOutputStream(new FileOutputStream(pathOut + "out\\" + file1.substring(0, file1.length() - 4) + fileType));
-            int count = dis.read(data);//читает в data и возвращает кол-во считанных байтов в count
-            while (count != -1) {
-                //шифруем первое число
-                N = g.SimpleReplacMode(N);
-                //за раз может зашифровать 2х32 бит данных
-                byte N0[] = new byte[]{(byte) ((N[0] & 0xFF000000L) >> 24), (byte) ((N[0] & 0x00FF0000) >> 16), (byte) ((N[0] & 0x0000FF00) >> 8), (byte) (N[0] & 0x000000FF)};
-                byte N1[] = new byte[]{(byte) ((N[1] & 0xFF000000L) >> 24), (byte) ((N[1] & 0x00FF0000) >> 16), (byte) ((N[1] & 0x0000FF00) >> 8), (byte) (N[1] & 0x000000FF)};
-                //N01 = N0 + N1
-                byte N01[] = new byte[8];
-                System.arraycopy(N0, 0, N01, 0, N0.length);
-                System.arraycopy(N1, 0, N01, 4, N1.length);
-
-                for (int w = 0; w < count; w++)
-                    data[w] = (byte) (data[w] ^ N01[w]);
-
-                dos.write(data, 0, count); //пишем столько байт, сколько считали
-                count = dis.read(data);
-
-                //получаем новое псевдослучайное число на основе прошлого шифрованного
-                if (count != -1) N = g.GeneratorOfNumber(N);
-            }
-            log.println(g.getTime() + " Файл \"" + file1 + "\" успешно " + (typeWork == 0? " зашифрован" : " дешифрован"));
+        for (String file : files) {
+            log.println(g.getTime() + " Работаю с файлом \"" + file + "\"");
+            processingOfByte(N, g, pathIn, pathOut, file, fileType);
+            log.println(g.getTime() + " Файл \"" + file + "\" успешно " + (typeWork == 0 ? " зашифрован" : " дешифрован"));
             log.println("________________________________");
-            dis.close();
-            dos.close();
         }
 
         log.println(g.getTime() +  " Процесс завершен.\n");
         log.close();
 
+    }
+    private static void processingOfByte(int N[], Magma g, String pathIn, String pathOut, String file1, String fileType) throws Exception {
+        byte data[] = new byte[8]; //данные для шифрования
+        DataInputStream dis = new DataInputStream(new FileInputStream(pathIn + file1));
+        DataOutputStream dos = new DataOutputStream(new FileOutputStream(pathOut + "out\\" + file1.substring(0, file1.length() - 4) + fileType));
+        int count = dis.read(data);//читает в data и возвращает кол-во считанных байтов в count
+        while (count != -1) {
+            //шифруем первое число
+            N = g.SimpleReplacMode(N);
+            //за раз может зашифровать 2х32 бит данных
+            byte N0[] = new byte[]{(byte) ((N[0] & 0xFF000000L) >> 24), (byte) ((N[0] & 0x00FF0000) >> 16), (byte) ((N[0] & 0x0000FF00) >> 8), (byte) (N[0] & 0x000000FF)};
+            byte N1[] = new byte[]{(byte) ((N[1] & 0xFF000000L) >> 24), (byte) ((N[1] & 0x00FF0000) >> 16), (byte) ((N[1] & 0x0000FF00) >> 8), (byte) (N[1] & 0x000000FF)};
+            //N01 = N0 + N1
+            byte N01[] = new byte[8];
+            System.arraycopy(N0, 0, N01, 0, N0.length);
+            System.arraycopy(N1, 0, N01, 4, N1.length);
+
+            for (int w = 0; w < count; w++)
+                data[w] = (byte) (data[w] ^ N01[w]);
+
+            dos.write(data, 0, count); //пишем столько байт, сколько считали
+            count = dis.read(data);
+
+            //получаем новое псевдослучайное число на основе прошлого шифрованного
+            if (count != -1) N = g.GeneratorOfNumber(N);
+        }
+        dis.close();
+        dos.close();
     }
     private int[] SimpleReplacMode(int [] N) throws Exception {
         byte[] B = new byte[4];
