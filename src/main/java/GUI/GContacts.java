@@ -26,7 +26,7 @@ public class GContacts extends javax.swing.JDialog {
     private javax.swing.JMenuItem AddNewContactMenuItem;
     private javax.swing.JMenuItem ChangeModeMenuItem;
     private javax.swing.JMenu ChangesMenu;
-    private javax.swing.JMenuItem DeleteMenuItem;
+    private javax.swing.JMenuItem DeleteContactMenuItem;
     private javax.swing.JTextField EmailTextField;
     private javax.swing.JTextField MiddleNameTextField;
     private javax.swing.JTextField NameTextField;
@@ -84,7 +84,7 @@ public class GContacts extends javax.swing.JDialog {
             AddMenu = new javax.swing.JMenu();
             AddModeContactMenuItem = new javax.swing.JMenuItem();
             AddNewContactMenuItem = new javax.swing.JMenuItem();
-            DeleteMenuItem = new javax.swing.JMenuItem();
+            DeleteContactMenuItem = new javax.swing.JMenuItem();
 
             setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
             setTitle("Контактные лица ("+ Access.name_operator+")");
@@ -173,7 +173,7 @@ public class GContacts extends javax.swing.JDialog {
             });
             ChangesMenu.add(ChangeModeMenuItem);
             ChangesMenu.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteContactMenuItem.setEnabled(false);
 
             AcceptChangesMenuItem.setText("Принять изменения");
             AcceptChangesMenuItem.setEnabled(false);
@@ -212,9 +212,9 @@ public class GContacts extends javax.swing.JDialog {
 
             editMenu.add(AddMenu);
 
-            DeleteMenuItem.setText("Удаление выбранного контактного лица");
-            DeleteMenuItem.addActionListener(evt -> DeleteMenuItemActionPerformed());
-            editMenu.add(DeleteMenuItem);
+            DeleteContactMenuItem.setText("Удаление выбранного контактного лица");
+            DeleteContactMenuItem.addActionListener(evt -> DeleteContactMenuItemActionPerformed());
+            editMenu.add(DeleteContactMenuItem);
 
             jMenuBar1.add(editMenu);
 
@@ -377,7 +377,7 @@ public class GContacts extends javax.swing.JDialog {
             AddModeContactMenuItem.setEnabled(false);
             ResultTable.setEnabled(false);
             ChangesMenu.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteContactMenuItem.setEnabled(false);
             setConditionFields(true);
             cleanFieldsForAddMode();
             JOptionPane.showMessageDialog(null,"Введите данные,затем нажмите \"Добавить новое контактное лицо\"", "Режим добавления", JOptionPane.INFORMATION_MESSAGE);
@@ -386,7 +386,7 @@ public class GContacts extends javax.swing.JDialog {
             add_mode=false;
             ResultTable.setEnabled(true);
             ChangesMenu.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteContactMenuItem.setEnabled(false);
             AddModeContactMenuItem.setEnabled(true);
             AcceptChangesMenuItem.setEnabled(false);
             cleanFields();
@@ -408,7 +408,7 @@ public class GContacts extends javax.swing.JDialog {
             change_mode = true;
             ResultTable.setEnabled(false);
             AcceptChangesMenuItem.setEnabled(true);
-            DeleteMenuItem.setEnabled(false);
+            DeleteContactMenuItem.setEnabled(false);
             AddMenu.setEnabled(false);
             setConditionFields(true);
             ChangeModeMenuItem.setEnabled(false);
@@ -417,7 +417,7 @@ public class GContacts extends javax.swing.JDialog {
             change_mode=false;
             ResultTable.setEnabled(true);
             ChangesMenu.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteContactMenuItem.setEnabled(false);
             AddMenu.setEnabled(true);
             setConditionFields(false);
             ChangeModeMenuItem.setEnabled(true);
@@ -428,7 +428,7 @@ public class GContacts extends javax.swing.JDialog {
             ResultTable.requestFocus();
         }
     }
-        private void DeleteMenuItemActionPerformed() {
+        private void DeleteContactMenuItemActionPerformed() {
 
             Object[] options = {"Да", "Нет"};
             int n = JOptionPane.showOptionDialog(null, "Удалить выбранное контактное лицо?",
@@ -440,7 +440,7 @@ public class GContacts extends javax.swing.JDialog {
                 model.removeRow(ResultTable.getSelectedRow());//удаление строки из таблицы
                 cleanFields();
                 ChangesMenu.setEnabled(false);
-                DeleteMenuItem.setEnabled(false);
+                DeleteContactMenuItem.setEnabled(false);
 
             }
         }
@@ -467,7 +467,7 @@ public class GContacts extends javax.swing.JDialog {
         private void clickOnTable() throws SQLException {
             AddNewContactMenuItem.setEnabled(false);
             ChangesMenu.setEnabled(true);
-            DeleteMenuItem.setEnabled(true);
+            DeleteContactMenuItem.setEnabled(true);
             Contact.showContact(String.valueOf(ResultTable.getModel().getValueAt(ResultTable.getSelectedRow(), 0)));
             String FIO[] = Contact.FIO.split(" ");
             SurnameTextField.setText(FIO[0]);

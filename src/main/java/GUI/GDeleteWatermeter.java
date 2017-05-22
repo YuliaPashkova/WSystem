@@ -34,7 +34,7 @@ javax.swing.JComboBox<String> NumWMComboBox;
     private void initComponents() {
 
         JLabel numWMLabel = new JLabel();
-        JButton OKButton = new JButton();
+        JButton DeleteWatForOrderButton = new JButton();
         JButton cancelButton = new JButton();
         NumWMComboBox = new javax.swing.JComboBox<>();
 
@@ -45,10 +45,10 @@ javax.swing.JComboBox<String> NumWMComboBox;
 
         numWMLabel.setText("Укажите заводской номер водомера:");
 
-        OKButton.setText("ОК");
-        OKButton.addActionListener(evt -> {
+        DeleteWatForOrderButton.setText("ОК");
+        DeleteWatForOrderButton.addActionListener(evt -> {
             try {
-                OKButtonActionPerformed();
+                DeleteWatForOrderButtonActionPerformed();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -71,7 +71,7 @@ javax.swing.JComboBox<String> NumWMComboBox;
                                                 .addComponent(numWMLabel)
                                                 .addGap(0, 60, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addComponent(OKButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(DeleteWatForOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
@@ -85,7 +85,7 @@ javax.swing.JComboBox<String> NumWMComboBox;
                                 .addComponent(NumWMComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(OKButton)
+                                        .addComponent(DeleteWatForOrderButton)
                                         .addComponent(cancelButton))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -94,7 +94,7 @@ javax.swing.JComboBox<String> NumWMComboBox;
         setLocationRelativeTo(null);
     }
 
-        private void OKButtonActionPerformed() throws SQLException {
+        private void DeleteWatForOrderButtonActionPerformed() throws SQLException {
         if(NumWMComboBox.getSelectedItem().equals("НЕ ВЫБРАНО"))
             JOptionPane.showMessageDialog(null,"Выберите серийный номер водомера!", "Закрытие заказа", JOptionPane.ERROR_MESSAGE);
         else {

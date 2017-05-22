@@ -125,13 +125,7 @@ public class Methods {
     static boolean isEmail(String str){
         return str.matches("[[0-9]*\\.*\\_*\\-*[a-zA-z]+\\.*\\_*\\-*[0-9]*]+\\@[a-zA-z]+\\.[a-zA-z]+");
     }
-    /*
-    * Проверяет входную строку
-    * Возвращает true: если строка подходит под формат WWW-dd
-    * */
-    static boolean isOwnerTerrit(String str) {
-        return str.matches("[[а-яА-Яa-zA-z]*\\-*[0-9]*]*");
-    }
+
     /*
     * Проверяет входную строку
     * Возвращает true: если строка подходит под формат типа водомера

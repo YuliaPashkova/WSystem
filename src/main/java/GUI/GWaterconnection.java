@@ -27,7 +27,7 @@ public class GWaterconnection extends javax.swing.JDialog {
     private javax.swing.JMenu ChangesMenu;
     private javax.swing.JTextField CodeWatconTextField;
     private org.jdesktop.swingx.JXDatePicker DateTYDatePicker;
-    private javax.swing.JMenuItem DeleteMenuItem;
+    private javax.swing.JMenuItem DeleteWaterconMenuItem;
     private javax.swing.JTextField DepthTextField;
     private javax.swing.JMenu EditMenu;
     private javax.swing.JMenu JournalWatconMenu;
@@ -115,7 +115,7 @@ public class GWaterconnection extends javax.swing.JDialog {
         ChangesMenu = new javax.swing.JMenu();
         ChangeModeMenuItem = new javax.swing.JMenuItem();
         AcceptChangesMenuItem = new javax.swing.JMenuItem();
-        DeleteMenuItem = new javax.swing.JMenuItem();
+        DeleteWaterconMenuItem = new javax.swing.JMenuItem();
         JournalWatconMenu = new javax.swing.JMenu();
         JMenuItem searchMenuItem = new JMenuItem();
         JMenuItem clearMenuItem = new JMenuItem();
@@ -251,10 +251,10 @@ public class GWaterconnection extends javax.swing.JDialog {
 
         EditMenu.add(ChangesMenu);
 
-        DeleteMenuItem.setText("Удалить текущее подключение");
-        DeleteMenuItem.setEnabled(false);
-        DeleteMenuItem.addActionListener(evt -> DeleteMenuItemActionPerformed());
-        EditMenu.add(DeleteMenuItem);
+        DeleteWaterconMenuItem.setText("Удалить текущее подключение");
+        DeleteWaterconMenuItem.setEnabled(false);
+        DeleteWaterconMenuItem.addActionListener(evt -> DeleteWaterconMenuItemActionPerformed());
+        EditMenu.add(DeleteWaterconMenuItem);
 
         menuBar.add(EditMenu);
 
@@ -429,7 +429,7 @@ public class GWaterconnection extends javax.swing.JDialog {
         ChangesMenu.setEnabled(true);
         EditMenu.setEnabled(true);
         AcceptChangesMenuItem.setEnabled(false);
-        DeleteMenuItem.setEnabled(true);
+        DeleteWaterconMenuItem.setEnabled(true);
         WatermetersMenu.setEnabled(true);
         Waterconnection.showWaterconnection(CODE);
         CodeWatconTextField.setText(String.valueOf(Waterconnection.code));
@@ -527,7 +527,7 @@ public class GWaterconnection extends javax.swing.JDialog {
             change_mode=true;
             JOptionPane.showMessageDialog(null,"Измените данные, затем нажмите \"Принять изменения\"", "Режим изменения", JOptionPane.INFORMATION_MESSAGE);
             ResultTable.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteWaterconMenuItem.setEnabled(false);
             ChangeModeMenuItem.setEnabled(false);
             AcceptChangesMenuItem.setEnabled(true);
             WatermetersMenu.setEnabled(false);
@@ -546,7 +546,7 @@ public class GWaterconnection extends javax.swing.JDialog {
         }
     }
 
-    private void DeleteMenuItemActionPerformed() {
+    private void DeleteWaterconMenuItemActionPerformed() {
         Object[] options = {"Да", "Нет"};
         int n = JOptionPane.showOptionDialog(null, "Удалить выбранное водомерное подключение? Так же будут удалены\n все водомеры,привязанные к водомерному подключению.",
                 "Подтверждение удаления", JOptionPane.YES_NO_OPTION,
@@ -556,7 +556,7 @@ public class GWaterconnection extends javax.swing.JDialog {
             model.removeRow(ResultTable.getSelectedRow());//удаление строки из таблицы
             cleanFields();
             ChangesMenu.setEnabled(false);
-            DeleteMenuItem.setEnabled(false);
+            DeleteWaterconMenuItem.setEnabled(false);
             JOptionPane.showMessageDialog(null, "Водомерное подключение было удалено!", "Результат удаления", JOptionPane.INFORMATION_MESSAGE);
 
         }

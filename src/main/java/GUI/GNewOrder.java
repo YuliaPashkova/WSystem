@@ -128,7 +128,7 @@ public class GNewOrder extends javax.swing.JDialog {
         okButton.setText("Принять");
         okButton.addActionListener(evt -> {
             try {
-                OkButtonActionPerformed();
+                DoOrderButtonActionPerformed();
             } catch (ParseException | SQLException e) {
                 e.printStackTrace();
             }
@@ -243,7 +243,7 @@ public class GNewOrder extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>
 
-    private void OkButtonActionPerformed() throws ParseException, SQLException {
+    private void DoOrderButtonActionPerformed() throws ParseException, SQLException {
         String data [] = readData();
         boolean error=false;
         String message="";
