@@ -3,9 +3,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-/*
- * Created by Юлия on 09.05.2017.
- */
 public class Access {
     //login - admin pass- Julia
     //login - elena_pet pass -Sevastopol

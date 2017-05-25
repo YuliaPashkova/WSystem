@@ -154,13 +154,19 @@ public class GProtection extends javax.swing.JDialog {
         }
         else {
             if (mode) {
-                Magma.encryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//шифрование
-                JOptionPane.showMessageDialog(null, "Шифрование файлов SQL окончено. Зашифрованные файлы находятся в " + PathDataTextField.getText() +
+                int result = Magma.encryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//шифрование
+                if(result == 1)
+                    JOptionPane.showMessageDialog(null, "Шифрование файлов SQL потерпело неудачу. Подробная информация в " + PathLogTextField.getText(), "Результат шифрования", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "Шифрование файлов SQL окончено. Зашифрованные файлы находятся в " + PathDataTextField.getText() +
                         "\\out", "Результат шифрования", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             } else {
-                Magma.decryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//дешифрование
-                JOptionPane.showMessageDialog(null, "Дешифрование файлов mgm окончено. Дешифрованные файлы находятся в " + PathDataTextField.getText() +
+                int result = Magma.decryption(PathDataTextField.getText(), PathDataTextField.getText(), PathKeyTextField.getText(), PathSynchroTextField.getText(), PathLogTextField.getText());//дешифрование
+                if(result == 1)
+                    JOptionPane.showMessageDialog(null, "Дешифрование файлов mgm потерпело неудачу. Подробная информация в " + PathLogTextField.getText(), "Результат дешифрования", JOptionPane.INFORMATION_MESSAGE);
+                else
+                    JOptionPane.showMessageDialog(null, "Дешифрование файлов mgm окончено. Дешифрованные файлы находятся в " + PathDataTextField.getText() +
                         "\\out", "Результат дешифрования", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             }

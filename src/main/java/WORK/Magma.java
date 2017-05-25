@@ -107,9 +107,9 @@ public class Magma {
      * @param pathSync - путь к файлу с синхропосылкой
      * @param pathLog - путь к файлу для лога
      */
-    public static void decryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
+    public static int decryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
 
-        work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 1);//1 - дешифрование
+        return work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 1);//1 - дешифрование
     }
     /**
      * Осуществляет шифрование файлов, находищхся в папке pathIn
@@ -121,12 +121,12 @@ public class Magma {
      * @param pathLog - путь к файлу для лога
      *
      */
-    public static void encryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
+    public static int encryption(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog) throws Exception{
         //0 - шифрование
-        work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 0);
+        return work(pathIn + "\\", pathOut + "\\", pathKey, pathSync, pathLog, 0);
     }
 
-    private static void work(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog, int typeWork) throws Exception {
+    private static int work(String pathIn, String pathOut, String pathKey, String pathSync, String pathLog, int typeWork) throws Exception {
         Magma g = new Magma();
         //PrintWriter обеспечит возможности записи в файл
         log  = new PrintWriter(pathLog);
@@ -149,13 +149,13 @@ public class Magma {
         if(g.initKey(pathKey) == 1){
             log.println(g.getTime() + " Процесс остановлен.");
             log.close();
-            return;
+            return 1;
         }
         log.println(g.getTime() + " Инициализирую начальный заполнитель из файла " + pathSync);
         if(g.initSync(pathSync) == 1){
             log.println(g.getTime() +  " Процесс остановлен.");
             log.close();
-            return;
+            return 1;
         }
 
         log.println(g.getTime() + " В директории " + pathIn + " создаю директорию \"out\" для результата.");
@@ -184,6 +184,7 @@ public class Magma {
 
         log.println(g.getTime() +  " Процесс завершен.\n");
         log.close();
+        return 0; //all ok
 
     }
     private static void processingOfByte(int N[], Magma g, String pathIn, String pathOut, String file1, String fileType) throws Exception {
