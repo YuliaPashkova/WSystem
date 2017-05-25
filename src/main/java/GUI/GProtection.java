@@ -209,13 +209,13 @@ public class GProtection extends javax.swing.JDialog {
             mode=true;
             setTitle("Шифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Зашифровать данные");
-            chooseDataButton.setText("Выбрать файлы SQL");
+            chooseDataButton.setText("Выбрать папку с файлами SQL");
         }
         else{
             mode=false;
             setTitle("Дешифрование данных ("+ Access.name_operator+")");
             CryptButton.setText("Дешифровать данные");
-            chooseDataButton.setText("Выбрать файлы mgm");
+            chooseDataButton.setText("Выбрать папку с файлами mgm");
         }
     }
 }
